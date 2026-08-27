@@ -15,3 +15,7 @@ _Avoid_: headless CMS, content platform, Squarespace editor
 **Host**:
 The service that serves the built static site to the public — Cloudflare Pages, connected to the private GitHub repo `ss-to-gh`.
 _Avoid_: hosting provider, CDN alone, GitHub Pages, GitLab Pages
+
+**Registrar**:
+Where `musavvir.info` is registered after cutover — Porkbun (same account as `musavvir.work` and `musavvir.fyi`).
+_Avoid_: DNS host, nameserver provider, Squarespace Domains (post-transfer)
