@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import errno
 import mimetypes
 import os
+import subprocess
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -55,6 +57,20 @@ class Handler(SimpleHTTPRequestHandler):
         self.wfile.write(data)
 
 
+def _port_owner_hint(port: int) -> str:
+    try:
+        out = subprocess.check_output(
+            ["lsof", "-i", f":{port}", "-sTCP:LISTEN", "-n", "-P"],
+            stderr=subprocess.DEVNULL,
+            text=True,
+        ).strip()
+        if out:
+            return f"\nAlready listening:\n{out}\nStop it, or pick another port: npm run serve:public -- --port {port + 1}"
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+    return f"\nPick another port: npm run serve:public -- --port {port + 1}"
+
+
 def main():
     if not PUBLIC.is_dir():
         raise SystemExit(f"Missing {PUBLIC} — run: npm run promote:public")
@@ -63,7 +79,14 @@ def main():
     parser.add_argument("--port", type=int, default=4173)
     parser.add_argument("--bind", default="127.0.0.1")
     args = parser.parse_args()
-    httpd = ThreadingHTTPServer((args.bind, args.port), Handler)
+    try:
+        httpd = ThreadingHTTPServer((args.bind, args.port), Handler)
+    except OSError as err:
+        if err.errno == errno.EADDRINUSE:
+            raise SystemExit(
+                f"Port {args.port} is already in use.{_port_owner_hint(args.port)}"
+            ) from err
+        raise
     print(
         f"Publish tree http://{args.bind}:{args.port}/ "
         f"(custom 404; baselines at /visual/baselines/)"
