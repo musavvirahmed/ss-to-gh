@@ -19,3 +19,15 @@ _Avoid_: hosting provider, CDN alone, GitHub Pages, GitLab Pages
 **Registrar**:
 Where `musavvir.info` is registered after cutover — Porkbun (same account as `musavvir.work` and `musavvir.fyi`).
 _Avoid_: DNS host, nameserver provider, Squarespace Domains (post-transfer)
+
+**Pixel-identical clone**:
+The v1 fidelity bar: musavvir.info must match today’s live page in fonts, spacing, colour, and size at every captured live CSS breakpoint, including hover/focus/transitions and document head (favicon, title, basic social meta).
+_Avoid_: visual identical, content-and-layout equivalent, redesign
+
+**Frozen baseline**:
+Committed screenshots of the live site at those breakpoints; Playwright compares the clone against these images, not against the live URL.
+_Avoid_: live screenshot oracle, golden master (ambiguous)
+
+**Visual waive**:
+A human override of a Playwright pixel-diff failure, allowed only after flip-book and overlay checks still pass.
+_Avoid_: force pass, ignore diff

@@ -1,0 +1,3 @@
+# Pixel-identical clone for v1
+
+The destination is “the same one-page personal site.” Content-and-layout equivalence would be cheaper, but would leave an open “close enough?” argument on every edit. **Decision: v1 is a pixel-identical clone** of today’s musavvir.info — exact fonts (free near-equivalent only if any license costs money), full responsive match at live CSS breakpoints, full interaction chrome, site head (favicon/title/meta) included, Squarespace platform injects excluded. Verification: human flip-book + overlay + eyeball, plus Playwright against frozen baselines with a ≤0.5% pixel-diff fail and human waive. Rejected: visual-identical-but-not-pixel and content-only redesign.
