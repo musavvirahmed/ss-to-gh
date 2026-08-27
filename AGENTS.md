@@ -20,7 +20,7 @@ When the frontier is empty and fog is gone: `/to-spec` → `/to-tickets` → `/i
 
 ### Issue tracker
 
-GitHub Issues on `musavvirahmed/musavvir-info` via `gh`. See [`docs/agents/issue-tracker.md`](docs/agents/issue-tracker.md).
+GitHub Issues on `musavvirahmed/ss-to-gh` via `gh`. See [`docs/agents/issue-tracker.md`](docs/agents/issue-tracker.md).
 
 ### Triage labels
 
