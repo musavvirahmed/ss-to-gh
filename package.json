@@ -1,0 +1,16 @@
+{
+  "name": "ss-to-gh",
+  "private": true,
+  "description": "Harness for musavvir.info off Squarespace — visual QA and site tooling",
+  "scripts": {
+    "prototype:clone": "python3 -m http.server 4173 --directory prototypes/throwaway-html-clone",
+    "visual:capture": "node scripts/capture-baselines.mjs",
+    "visual:gate": "node scripts/pixel-gate.mjs",
+    "visual:smoke": "CLONE_URL=https://musavvir.info node scripts/pixel-gate.mjs"
+  },
+  "devDependencies": {
+    "pixelmatch": "^7.1.0",
+    "playwright": "^1.55.0",
+    "pngjs": "^7.0.0"
+  }
+}

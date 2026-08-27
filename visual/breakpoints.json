@@ -1,0 +1,17 @@
+{
+  "source": "Unique (min|max)-width px values appearing in @media rules in live site.css (versioned site CSS for website 652c4fe2909110318c591304), plus one wide desktop (1440) above the largest min-width. Captured 2026-08-27 from https://musavvir.info/. Component-only widths under 320px and non-viewport queries (hover, resolution, orientation-only) are excluded.",
+  "siteCssUrl": "https://static1.squarespace.com/static/versioned-site-css/652c4fe2909110318c591304/23/5c5a519771c10ba3470d8101/652c4fe2909110318c59130c/1820/site.css?nocustom=true",
+  "viewportWidthsPx": [
+    320, 400, 414, 432, 433, 480, 575, 576, 600, 639, 640, 767, 768, 799, 800, 991, 992, 1024, 1100, 1200, 1440
+  ],
+  "capture": {
+    "deviceScaleFactor": 1,
+    "fullPage": true,
+    "liveUrl": "https://musavvir.info/",
+    "hidePlatformInjects": true
+  },
+  "gate": {
+    "maxDiffPixelRatio": 0.005,
+    "note": "Fail when differing pixels / total pixels > 0.5%. Human Visual waive still required per issue #2 / ADR 0003."
+  }
+}
