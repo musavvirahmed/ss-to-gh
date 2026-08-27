@@ -13,15 +13,9 @@ import {
 
 const bp = loadBreakpoints();
 const maxRatio = bp.gate.maxDiffPixelRatio;
-const cloneUrl = process.env.CLONE_URL;
+const cloneUrl =
+  process.env.CLONE_URL ?? "http://127.0.0.1:4173";
 const widths = bp.viewportWidthsPx;
-
-if (!cloneUrl) {
-  console.error(
-    "CLONE_URL is required (e.g. CLONE_URL=http://127.0.0.1:4173 npm run visual:gate)",
-  );
-  process.exit(2);
-}
 
 for (const width of widths) {
   if (!fs.existsSync(baselinePath(width))) {
