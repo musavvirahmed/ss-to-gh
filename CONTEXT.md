@@ -20,6 +20,10 @@ _Avoid_: hosting provider, CDN alone, GitHub Pages, GitLab Pages
 Where `musavvir.info` is registered after cutover — Porkbun (same account as `musavvir.work` and `musavvir.fyi`).
 _Avoid_: DNS host, nameserver provider, Squarespace Domains (post-transfer)
 
+**Canonical hostname**:
+The public URL of the Site — apex `https://musavvir.info`. `www` and plain HTTP permanently redirect here; the Pages `*.pages.dev` hostname is not the Canonical hostname.
+_Avoid_: primary domain, preferred URL, www subdomain
+
 **Pixel-identical clone**:
 The v1 fidelity bar: musavvir.info must match today’s live page in fonts, spacing, colour, and size at every captured live CSS breakpoint, including hover/focus/transitions and document head (favicon, title, basic social meta).
 _Avoid_: visual identical, content-and-layout equivalent, redesign
