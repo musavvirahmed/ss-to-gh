@@ -1,0 +1,42 @@
+/* Static-site fixes after Squarespace platform JS is stripped. */
+
+/* Leftover Squarespace cart chrome (showCart:false but markup remains) */
+.cart-style-icon,
+#sqs-cart-container,
+.sqs-cart-dropzone,
+[data-animation-role="header-element"] .icon--cart {
+  display: none !important;
+}
+
+/* Menu-open title color: live rule loses to another cascade without SS JS theme setup */
+body.header--menu-open .header .header-title-text a,
+body.header--menu-open .header #site-title {
+  color: #000 !important;
+}
+
+/*
+ * Footer link underlines: live has underline on the inner <span> AND a 1px
+ * underline on the <a> from .sqs-block-html a — they should coincide. Without
+ * SS runtime they can separate into a thin double line. Collapse to one stroke
+ * matching the intended weight.
+ */
+footer.sections h4 a {
+  text-decoration: none !important;
+}
+footer.sections h4 a span {
+  text-decoration: underline !important;
+  text-decoration-color: currentColor !important;
+  text-decoration-thickness: 0.14em !important;
+  text-underline-offset: 0.18em !important;
+  text-decoration-skip-ink: auto;
+}
+
+/* Live: highlight wrappers strip link underlines (decorative stroke only) */
+.sqs-block-html .sqs-html-content .sqsrte-text-highlight a,
+.sqs-block-html .sqs-html-content .sqsrte-text-highlight a:link,
+.sqs-block-html .sqs-html-content .sqsrte-text-highlight a:visited,
+.sqs-block-html .sqs-html-content .sqsrte-text-highlight a:hover,
+.sqs-block-html .sqs-html-content .sqsrte-text-highlight a:active {
+  text-decoration: none !important;
+  background-image: none !important;
+}

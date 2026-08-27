@@ -1,0 +1,51 @@
+/* PROTOTYPE: TextShape highlight chrome (paths from highlights.js). */
+
+.sqs-block-content {
+  position: relative;
+  z-index: 0;
+}
+
+.sqsrte-text-highlight {
+  position: relative;
+}
+
+.sqsrte-text-color--white,
+.sqsrte-text-color--white * {
+  color: #fff !important;
+}
+
+.TextShape-node {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+  z-index: -1;
+}
+
+.TextShape-node[data-is-front="true"] {
+  z-index: 1;
+}
+
+.TextShape-node svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.TextShape-node path {
+  fill: none;
+  stroke: var(--stroke, #e63148);
+  /*
+   * Live token is 0.05em, but painted TextShapes read heavier (overlap + AA).
+   * Keep this on the SVG stroke only — not on <a> text-decoration.
+   */
+  stroke-width: calc(var(--stroke-width, 0.05em) * 2.4);
+  stroke-linecap: var(--stroke-linecap, round);
+  stroke-linejoin: var(--stroke-linejoin, round);
+  vector-effect: non-scaling-stroke;
+}
+
+.TextShape-node[data-shape="scribble"] path {
+  /* multi-pass highlighter — a bit heavier than underlineCurve */
+  stroke-width: calc(var(--stroke-width, 0.05em) * 2.8);
+}

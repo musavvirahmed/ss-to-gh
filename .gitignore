@@ -8,6 +8,7 @@ node_modules/
 dist/
 *.log
 .scratch/
+prototypes/throwaway-html-clone/
 visual/diffs/
 playwright-report/
 test-results/
