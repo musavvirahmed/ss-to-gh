@@ -14,7 +14,7 @@ const checks = [
   },
   {
     name: "résumé PDF",
-    path: "/s/musa-resume-2025.pdf",
+    path: "/s/musa-resume-2026.pdf",
     status: 200,
     contentTypeIncludes: "application/pdf",
   },
