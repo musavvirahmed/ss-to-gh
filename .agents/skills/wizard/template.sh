@@ -166,10 +166,13 @@ set_var() {
   warn "skipped GitHub variable $name, gh not ready; set it later"
 }
 
-# finish clears, then shows a closing summary of everything configured.
+# finish [headline [subtext]] — closing summary. Headline defaults to "Setup complete";
+# optional subtext names async or follow-up work the wizard does not block on.
 finish() {
   _clear
-  printf '\n%s%s  ✓ Setup complete%s\n' "$BOLD" "$GREEN" "$RESET"
+  local headline="${1:-Setup complete}" subtext="${2:-}"
+  printf '\n%s%s  ✓ %s%s\n' "$BOLD" "$GREEN" "$headline" "$RESET"
+  [[ -n "$subtext" ]] && note "$subtext"
   (( ${#WRITTEN_ENV[@]} ))    && note "wrote ${#WRITTEN_ENV[@]} value(s) to $ENV_FILE: ${WRITTEN_ENV[*]}"
   (( ${#WRITTEN_SECRET[@]} )) && note "set ${#WRITTEN_SECRET[@]} GitHub secret(s): ${WRITTEN_SECRET[*]}"
   if (( ${#SKIPPED[@]} )); then

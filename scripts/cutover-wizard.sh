@@ -167,10 +167,13 @@ set_var() {
   warn "skipped GitHub variable $name, gh not ready; set it later"
 }
 
-# finish clears, then shows a closing summary of everything configured.
+# finish [headline [subtext]] — closing summary. Headline defaults to "Setup complete";
+# optional subtext names async or follow-up work the wizard does not block on.
 finish() {
   _clear
-  printf '\n%s%s  ✓ Setup complete%s\n' "$BOLD" "$GREEN" "$RESET"
+  local headline="${1:-Setup complete}" subtext="${2:-}"
+  printf '\n%s%s  ✓ %s%s\n' "$BOLD" "$GREEN" "$headline" "$RESET"
+  [[ -n "$subtext" ]] && note "$subtext"
   (( ${#WRITTEN_ENV[@]} ))    && note "wrote ${#WRITTEN_ENV[@]} value(s) to $ENV_FILE: ${WRITTEN_ENV[*]}"
   (( ${#WRITTEN_SECRET[@]} )) && note "set ${#WRITTEN_SECRET[@]} GitHub secret(s): ${WRITTEN_SECRET[*]}"
   if (( ${#SKIPPED[@]} )); then
@@ -224,13 +227,15 @@ fi
 # ── Stage 2: NS cutover (go-live) ─────────────────────────────────────────
 stage "Squarespace: nameserver cutover"
 warn "GO-LIVE: traffic leaves Squarespace hosting."
-open_url "https://account.squarespace.com/domains/managed/musavvir.info/dns/nameservers"
-step "Open Nameservers."
-step "Choose Use custom nameservers (not Squarespace defaults)."
-step "Remove every Squarespace / NSONE nameserver."
-step "Add: $CF_NS_1"
-step "Add: $CF_NS_2"
-step "Save."
+open_url "https://account.squarespace.com/domains/managed/musavvir.info/dns/domain-nameservers"
+step "DNS → Domain Nameservers (not Nameserver Registration)."
+say "If the list is read-only (only USE SQUARESPACE NAMESERVERS, no trash icons):"
+step "Click USE SQUARESPACE NAMESERVERS → Continue (discards stale NS — expected)."
+step "Click USE CUSTOM NAMESERVERS (appears after the reset)."
+step "UPDATE NAMESERVERS or add fields: $CF_NS_1 and $CF_NS_2 only."
+step "Save. Re-auth if prompted; Continue if asked to disable DNSSEC."
+note "DNS → DNSSEC: disable first if a toggle or DS records are present."
+note "Use Safari or Firefox if Chrome hides edit controls."
 if ! confirm "Both Cloudflare nameservers saved at Squarespace?"; then
   warn "NS change not confirmed — re-run from this stage."
   exit 1
@@ -240,41 +245,42 @@ write_env CUTOVER_NS_CHANGED "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 # ── Stage 3: wait for zone Active ─────────────────────────────────────────
 stage "Cloudflare: wait for zone Active"
 say "Pages custom domains need an Active zone — do not attach while Pending."
-open_url "https://dash.cloudflare.com/?to=/:account/:zone/musavvir.info"
-step "Overview → Status must show Active (not Pending)."
+open_url "https://dash.cloudflare.com/?to=/:account/domains/overview"
+step "Find musavvir.info — Status must show Active (not Invalid nameservers)."
 step "Optional CLI: dig NS musavvir.info +short — expect $CF_NS_1 and $CF_NS_2."
 note "Propagation often takes minutes; allow up to 24h before retrying."
 pause "Zone status is Active?"
 
 # ── Stage 4: Pages apex custom domain ─────────────────────────────────────
 stage "Pages: add apex domain"
-say "Workers & Pages → ss-to-gh → Custom domains. Zone must already exist in this account."
-open_url "https://dash.cloudflare.com/?to=/:account/pages/view/ss-to-gh/settings/custom-domains"
-step "Custom domains → Set up a domain."
+say "Workers & Pages → ss-to-gh → Custom domains tab. Zone must already be Active."
+open_url "https://dash.cloudflare.com/?to=/:account/pages/view/ss-to-gh/domains"
+step "Custom domains tab → Set up a custom domain."
 step "Enter musavvir.info → Continue."
-step "Let Cloudflare create the DNS record — do not hand-add a CNAME."
+step "Confirm new DNS record (CNAME @ → ss-to-gh.pages.dev) → Activate domain."
+step "Let Cloudflare create the record — do not hand-add a CNAME in DNS."
 warn "If you see Transfer DNS management → do not click Begin DNS transfer."
 note "That loop means NS are not Active yet — return to stage 3."
 pause "musavvir.info shows Active on Custom domains?"
 
 # ── Stage 5: Pages www custom domain ──────────────────────────────────────
 stage "Pages: add www domain"
-open_url "https://dash.cloudflare.com/?to=/:account/pages/view/ss-to-gh/settings/custom-domains"
-step "Set up a domain → www.musavvir.info → Continue."
-step "Accept the auto-created CNAME for www."
+say "Same Custom domains tab as stage 4 — no need to open a new tab."
+step "Set up a custom domain → www.musavvir.info → Continue."
+step "Confirm DNS record → Activate domain."
 pause "www.musavvir.info shows Active on Custom domains?"
 write_env CUTOVER_CUSTOM_DOMAINS "yes"
 
 # ── Stage 6: Bulk Redirect www→apex ───────────────────────────────────────
 stage "Bulk Redirect: www→apex"
-say "ADR-0004: path and query preserved via \${1} capture group."
+say "Redirect www.musavvir.info to musavvir.info (same path and query)."
 open_url "https://dash.cloudflare.com/?to=/:account/bulk-redirects"
-step "Create Bulk Redirect List → name it musavvir-www-to-apex."
-step "Or, manually add URL redirects → add one row:"
-step "  Source URL:  https://www.musavvir.info/*"
-step "  Target URL:  https://musavvir.info/\${1}"
-step "  Status:      301"
-step "Continue to Redirect Rules → Save and Deploy."
+step "Create Bulk Redirect List — name: musavvir_www_to_apex (underscores only)."
+step "Add one row: Source https://www.musavvir.info/*"
+step "  Target https://musavvir.info/\${1}  Status 301"
+step "Next → Continue to Redirect Rules."
+step "Rule name: musavvir www to apex — select list musavvir_www_to_apex."
+step "Save and Deploy."
 pause "Bulk Redirect rule deployed?"
 write_env CUTOVER_WWW_REDIRECT "yes"
 
@@ -291,53 +297,67 @@ write_env CUTOVER_PRODUCTION_VERIFIED "yes"
 
 # ── Stage 8: TLS hardening ──────────────────────────────────────────────────
 stage "Cloudflare: TLS settings"
-open_url "https://dash.cloudflare.com/?to=/:account/:zone/musavvir.info/ssl-tls/edge-certificates"
+open_url "https://dash.cloudflare.com/?to=/:account/musavvir.info/ssl-tls/edge-certificates"
 step "Always Use HTTPS → On."
-step "HTTP Strict Transport Security (HSTS) → Enable."
-step "Max-Age: ~6 months. Preload: Off. Include subDomains: Off."
+step "HSTS → Enable. Max-Age: 6 months. Preload: Off. Include subDomains: Off."
+step "No-Sniff Header: Off (optional — not required for cutover)."
 note "Enable HSTS only after apex HTTPS is confirmed (stage 7)."
 pause "Always Use HTTPS and HSTS saved?"
 
 # ── Stage 9: cancel Squarespace website ───────────────────────────────────
 stage "Squarespace: cancel website"
-warn "Irreversible for Squarespace hosting. Cancel now — not Retain Access."
-open_url "https://account.squarespace.com/settings/billing/subscriptions"
-step "Find the website subscription (not the domain subscription)."
-step "Cancel → immediate cancel. Do not choose Retain Access."
-step "Before 16 Sep 2026 renewal (~€132) if still in that billing window."
-if ! confirm "Website subscription canceled?"; then
-  warn "Website may still bill — cancel manually, then continue."
+say "Site billing — not account.squarespace.com (that page is blank)."
+warn "Cancel the website plan only — not the domain subscription."
+open_url "https://musavvirinfo.squarespace.com/config/settings/billing/subscriptions"
+step "Subscriptions → website plan → Cancel subscription."
+step "CONTINUE through the steps (reason, feedback, confirm)."
+note "UI schedules cancel at billing-cycle end (e.g. Sep 16, 2026) — stops renewal."
+note "No refund after 14-day window; musavvir.info already on Cloudflare."
+note "Do not cancel the domain subscription here — transfer comes in stage 11."
+if ! confirm "Website subscription cancellation submitted?"; then
+  warn "Website may still renew — cancel manually, then continue."
 fi
 write_env CUTOVER_WEBSITE_CANCELED "yes"
 
 # ── Stage 10: unlock + auth code ──────────────────────────────────────────
 stage "Squarespace: unlock + auth code"
-say "Start Porkbun transfer same day. Avoid DNS edits while transfer is pending."
-open_url "https://account.squarespace.com/domains/managed/musavvir.info/registration"
-step "Domain Lock → Off (only for the transfer window)."
-step "Request transfer / auth code."
-step "Code arrives by email from no-reply@squarespace.com (within 24h)."
-ask_secret SS_AUTH_CODE "Paste auth/EPP code when it arrives:"
-write_env SS_AUTH_CODE "$SS_AUTH_CODE"
-note "Use the latest code only — a new request invalidates older codes."
+say "Request the transfer code — do not paste it into this wizard."
+warn "Avoid DNS edits at Squarespace while Porkbun transfer is pending."
+open_url "https://account.squarespace.com/domains/managed/musavvir.info"
+step "DOMAIN LOCK → Off (transfer window only)."
+step "Send Transfer Authentication Code (or Request transfer code)."
+step "Code emails to the registrant contact from no-reply@squarespace.com (≤24h)."
+note "Paste the code only on Porkbun (stage 11) — never commit it to .env."
+if ! confirm "Auth code requested (or already in your inbox)?"; then
+  warn "Request the code before Porkbun transfer (stage 11)."
+fi
+write_env CUTOVER_AUTH_CODE_REQUESTED "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 # ── Stage 11: Porkbun transfer ────────────────────────────────────────────
 stage "Porkbun: submit transfer"
-open_url "https://porkbun.com/account/transfer"
-step "Enter musavvir.info and the auth code."
-step "Keep WHOIS privacy and auto-renew enabled."
-step "Pay the transfer fee (~5–7 business days to complete)."
+say "Transfer page — not /account/transfer (404). Use top-nav Transfer or:"
+open_url "https://porkbun.com/transfer"
+step "Domain Name: musavvir.info"
+step "Auth Code: paste from Squarespace email here only (not stored by wizard)."
+step "WHOIS privacy + auto-renew checked → Add Transfers to Cart."
+step "Cart → Continue to Billing → pay."
+note ".info transfer is ~USD 22.14 — includes one year registration."
 write_env CUTOVER_PORKBUN_TRANSFER_STARTED "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-pause "Transfer submitted at Porkbun?"
+pause "Transfer submitted? Porkbun shows pending transfer from losing registrar?"
 
-# ── Stage 12: Tucows confirm + finish ─────────────────────────────────────
-stage "Tucows confirm + cleanup"
-say "Watch the registrant inbox for the expedited-transfer link."
-step "From noreply@opensrs.email or @registrarmail.net — click confirm."
-step "Skipping confirm adds ~5 business days."
+# ── Stage 12: monitor transfer + finish ─────────────────────────────────────
+stage "Monitor Porkbun transfer (async)"
+say "Go-live steps are done. This stage is a checklist — the wizard ends after you note it."
+open_url "https://porkbun.com/account/transfers"
+step "Status pending transfer from losing registrar is normal — wait ~5 days."
+step "Check Porkbun Domain Transfers every few days until complete."
+note "Optional expedite (Tucows backend): registrant inbox may get a confirm"
+note "link from noreply@opensrs.email or @registrarmail.net — click if it arrives."
+note "No email? Wait five business days; transfer still proceeds."
 step "After Porkbun shows complete: NS should still be $CF_NS_1, $CF_NS_2."
-step "Squarespace: turn off domain auto-renew (subscription ends after transfer)."
+step "Squarespace: disable domain auto-renew (domain sub ends after transfer)."
 open_url "https://porkbun.com/account/domains"
-pause "Transfer confirm handled and post-transfer cleanup done?"
+pause "Monitoring plan noted?"
 
-finish
+finish "Go-live complete" \
+  "Site is on Cloudflare. Porkbun domain transfer still pending (~5–7 days) — check Domain Transfers every few days until complete."
