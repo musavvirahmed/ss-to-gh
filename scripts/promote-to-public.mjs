@@ -81,7 +81,27 @@ function stripHtml(html) {
     `href="${RESUME_HREF}"`,
   );
 
+  // Squarespace lazy-loader JS is stripped; show images immediately.
+  out = out.replace(/\sdata-load="false"/g, "");
+  out = out.replace(/\sdata-loader="sqs"/g, "");
+  out = out.replace(/\ssrcset="assets\/[^"]+"/g, (match) => {
+    const asset = match.match(/assets\/[^"?]+/)[0];
+    return ` srcset="${asset}"`;
+  });
+
   return out;
+}
+
+function patchImageComponentCss(css) {
+  return css
+    .replaceAll(
+      '.sqs-block[data-definition-name="website.components.imageFluid"]',
+      ".sqs-block-image",
+    )
+    .replace(
+      /.fe-block \.fe-block \.sqs-block-image/g,
+      ".fe-block .sqs-block-image",
+    );
 }
 
 function copyFile(src, dest) {
@@ -124,10 +144,13 @@ function promote(sourceDir) {
   );
 
   for (const name of CAPTURE_CSS) {
-    copyFile(
-      path.join(sourceDir, "_capture", name),
-      path.join(PUBLIC, "_capture", name),
-    );
+    const dest = path.join(PUBLIC, "_capture", name);
+    if (name === "image-component.css") {
+      const raw = fs.readFileSync(path.join(sourceDir, "_capture", name), "utf8");
+      fs.writeFileSync(dest, patchImageComponentCss(raw));
+    } else {
+      copyFile(path.join(sourceDir, "_capture", name), dest);
+    }
   }
 
   for (const name of ["favicon.webp", "pro-pic-circular-musa.png"]) {
