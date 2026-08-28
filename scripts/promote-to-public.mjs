@@ -10,6 +10,8 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_SOURCE = path.join(ROOT, "prototypes/throwaway-html-clone");
 const PUBLIC = path.join(ROOT, "public");
+const RESUME_PUBLIC = path.join(PUBLIC, "s", "musa-resume-2026.pdf");
+const RESUME_HREF = "/s/musa-resume-2026.pdf";
 
 const CAPTURE_CSS = [
   "site.css",
@@ -74,6 +76,11 @@ function stripHtml(html) {
   out = out.replace(/<script src="menu\.js" defer><\/script>\n?/g, "");
   out = out.replace(/<div id="prototype-badge">[\s\S]*?<\/div>\n?/g, "");
 
+  out = out.replace(
+    /href="(?:assets\/musa-resume-2025\.pdf|\/s\/musa-resume-2025\.pdf)"/g,
+    `href="${RESUME_HREF}"`,
+  );
+
   return out;
 }
 
@@ -94,6 +101,10 @@ function promote(sourceDir) {
     );
     process.exit(1);
   }
+
+  const preservedResume = fs.existsSync(RESUME_PUBLIC)
+    ? fs.readFileSync(RESUME_PUBLIC)
+    : null;
 
   rmrf(PUBLIC);
   fs.mkdirSync(PUBLIC, { recursive: true });
@@ -126,10 +137,18 @@ function promote(sourceDir) {
     );
   }
 
-  copyFile(
-    path.join(sourceDir, "assets", "musa-resume-2025.pdf"),
-    path.join(PUBLIC, "s", "musa-resume-2025.pdf"),
-  );
+  if (preservedResume) {
+    fs.mkdirSync(path.join(PUBLIC, "s"), { recursive: true });
+    fs.writeFileSync(RESUME_PUBLIC, preservedResume);
+  } else {
+    const fallback = path.join(sourceDir, "assets", "musa-resume-2025.pdf");
+    if (fs.existsSync(fallback)) {
+      copyFile(fallback, RESUME_PUBLIC);
+      console.warn(
+        "No public/s/musa-resume-2026.pdf found; copied throwaway placeholder.",
+      );
+    }
+  }
 
   fs.writeFileSync(path.join(PUBLIC, "_redirects"), "/home /\n");
 

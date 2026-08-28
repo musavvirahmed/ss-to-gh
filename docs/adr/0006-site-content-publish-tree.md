@@ -10,7 +10,7 @@ Grilling ([#16](https://github.com/musavvirahmed/ss-to-gh/issues/16)) chose how 
 
 **Fonts:** Aktiv Grotesk via Typekit (live parity). Libre Baskerville via [Google Fonts](https://fonts.google.com/specimen/Libre+Baskerville) CSS2 (`ital,wght@0,700;1,400`); re-eyeball italic headings after swap.
 
-**Résumé:** serve at `public/s/musa-resume-2025.pdf` (live path parity). Placeholder PDF OK at promote; updated file required before cutover ([#21](https://github.com/musavvirahmed/ss-to-gh/issues/21)).
+**Résumé:** serve at `public/s/musa-resume-2026.pdf`; footer links to `/s/musa-resume-2026.pdf`. `npm run promote:public` preserves an existing `public/s/musa-resume-2026.pdf` if present; otherwise copies the throwaway placeholder from `assets/musa-resume-2025.pdf`. Live Squarespace path was `/s/musa-resume-2025.pdf`; year bumped at cutover ([#21](https://github.com/musavvirahmed/ss-to-gh/issues/21)).
 
 **Harness:** `npm run serve:public` — custom 404 + `/visual/baselines/` mount for flip-book; `visual:gate` runs against promoted `public/` (fresh **Visual waive** only if still failing). `public/_redirects`: `/home` → `/`.
 
