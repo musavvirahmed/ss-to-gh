@@ -21,7 +21,7 @@ collections:
   - name: site
     label: Site content
     files:
-      - label: Homepage copy & links
+      - label: Site copy & links
         name: site
         file: content/site.yaml
         format: yaml
@@ -29,15 +29,66 @@ collections:
           - label: Location (city)
             name: location
             widget: string
-            hint: Shown in the bio line, e.g. "Den Haag"
+            hint: Used in homepage bio, e.g. "Den Haag"
+          - label: Avatar image
+            name: avatar
+            widget: image
+            hint: Profile photo (stored under public/assets)
           - label: Résumé PDF path
             name: resume_pdf
             widget: string
             hint: Site path, e.g. /s/musa-resume-2026.pdf
-          - label: Avatar image path
-            name: avatar
-            widget: string
-            hint: Path under public/, e.g. assets/pro-pic-circular-musa.png
+          - label: Homepage bio — paragraphs
+            name: bio
+            widget: object
+            collapsed: true
+            fields:
+              - label: Paragraphs
+                name: paragraphs
+                widget: list
+                summary: "{{fields.paragraph}}"
+                field:
+                  label: Paragraph
+                  name: paragraph
+                  widget: markdown
+              - label: Highlight decorations
+                name: highlights
+                widget: list
+                summary: "{{fields.phrase}} ({{fields.style}})"
+                fields:
+                  - label: Phrase (exact match in bio)
+                    name: phrase
+                    widget: string
+                  - label: Style
+                    name: style
+                    widget: select
+                    options:
+                      - underline
+                      - scribble
+                  - label: Bold inside highlight
+                    name: bold
+                    widget: boolean
+                    required: false
+                  - label: Link URL (optional)
+                    name: href
+                    widget: string
+                    required: false
+          - label: 404 page copy
+            name: not_found
+            widget: object
+            collapsed: true
+            fields:
+              - label: Heading
+                name: heading
+                widget: string
+              - label: Body lines
+                name: lines
+                widget: list
+                summary: "{{fields.line}}"
+                field:
+                  label: Line
+                  name: line
+                  widget: markdown
           - label: Footer links
             name: footer_links
             widget: list

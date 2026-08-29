@@ -1,55 +1,68 @@
 #!/usr/bin/env node
 /**
- * One-time (or post-promote) surgery: location markers + footer mount in Publish HTML.
- * Idempotent when markers / content-footer-row already exist.
+ * One-time (or post-promote) surgery: content slots in Publish HTML.
+ * Idempotent when markers already exist.
  */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { HTML_TARGETS, PUBLIC, renderFooterLinks, loadSiteContent } from "./lib/site-content.mjs";
+import {
+  HTML_TARGETS,
+  PUBLIC,
+  applyContent,
+  renderFooterLinks,
+  loadSiteContent,
+} from "./lib/site-content.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const FOOTER_BLOCK_CSS_START = "  .fe-block-51697b3894f8863fd2b5 {";
-const FOOTER_ROW_CSS = `  .content-footer-row {
-    grid-area: 1/1/6/-1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-
-  @media (min-width: 768px) {
-    .content-footer-row {
-      grid-area: 2/2/3/26;
-    }
-  }
-
-`;
-
 const FE_BLOCK_INNER_START =
   '<div class="fluid-engine fe-652c57a10d6f9a768507b174"><div class="fe-block fe-block-51697b3894f8863fd2b5">';
 
-function patchLocation(html) {
-  if (html.includes("<!-- content:location -->")) return html;
+function patchBio(html) {
+  if (html.includes("<!-- content:bio -->")) return html;
+  if (!html.includes('id="block-880e0a4d670baafb02b2"')) return html;
   return html.replace(
-    /Product designer based in ([^<,]+),/,
-    "Product designer based in <!-- content:location -->$1<!-- /content:location -->,",
+    /(<div class="sqs-html-content" data-sqsp-text-block-content><h1 style="white-space:pre-wrap;">)[\s\S]*?(<\/h1><\/div>)/,
+    "$1<!-- content:bio --><!-- /content:bio --></h1></div>",
   );
 }
 
+function patchNotFound(html) {
+  if (html.includes("<!-- content:not-found -->")) return html;
+  if (!html.includes('id="block-6721e778138f1a970177"')) return html;
+  return html.replace(
+    /(<div class="sqs-html-content" data-sqsp-text-block-content>)([\s\S]*?)(<\/div>)(\s*<style id="container-styles">#block-6721e778138f1a970177)/,
+    "$1<!-- content:not-found -->$2<!-- /content:not-found -->$3$4",
+  );
+}
+
+function patchAvatar(html) {
+  if (html.includes("<!-- content:avatar -->")) return html;
+  const pathPattern = /assets\/pro-pic-circular-musa\.png/g;
+  return html
+    .replace(/data-src="(assets\/[^"]+)"/g, 'data-src="<!-- content:avatar -->$1<!-- /content:avatar -->"')
+    .replace(/data-image="(assets\/[^"]+)"/g, 'data-image="<!-- content:avatar -->$1<!-- /content:avatar -->"')
+    .replace(
+      /(<img[\s\S]*? )src="(assets\/[^"]+)"/,
+      '$1src="<!-- content:avatar -->$2<!-- /content:avatar -->"',
+    )
+    .replace(/srcset="(assets\/[^"]+)"/g, 'srcset="<!-- content:avatar -->$1<!-- /content:avatar -->"');
+}
+
 function patchFooterCss(html) {
-  if (html.includes(".content-footer-row")) return html;
+  if (html.includes("<!-- content:footer-links -->")) return html;
   const start = html.indexOf(FOOTER_BLOCK_CSS_START);
   if (start === -1) {
     throw new Error("Footer fe-block CSS anchor not found");
   }
-  const endMarker = "\n\n</style><div class=\"fluid-engine fe-652c57a10d6f9a768507b174\">";
+  const endMarker = '\n\n</style><div class="fluid-engine fe-652c57a10d6f9a768507b174">';
   const end = html.indexOf(endMarker, start);
   if (end === -1) {
     throw new Error("Footer CSS end anchor not found");
   }
-  return html.slice(0, start) + FOOTER_ROW_CSS + html.slice(end);
+  return html.slice(0, start) + html.slice(end);
 }
 
 function patchFooterMount(html, footerHtml) {
@@ -64,7 +77,7 @@ function patchFooterMount(html, footerHtml) {
   if (end === -1) {
     throw new Error("Footer mount end anchor not found");
   }
-  const replacement = `<div class="fluid-engine fe-652c57a10d6f9a768507b174"><div class="content-footer-row">
+  const replacement = `<div class="fluid-engine fe-652c57a10d6f9a768507b174">
   <!-- content:footer-links -->
   ${footerHtml}
   <!-- /content:footer-links -->
@@ -77,18 +90,43 @@ function patchFooterMount(html, footerHtml) {
   return html.slice(0, start) + replacement + html.slice(end + closePattern.length);
 }
 
-function patchFile(name, footerHtml) {
+function patchFooterLayoutUpgrade(html) {
+  if (html.includes(".content-footer-row {")) {
+    html = html.replace(/  \.content-footer-row \{[\s\S]*?  \}\n\n\n/, "");
+  }
+  if (html.includes('<div class="content-footer-row">')) {
+    html = html.replace(
+      '<div class="fluid-engine fe-652c57a10d6f9a768507b174"><div class="content-footer-row">\n  ',
+      '<div class="fluid-engine fe-652c57a10d6f9a768507b174">\n  ',
+    );
+  }
+  return html;
+}
+
+function patchFile(name, content) {
   const filePath = path.join(PUBLIC, name);
   let html = fs.readFileSync(filePath, "utf8");
-  html = patchLocation(html);
-  html = patchFooterCss(html);
-  html = patchFooterMount(html, footerHtml);
+  html = patchAvatar(html);
+  if (name === "index.html") {
+    html = patchBio(html);
+  }
+  if (name === "404.html") {
+    html = patchNotFound(html);
+  }
+  html = patchFooterLayoutUpgrade(html);
+  if (!html.includes("<!-- content:footer-links -->")) {
+    html = patchFooterCss(html);
+    html = patchFooterMount(html, renderFooterLinks(content.footer_links));
+  }
   fs.writeFileSync(filePath, html);
-  console.log(`Patched ${name}`);
+  console.log(`Patched ${name} (slots)`);
 }
 
 const content = loadSiteContent();
-const footerHtml = renderFooterLinks(content.footer_links);
 for (const name of HTML_TARGETS) {
-  patchFile(name, footerHtml);
+  patchFile(name, content);
 }
+
+// Bake initial content into slots
+applyContent({ root: ROOT });
+console.log("Applied content/site.yaml → public/");

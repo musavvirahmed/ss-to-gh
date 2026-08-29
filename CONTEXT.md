@@ -5,7 +5,7 @@ Domain language for replacing the Squarespace-hosted personal site with a cheap 
 ## Language
 
 **Site content**:
-The editable words and assets on musavvir.info — bio copy, avatar image, footer links, and résumé PDF.
+The editable words and assets on musavvir.info — homepage bio (markdown paragraphs + highlight decorations), 404 copy, avatar image, footer links, and résumé PDF.
 _Avoid_: page content, CMS content, marketing copy
 
 **Git-as-CMS**:

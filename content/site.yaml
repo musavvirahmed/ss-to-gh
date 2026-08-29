@@ -1,6 +1,28 @@
 location: The Hague
 resume_pdf: /s/musa-resume-2026.pdf
 avatar: assets/pro-pic-circular-musa.png
+
+bio:
+  paragraphs:
+    - paragraph: "Product designer based in {{location}}, interested in growth hacking & designOps"
+    - paragraph: "Currently designing at [**Nord Security**](https://nordsecurity.com/). Previously, for **Vermietet.de (ImmoScout24)**."
+    - paragraph: "Interested in open source & research projects. Feel free to say hello!"
+  highlights:
+    - phrase: growth hacking
+      style: underline
+    - phrase: designOps
+      style: scribble
+      bold: true
+    - phrase: say hello
+      style: underline
+      href: https://adplist.org/mentors/musavvir-ahmed
+
+not_found:
+  heading: "Oops… "
+  lines:
+    - line: "No such page. "
+    - line: "You should go [back](/)."
+
 footer_links:
   - label: Linkedin
     href: https://www.linkedin.com/in/musavvirinfo/

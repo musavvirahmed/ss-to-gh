@@ -31,8 +31,55 @@ footer.sections h4 a span {
   text-decoration-skip-ink: auto;
 }
 
-/* Schema-driven footer links (ADR-0007) */
+/* Schema-driven footer links (ADR-0007) — grid placement via display:contents */
+.content-footer-row {
+  display: contents;
+}
+
 .content-footer-links {
+  display: contents;
+}
+
+.content-footer-link {
+  margin: 0;
+}
+
+.content-footer-link:nth-child(1) {
+  grid-area: 1/2/3/5;
+}
+
+.content-footer-link:nth-child(2) {
+  grid-area: 1/7/3/10;
+}
+
+.content-footer-link:nth-child(3) {
+  grid-area: 4/2/6/5;
+}
+
+.content-footer-link:nth-child(4) {
+  grid-area: 4/7/6/10;
+}
+
+@media (min-width: 768px) {
+  .content-footer-link:nth-child(1) {
+    grid-area: 2/2/3/5;
+  }
+
+  .content-footer-link:nth-child(2) {
+    grid-area: 2/6/3/9;
+  }
+
+  .content-footer-link:nth-child(3) {
+    grid-area: 2/10/3/13;
+  }
+
+  .content-footer-link:nth-child(4) {
+    grid-area: 2/14/3/17;
+  }
+}
+
+/* Fallback when footer_links.length !== 4 */
+.content-footer-links--flex {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -41,9 +88,16 @@ footer.sections h4 a span {
   width: 100%;
   max-width: var(--sqs-site-max-width, 1500px);
   margin: 0 auto;
+  grid-area: 1/1/6/-1;
 }
 
-.content-footer-links h4 {
+@media (min-width: 768px) {
+  .content-footer-links--flex {
+    grid-area: 2/2/3/26;
+  }
+}
+
+.content-footer-links--flex .content-footer-link-flex {
   margin: 0;
 }
 
