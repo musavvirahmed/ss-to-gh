@@ -2,6 +2,10 @@
 /**
  * Promote-and-strip throwaway clone → public/ (ADR-0006).
  * Source default: prototypes/throwaway-html-clone (archived on branch prototype/throwaway-html-clone).
+ *
+ * WARNING: deletes all of public/. After promote, re-run:
+ *   npm run init-content-slots && npm run apply-content
+ * or content markers and /admin are lost (ADR-0007).
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -176,6 +180,9 @@ function promote(sourceDir) {
   fs.writeFileSync(path.join(PUBLIC, "_redirects"), "/home /\n");
 
   console.log(`Promoted ${sourceDir} → public/`);
+  console.warn(
+    "Run: npm run init-content-slots && npm run apply-content (ADR-0007 content seam)",
+  );
 }
 
 const sourceArg = process.argv.find((a) => a.startsWith("--source="));

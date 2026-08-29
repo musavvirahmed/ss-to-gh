@@ -31,6 +31,22 @@ footer.sections h4 a span {
   text-decoration-skip-ink: auto;
 }
 
+/* Schema-driven footer links (ADR-0007) */
+.content-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  width: 100%;
+  max-width: var(--sqs-site-max-width, 1500px);
+  margin: 0 auto;
+}
+
+.content-footer-links h4 {
+  margin: 0;
+}
+
 /* Live: highlight wrappers strip link underlines (decorative stroke only) */
 .sqs-block-html .sqs-html-content .sqsrte-text-highlight a,
 .sqs-block-html .sqs-html-content .sqsrte-text-highlight a:link,

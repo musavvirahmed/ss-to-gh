@@ -3,6 +3,10 @@
   "private": true,
   "description": "Harness for musavvir.info off Squarespace — visual QA and site tooling",
   "scripts": {
+    "apply-content": "node scripts/apply-content.mjs",
+    "init-content-slots": "node scripts/init-html-content-slots.mjs",
+    "content:smoke": "node scripts/content-smoke.mjs",
+    "test": "npm run content:smoke",
     "promote:public": "node scripts/promote-to-public.mjs",
     "serve:public": "python3 scripts/serve-public.py",
     "pages:smoke": "node scripts/pages-smoke.mjs",
@@ -11,8 +15,10 @@
     "visual:smoke": "CLONE_URL=https://musavvir.info node scripts/pixel-gate.mjs"
   },
   "devDependencies": {
+    "ajv": "^8.17.1",
     "pixelmatch": "^7.1.0",
     "playwright": "^1.55.0",
-    "pngjs": "^7.0.0"
+    "pngjs": "^7.0.0",
+    "yaml": "^2.8.0"
   }
 }

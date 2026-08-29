@@ -1,0 +1,36 @@
+{
+  "$id": "https://musavvir.info/schemas/site-content.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["location", "resume_pdf", "avatar", "footer_links"],
+  "properties": {
+    "location": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resume_pdf": {
+      "type": "string",
+      "pattern": "^/s/[\\w.-]+\\.pdf$"
+    },
+    "avatar": {
+      "type": "string",
+      "pattern": "^assets/[\\w.-]+$"
+    },
+    "footer_links": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "href"],
+        "properties": {
+          "label": { "type": "string", "minLength": 1 },
+          "href": {
+            "type": "string",
+            "pattern": "^(https://|/)[^\\s]+$"
+          }
+        }
+      }
+    }
+  }
+}

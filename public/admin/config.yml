@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+backend:
+  name: github
+  repo: musavvirahmed/ss-to-gh
+  branch: main
+
+media_folder: public/assets
+public_folder: /assets
+
+collections:
+  - name: site
+    label: Site content
+    files:
+      - label: Homepage copy & links
+        name: site
+        file: content/site.yaml
+        format: yaml
+        fields:
+          - label: Location (city)
+            name: location
+            widget: string
+            hint: Shown in the bio line, e.g. "Den Haag"
+          - label: Résumé PDF path
+            name: resume_pdf
+            widget: string
+            hint: Site path, e.g. /s/musa-resume-2026.pdf
+          - label: Avatar image path
+            name: avatar
+            widget: string
+            hint: Path under public/, e.g. assets/pro-pic-circular-musa.png
+          - label: Footer links
+            name: footer_links
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - label: Label
+                name: label
+                widget: string
+              - label: URL
+                name: href
+                widget: string
+                hint: https://… or /s/… for on-site files

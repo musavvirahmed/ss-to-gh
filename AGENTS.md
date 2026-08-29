@@ -16,6 +16,10 @@ Until the Wayfinder map is clear, **plan, don't do**: resolve decisions, not pro
 
 When the frontier is empty and fog is gone: `/to-spec` → `/to-tickets` → `/implement`. Registrar dashboards (Squarespace, Porkbun) use `/wizard`.
 
+## Site content (ADR-0007)
+
+Edit **`content/site.yaml`** or the visual editor at **`/admin`** (Sveltia CMS, GitHub PAT). Run **`npm test`** before commit. Never edit bio/footer copy inside `public/index.html`. Cloudflare Pages build: **`npm run apply-content`**.
+
 ## Agent skills
 
 ### Issue tracker
