@@ -3,7 +3,38 @@
   <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex" />
-    <title>musavvir.info — Site content</title>
+    <title>Admin - musavvir.info</title>
+    <link rel="icon" type="image/webp" href="/assets/favicon.webp" />
+    <script>
+      // Sveltia sets document.title and favicon from app_title/logo; keep tab chrome separate.
+      (function () {
+        const TAB_TITLE = "Admin - musavvir.info";
+        const FAVICON = "/assets/favicon.webp";
+
+        function fixChrome() {
+          if (document.title !== TAB_TITLE) {
+            document.title = TAB_TITLE;
+          }
+          const links = [...document.querySelectorAll('link[rel="icon"]')];
+          const ok = links.some((l) => l.href.includes("favicon.webp"));
+          if (!ok) {
+            for (const l of links) l.remove();
+            const link = document.createElement("link");
+            link.rel = "icon";
+            link.type = "image/webp";
+            link.href = FAVICON;
+            document.head.appendChild(link);
+          }
+        }
+
+        new MutationObserver(fixChrome).observe(document.head, {
+          childList: true,
+          subtree: true,
+          characterData: true,
+        });
+        fixChrome();
+      })();
+    </script>
   </head>
   <body>
     <script src="https://unpkg.com/@sveltia/cms@0.198.0/dist/sveltia-cms.js"></script>

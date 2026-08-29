@@ -1,9 +1,18 @@
 # yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
 
+app_title: Sveltia CMS for musavvir.info
+site_url: https://musavvir.info
+
+logo:
+  src: /assets/pro-pic-circular-musa.png
+  show_in_header: true
+
 backend:
   name: github
   repo: musavvirahmed/ss-to-gh
   branch: main
+  auth_methods:
+    - token
 
 media_folder: public/assets
 public_folder: /assets
