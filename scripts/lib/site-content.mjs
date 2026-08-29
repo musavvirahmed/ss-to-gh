@@ -38,6 +38,11 @@ function normalizeSiteContent(data) {
   if (typeof data.avatar === "string" && data.avatar.startsWith("/")) {
     data.avatar = data.avatar.replace(/^\//, "");
   }
+  for (const highlight of data.bio?.highlights ?? []) {
+    if (!highlight.href?.trim()) {
+      delete highlight.href;
+    }
+  }
   return data;
 }
 
