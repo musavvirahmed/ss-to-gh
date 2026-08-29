@@ -90,19 +90,6 @@ function patchFooterMount(html, footerHtml) {
   return html.slice(0, start) + replacement + html.slice(end + closePattern.length);
 }
 
-function patchFooterLayoutUpgrade(html) {
-  if (html.includes(".content-footer-row {")) {
-    html = html.replace(/  \.content-footer-row \{[\s\S]*?  \}\n\n\n/, "");
-  }
-  if (html.includes('<div class="content-footer-row">')) {
-    html = html.replace(
-      '<div class="fluid-engine fe-652c57a10d6f9a768507b174"><div class="content-footer-row">\n  ',
-      '<div class="fluid-engine fe-652c57a10d6f9a768507b174">\n  ',
-    );
-  }
-  return html;
-}
-
 function patchFile(name, content) {
   const filePath = path.join(PUBLIC, name);
   let html = fs.readFileSync(filePath, "utf8");
@@ -113,7 +100,6 @@ function patchFile(name, content) {
   if (name === "404.html") {
     html = patchNotFound(html);
   }
-  html = patchFooterLayoutUpgrade(html);
   if (!html.includes("<!-- content:footer-links -->")) {
     html = patchFooterCss(html);
     html = patchFooterMount(html, renderFooterLinks(content.footer_links));

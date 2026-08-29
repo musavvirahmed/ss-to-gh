@@ -183,7 +183,7 @@ export function renderFooterLinks(footerLinks) {
     .map(({ label, href }) => {
       const external = href.startsWith("http");
       const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : "";
-      return `    <h4 class="${gridClass}" style="white-space:pre-wrap;"><a href="${escapeAttr(href)}"${attrs}><span style="text-decoration:underline">${escapeHtml(label)}</span></a></h4>`;
+      return `    <h4 class="${gridClass}"><a href="${escapeAttr(href)}"${attrs}><span style="text-decoration:underline">${escapeHtml(label)}</span></a></h4>`;
     })
     .join("\n");
 
