@@ -31,7 +31,14 @@ export function escapeAttr(text) {
 
 export function loadSiteContent(file = CONTENT_FILE) {
   const raw = fs.readFileSync(file, "utf8");
-  return yaml.parse(raw);
+  return normalizeSiteContent(yaml.parse(raw));
+}
+
+function normalizeSiteContent(data) {
+  if (typeof data.avatar === "string" && data.avatar.startsWith("/")) {
+    data.avatar = data.avatar.replace(/^\//, "");
+  }
+  return data;
 }
 
 export function validateSiteContent(data) {

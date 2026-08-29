@@ -25,6 +25,8 @@ collections:
         name: site
         file: content/site.yaml
         format: yaml
+        editor:
+          preview: false
         fields:
           - label: Location (city)
             name: location
@@ -41,7 +43,7 @@ collections:
           - label: Homepage bio — paragraphs
             name: bio
             widget: object
-            collapsed: true
+            collapsed: false
             fields:
               - label: Paragraphs
                 name: paragraphs
@@ -76,7 +78,7 @@ collections:
           - label: 404 page copy
             name: not_found
             widget: object
-            collapsed: true
+            collapsed: false
             fields:
               - label: Heading
                 name: heading

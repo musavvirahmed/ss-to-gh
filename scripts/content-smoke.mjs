@@ -142,6 +142,10 @@ assert(
   "admin config must reference content/site.yaml",
 );
 assert(configText.includes("not_found"), "admin config must include 404 fields");
+assert(
+  configText.includes("preview: false"),
+  "admin config must disable the preview pane",
+);
 console.log("OK admin static");
 
 void before;
