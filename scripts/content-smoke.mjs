@@ -141,7 +141,10 @@ assert(
   configText.includes("content/site.yaml"),
   "admin config must reference content/site.yaml",
 );
-assert(configText.includes("not_found"), "admin config must include 404 fields");
+assert(
+  configText.includes("content/not-found.yaml"),
+  "admin config must reference content/not-found.yaml",
+);
 assert(
   configText.includes("preview: false"),
   "admin config must disable the preview pane",

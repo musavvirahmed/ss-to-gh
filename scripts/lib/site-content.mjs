@@ -6,7 +6,9 @@ import yaml from "yaml";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 export const CONTENT_FILE = path.join(ROOT, "content", "site.yaml");
+export const NOT_FOUND_FILE = path.join(ROOT, "content", "not-found.yaml");
 export const SCHEMA_FILE = path.join(ROOT, "content", "site.schema.json");
+export const NOT_FOUND_SCHEMA_FILE = path.join(ROOT, "content", "not-found.schema.json");
 export const ADMIN_SOURCE = path.join(ROOT, "content", "admin");
 export const PUBLIC = path.join(ROOT, "public");
 export const HTML_TARGETS = ["index.html", "404.html"];
@@ -29,11 +31,6 @@ export function escapeAttr(text) {
   return escapeHtml(text).replaceAll("'", "&#39;");
 }
 
-export function loadSiteContent(file = CONTENT_FILE) {
-  const raw = fs.readFileSync(file, "utf8");
-  return normalizeSiteContent(yaml.parse(raw));
-}
-
 function normalizeSiteContent(data) {
   if (typeof data.avatar === "string" && data.avatar.startsWith("/")) {
     data.avatar = data.avatar.replace(/^\//, "");
@@ -46,14 +43,29 @@ function normalizeSiteContent(data) {
   return data;
 }
 
-export function validateSiteContent(data) {
-  const schema = JSON.parse(fs.readFileSync(SCHEMA_FILE, "utf8"));
+export function loadSiteContent(
+  siteFile = CONTENT_FILE,
+  notFoundFile = NOT_FOUND_FILE,
+) {
+  const site = normalizeSiteContent(yaml.parse(fs.readFileSync(siteFile, "utf8")));
+  const notFound = yaml.parse(fs.readFileSync(notFoundFile, "utf8"));
+  return { ...site, not_found: notFound };
+}
+
+function validateAgainstSchema(data, schemaFile, label) {
+  const schema = JSON.parse(fs.readFileSync(schemaFile, "utf8"));
   const ajv = new Ajv({ allErrors: true });
   const validate = ajv.compile(schema);
   if (!validate(data)) {
     const msg = ajv.errorsText(validate.errors, { separator: "\n" });
-    throw new Error(`content/site.yaml failed schema validation:\n${msg}`);
+    throw new Error(`${label} failed schema validation:\n${msg}`);
   }
+}
+
+export function validateSiteContent(data) {
+  const { not_found: notFound, ...site } = data;
+  validateAgainstSchema(site, SCHEMA_FILE, "content/site.yaml");
+  validateAgainstSchema(notFound, NOT_FOUND_SCHEMA_FILE, "content/not-found.yaml");
   validateHighlights(data);
   return data;
 }
@@ -80,8 +92,11 @@ function validateHighlights(content) {
   }
 }
 
-export function loadValidatedSiteContent(file = CONTENT_FILE) {
-  return validateSiteContent(loadSiteContent(file));
+export function loadValidatedSiteContent(
+  siteFile = CONTENT_FILE,
+  notFoundFile = NOT_FOUND_FILE,
+) {
+  return validateSiteContent(loadSiteContent(siteFile, notFoundFile));
 }
 
 function renderMarkdownBold(text) {
@@ -239,7 +254,10 @@ export function copyAdminAssets() {
 }
 
 export function applyContent({ root = ROOT } = {}) {
-  const content = loadValidatedSiteContent(path.join(root, "content", "site.yaml"));
+  const content = loadValidatedSiteContent(
+    path.join(root, "content", "site.yaml"),
+    path.join(root, "content", "not-found.yaml"),
+  );
   const publicDir = path.join(root, "public");
 
   for (const name of HTML_TARGETS) {

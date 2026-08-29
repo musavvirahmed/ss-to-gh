@@ -5,8 +5,20 @@ Domain language for replacing the Squarespace-hosted personal site with a cheap 
 ## Language
 
 **Site content**:
-The editable words and assets on musavvir.info — homepage bio (markdown paragraphs + highlight decorations), 404 copy, avatar image, footer links, and résumé PDF.
+The editable words and assets on musavvir.info — homepage bio (markdown paragraphs + highlighted phrases), page-not-found copy, profile photo, footer links, and résumé file.
 _Avoid_: page content, CMS content, marketing copy
+
+**Homepage bio**:
+The three intro paragraphs on the homepage, plus optional phrase highlights (underline, scribble, bold, link).
+_Avoid_: hero copy, about text, bio block
+
+**Page not found**:
+The title and message shown on the custom 404 page when a URL does not exist. Edited in `content/not-found.yaml` (its own item in `/admin`).
+_Avoid_: 404 page, error page, not_found
+
+**Footer links**:
+The row of named links at the bottom of every page (link text + web address).
+_Avoid_: footer menu, social links (unless they are only in the footer)
 
 **Git-as-CMS**:
 The chosen editing model: Site content lives in the git repo and changes by commit. There is no separate CMS.

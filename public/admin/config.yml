@@ -21,85 +21,92 @@ collections:
   - name: site
     label: Site content
     files:
-      - label: Site copy & links
+      - label: Homepage & footer
         name: site
         file: content/site.yaml
         format: yaml
         editor:
           preview: false
         fields:
-          - label: Location (city)
+          - label: City
             name: location
             widget: string
-            hint: Used in homepage bio, e.g. "Den Haag"
-          - label: Avatar image
+            hint: Shown in your homepage bio, e.g. "Den Haag"
+          - label: Profile photo
             name: avatar
             widget: image
-            hint: Profile photo (stored under public/assets)
-          - label: Résumé PDF path
+            hint: Circular headshot on the homepage
+          - label: Résumé file
             name: resume_pdf
             widget: string
-            hint: Site path, e.g. /s/musa-resume-2026.pdf
-          - label: Homepage bio — paragraphs
+            hint: Path on this site, e.g. /s/musa-resume-2026.pdf
+          - label: Homepage bio
             name: bio
             widget: object
             collapsed: false
             fields:
-              - label: Paragraphs
+              - label: Bio paragraphs
                 name: paragraphs
                 widget: list
+                label_singular: paragraph
                 summary: "{{fields.paragraph}}"
                 field:
-                  label: Paragraph
+                  label: Text
                   name: paragraph
                   widget: markdown
-              - label: Highlight decorations
+              - label: Highlighted phrases
                 name: highlights
                 widget: list
+                label_singular: highlight
                 summary: "{{fields.phrase}} ({{fields.style}})"
                 fields:
-                  - label: Phrase (exact match in bio)
+                  - label: Exact words in bio
                     name: phrase
                     widget: string
-                  - label: Style
+                  - label: Decoration
                     name: style
                     widget: select
                     options:
                       - underline
                       - scribble
-                  - label: Bold inside highlight
+                  - label: Bold
                     name: bold
                     widget: boolean
                     required: false
-                  - label: Link URL (optional)
+                  - label: Link (optional)
                     name: href
                     widget: string
                     required: false
-          - label: 404 page copy
-            name: not_found
-            widget: object
-            collapsed: false
-            fields:
-              - label: Heading
-                name: heading
-                widget: string
-              - label: Body lines
-                name: lines
-                widget: list
-                summary: "{{fields.line}}"
-                field:
-                  label: Line
-                  name: line
-                  widget: markdown
           - label: Footer links
             name: footer_links
             widget: list
+            label_singular: footer link
             summary: "{{fields.label}}"
             fields:
-              - label: Label
+              - label: Link text
                 name: label
                 widget: string
-              - label: URL
+              - label: Web address
                 name: href
                 widget: string
                 hint: https://… or /s/… for on-site files
+      - label: Page not found (404)
+        name: not-found
+        file: content/not-found.yaml
+        format: yaml
+        editor:
+          preview: false
+        fields:
+          - label: Title
+            name: heading
+            widget: string
+            hint: Large heading at the top of the 404 page
+          - label: Message
+            name: lines
+            widget: list
+            label_singular: line
+            summary: "{{fields.line}}"
+            field:
+              label: Text
+              name: line
+              widget: markdown

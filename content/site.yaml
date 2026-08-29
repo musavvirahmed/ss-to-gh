@@ -19,11 +19,6 @@ bio:
       style: underline
       bold: false
       href: https://adplist.org/mentors/musavvir-ahmed
-not_found:
-  heading: Oops…
-  lines:
-    - No such page.
-    - You should go [back](/).
 footer_links:
   - label: Linkedin
     href: https://www.linkedin.com/in/musavvirinfo/
