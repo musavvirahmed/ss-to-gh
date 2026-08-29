@@ -103,9 +103,12 @@ for (const line of notFoundLines(content)) {
 for (const name of HTML_TARGETS) {
   const html = afterSecond[name];
   assert(
-    html.includes(`<!-- content:avatar -->${content.avatar}<!-- /content:avatar -->`) ||
-      html.includes(content.avatar),
-    `${name}: missing avatar path ${content.avatar}`,
+    html.includes(`src="${content.avatar}"`),
+    `${name}: avatar img must have clean src="${content.avatar}"`,
+  );
+  assert(
+    !html.includes("<!-- content:avatar -->"),
+    `${name}: avatar attributes must not contain slot markers`,
   );
   for (const link of content.footer_links) {
     assert(html.includes(link.label), `${name}: missing footer label ${link.label}`);

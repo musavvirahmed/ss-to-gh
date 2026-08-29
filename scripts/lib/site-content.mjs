@@ -224,6 +224,25 @@ export function replaceSlotIfPresent(html, name, innerHtml) {
   return replaceSlot(html, name, innerHtml);
 }
 
+const AVATAR_SLOT_OPEN = "<!-- content:avatar -->";
+const AVATAR_SLOT_CLOSE = "<!-- /content:avatar -->";
+
+/** Avatar paths live in img attributes; slot comment markers break src URLs. */
+export function applyAvatar(html, avatarPath) {
+  const path = escapeAttr(avatarPath);
+  if (html.includes(AVATAR_SLOT_OPEN)) {
+    const re = new RegExp(`${AVATAR_SLOT_OPEN}[\\s\\S]*?${AVATAR_SLOT_CLOSE}`, "g");
+    return html.replace(re, path);
+  }
+
+  return html.replace(/<img\b[^>]*\bdata-sqsp-image-block-image\b[^>]*>/g, (tag) =>
+    tag.replace(
+      /(data-src|data-image|src|srcset)="[^"]*"/g,
+      `$1="${path}"`,
+    ),
+  );
+}
+
 export function applyContentToHtml(
   html,
   content,
@@ -239,7 +258,7 @@ export function applyContentToHtml(
     out = replaceSlot(out, "not-found", renderNotFound(content));
   }
   if (includeAvatar) {
-    out = replaceSlot(out, "avatar", content.avatar);
+    out = applyAvatar(out, content.avatar);
   }
   out = replaceSlot(out, "footer-links", renderFooterLinks(footerLinks));
   return out;
