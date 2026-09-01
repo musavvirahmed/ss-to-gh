@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""PROTOTYPE — punch eye holes in the circular profile PNG (Ben Tasker style).
+"""Bake tier-C eye cutout + eyes-config.json from Site content avatar.
 
-Works from the 216 display PNG so rest pose stays pixel-identical to Site content.
-Writes musa-no-eyes.png + eyes-config.json for prototypes/tier-c-eyes/.
+Reads avatar path from content/site.yaml, punches eye sockets in the circular
+profile PNG, and writes musa-no-eyes.png + eyes-config.json to public/assets/
+for Cloudflare Pages. Socket geometry is a build artifact, not a CMS field.
+
+Optional iris patches (A1 prototype) land in prototypes/tier-c-eyes/assets/
+when the private hi-res bake source exists.
 """
 
 from __future__ import annotations
@@ -15,9 +19,9 @@ import numpy as np
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "public/assets/pro-pic-circular-musa.png"
+PUBLISH_DIR = ROOT / "public/assets"
+PROTOTYPE_DIR = ROOT / "prototypes/tier-c-eyes/assets"
 HI = ROOT / "prototypes/tier-d-portrait/_private/profile-picture-i-facebook.jpg"
-OUT_DIR = ROOT / "prototypes/tier-c-eyes/assets"
 PATCH_PX = 64
 
 # Pixel coords on the 216×216 circular PNG (viewer's left / right).
@@ -32,6 +36,25 @@ EYES = {
         "iris": {"cx": 140.2, "cy": 86.6, "r": 4.4},
     },
 }
+
+
+def load_avatar_from_site_content(root: Path) -> tuple[Path, str]:
+    """Return (absolute public path, site-relative avatar string)."""
+    site_yaml = root / "content" / "site.yaml"
+    avatar_rel: str | None = None
+    for line in site_yaml.read_text().splitlines():
+        stripped = line.strip()
+        if stripped.startswith("avatar:"):
+            avatar_rel = stripped.split(":", 1)[1].strip()
+            if avatar_rel.startswith("/"):
+                avatar_rel = avatar_rel[1:]
+            break
+    if not avatar_rel:
+        raise SystemExit("avatar not found in content/site.yaml")
+    src = root / "public" / avatar_rel
+    if not src.is_file():
+        raise SystemExit(f"avatar file not found: {src}")
+    return src, avatar_rel
 
 
 def ellipse_alpha(h: int, w: int, cx: float, cy: float, rx: float, ry: float, feather: float) -> np.ndarray:
@@ -70,7 +93,8 @@ def sample_disk(rgb: np.ndarray, cx: float, cy: float, r: float) -> list[int]:
 
 
 def main() -> None:
-    im = Image.open(SRC).convert("RGBA")
+    src_path, avatar_rel = load_avatar_from_site_content(ROOT)
+    im = Image.open(src_path).convert("RGBA")
     arr = np.array(im)
     rgb = arr[:, :, :3]
     a = arr[:, :, 3].astype(np.float32)
@@ -86,8 +110,9 @@ def main() -> None:
     a *= hole
     out = np.dstack([rgb, np.clip(a, 0, 255).astype(np.uint8)])
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    Image.fromarray(out).save(OUT_DIR / "musa-no-eyes.png")
+    PUBLISH_DIR.mkdir(parents=True, exist_ok=True)
+    cutout_path = PUBLISH_DIR / "musa-no-eyes.png"
+    Image.fromarray(out).save(cutout_path)
 
     sclera_pts = []
     for spec in EYES.values():
@@ -98,8 +123,8 @@ def main() -> None:
         sclera_pts.append(sample_disk(rgb, sx, sy, 1.2))
 
     config = {
-        "size": 216,
-        "source": "public/assets/pro-pic-circular-musa.png",
+        "size": im.size[0],
+        "source": avatar_rel,
         "sclera": [int(round(sum(c) / len(c))) for c in zip(*sclera_pts)],
         "eyes": {},
     }
@@ -119,8 +144,12 @@ def main() -> None:
             "patch": f"assets/iris-{name}.png",
         }
 
+    config_path = PUBLISH_DIR / "eyes-config.json"
+    config_path.write_text(json.dumps(config, indent=2) + "\n")
+
     hi = Image.open(HI).convert("RGBA") if HI.exists() else im
-    scale = hi.size[0] / 216
+    scale = hi.size[0] / im.size[0]
+    PROTOTYPE_DIR.mkdir(parents=True, exist_ok=True)
     for name, spec in EYES.items():
         iris = spec["iris"]
         patch = circular_patch(
@@ -130,13 +159,12 @@ def main() -> None:
             iris["r"] * scale * 1.18,
             PATCH_PX,
         )
-        dest = OUT_DIR / f"iris-{name}.png"
+        dest = PROTOTYPE_DIR / f"iris-{name}.png"
         patch.save(dest)
         print(f"Wrote {dest}")
 
-    (OUT_DIR / "eyes-config.json").write_text(json.dumps(config, indent=2) + "\n")
-    print(f"Wrote {OUT_DIR / 'musa-no-eyes.png'}")
-    print(f"Wrote {OUT_DIR / 'eyes-config.json'}")
+    print(f"Wrote {cutout_path}")
+    print(f"Wrote {config_path}")
 
 
 if __name__ == "__main__":
