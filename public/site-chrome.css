@@ -106,26 +106,23 @@ footer.sections h4 a span {
   background-image: none !important;
 }
 
-/* Tier-C interactive profile photo slot (#38) — homepage only */
-.profile-photo-slot {
+/* Tier-C interactive profile photo (#38) — slot is .content-fit[data-profile-photo-slot] */
+[data-profile-photo-slot] {
   position: relative;
-  width: 216px;
-  height: 216px;
-  flex-shrink: 0;
 }
 
-.profile-photo-slot canvas[data-tier-c-portrait] {
+[data-profile-photo-slot] canvas[data-tier-c-portrait] {
   position: absolute;
   inset: 0;
-  width: 216px;
-  height: 216px;
+  width: 100%;
+  height: 100%;
   display: none;
 }
 
-.profile-photo-slot.is-live canvas[data-tier-c-portrait] {
+[data-profile-photo-slot].is-live canvas[data-tier-c-portrait] {
   display: block;
 }
 
-.profile-photo-slot.is-live img[data-profile-photo] {
-  display: none;
+[data-profile-photo-slot].is-live img[data-profile-photo] {
+  visibility: hidden;
 }

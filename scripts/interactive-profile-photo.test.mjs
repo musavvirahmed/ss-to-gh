@@ -167,11 +167,11 @@ test("fine pointer happy path shows canvas and returns interactive mode", async 
     assert.ok(canvas);
     assert.equal(canvas.hidden, false);
     assert.equal(canvas.style.display, "block");
-    assert.equal(canvas.style.width, "216px");
-    assert.equal(canvas.style.height, "216px");
+    assert.equal(canvas.style.width, "100%");
+    assert.equal(canvas.style.height, "100%");
     assert.equal(canvas.width, 216 * 2);
     assert.equal(canvas.height, 216 * 2);
-    assert.equal(img.style.display, "none");
+    assert.equal(img.style.visibility, "hidden");
     assert.ok(slot.classList.contains("is-live"));
   } finally {
     restoreCanvas();

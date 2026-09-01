@@ -133,8 +133,12 @@ for (const name of HTML_TARGETS) {
   );
 }
 assert(
-  indexHtml.includes('data-profile-photo-slot'),
-  "index.html: missing profile photo slot marker",
+  indexHtml.includes('class="js-content-mode-element content-fit" data-profile-photo-slot'),
+  "index.html: profile photo slot must be on content-fit (no extra wrapper)",
+);
+assert(
+  !indexHtml.includes('class="profile-photo-slot"'),
+  "index.html: must not use profile-photo-slot wrapper div",
 );
 assert(
   indexHtml.includes('data-profile-photo="true"'),
@@ -169,8 +173,8 @@ assert(
   "site-chrome.css: footer labels must not wrap mid-word",
 );
 assert(
-  /\.profile-photo-slot \{\s*[^}]*width: 216px/.test(chrome),
-  "site-chrome.css: profile photo slot must reserve 216×216 layout",
+  /\[data-profile-photo-slot\][^{]*\{[^}]*position: relative/.test(chrome),
+  "site-chrome.css: profile photo slot must be a positioned overlay anchor",
 );
 console.log("OK footer layout CSS");
 

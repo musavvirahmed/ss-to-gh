@@ -63,8 +63,8 @@ function setupHiDpi(canvas, ctx, options) {
   const dpr = Math.min((options.devicePixelRatio ?? window.devicePixelRatio) || 2, 3);
   canvas.width = SIZE * dpr;
   canvas.height = SIZE * dpr;
-  canvas.style.width = `${SIZE}px`;
-  canvas.style.height = `${SIZE}px`;
+  canvas.style.width = "100%";
+  canvas.style.height = "100%";
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
@@ -156,7 +156,7 @@ function showInteractive(slot, staticImg, canvas) {
   slot.classList.add("is-live");
   canvas.hidden = false;
   canvas.style.display = "block";
-  if (staticImg) staticImg.style.display = "none";
+  if (staticImg) staticImg.style.visibility = "hidden";
 }
 
 /**
