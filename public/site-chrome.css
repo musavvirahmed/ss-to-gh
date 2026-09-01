@@ -106,9 +106,38 @@ footer.sections h4 a span {
   background-image: none !important;
 }
 
+/*
+ * Profile photo block (#35): match live Squarespace sizing — img must fit the
+ * fluid-engine row span (3 rows), not expand tracks to full column width.
+ */
+.fe-block-yui_3_17_2_1_1697406766081_6001 {
+  min-height: 0;
+}
+
+.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-block,
+.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-block-content,
+.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-block-alignment-wrapper,
+.fe-block-yui_3_17_2_1_1697406766081_6001 .image-block-outer-wrapper,
+.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-image,
+.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-image-content,
+.fe-block-yui_3_17_2_1_1697406766081_6001 .fluid-image-container,
+.fe-block-yui_3_17_2_1_1697406766081_6001 .js-content-mode-element-wrapper {
+  height: 100%;
+  min-height: 0;
+}
+
+.fe-block-yui_3_17_2_1_1697406766081_6001 .content-fit img {
+  max-width: 100%;
+  max-height: calc(var(--container-width, 100vw) * var(--row-height-scaling-factor, 0.0215) * 3);
+  width: auto;
+  height: auto;
+}
+
 /* Tier-C interactive profile photo (#38) — slot is .content-fit[data-profile-photo-slot] */
 [data-profile-photo-slot] {
   position: relative;
+  height: 100%;
+  min-height: 0;
 }
 
 [data-profile-photo-slot] canvas[data-tier-c-portrait] {

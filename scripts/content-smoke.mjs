@@ -176,6 +176,10 @@ assert(
   /\[data-profile-photo-slot\][^{]*\{[^}]*position: relative/.test(chrome),
   "site-chrome.css: profile photo slot must be a positioned overlay anchor",
 );
+assert(
+  chrome.includes("max-height: calc(var(--container-width"),
+  "site-chrome.css: profile photo must cap height to fluid-engine row span",
+);
 console.log("OK footer layout CSS");
 
 // 4. Admin static

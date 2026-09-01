@@ -100,6 +100,13 @@ function drawMatteIris(ctx, eye, x, y) {
   ctx.fill();
 }
 
+function drawSclera(ctx, eyesConfig, eye) {
+  ctx.fillStyle = scleraCss(eyesConfig);
+  ctx.beginPath();
+  ctx.ellipse(eye.cx, eye.cy, eye.rx * 1.1, eye.ry * 1.1, 0, 0, Math.PI * 2);
+  ctx.fill();
+}
+
 function drawLidShadow(ctx, eye, x, y) {
   ctx.save();
   ctx.beginPath();
@@ -115,8 +122,9 @@ function drawLidShadow(ctx, eye, x, y) {
 
 function drawEyes(ctx, eyesConfig, cutoutImg, smooth, lookProgress) {
   ctx.clearRect(0, 0, SIZE, SIZE);
-  ctx.fillStyle = scleraCss(eyesConfig);
-  ctx.fillRect(0, 0, SIZE, SIZE);
+  for (const name of Object.keys(eyesConfig.eyes)) {
+    drawSclera(ctx, eyesConfig, eyesConfig.eyes[name]);
+  }
   for (const name of Object.keys(eyesConfig.eyes)) {
     const eye = eyesConfig.eyes[name];
     const { x, y } = eyePos(eye, smooth, lookProgress);
