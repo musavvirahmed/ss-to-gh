@@ -134,6 +134,22 @@ for (const name of HTML_TARGETS) {
 }
 console.log("OK HTML assertions");
 
+// 3b. Footer layout (ADR-0008): left-aligned Squarespace grid, labels stay one line
+const chrome = fs.readFileSync(path.join(PUBLIC, "site-chrome.css"), "utf8");
+assert(
+  /\.content-footer-links \{\s*display: contents;/.test(chrome),
+  "site-chrome.css: 4-link footer must use display:contents (ADR-0008)",
+);
+assert(
+  !/\.content-footer-links \{\s*display: flex;/.test(chrome),
+  "site-chrome.css: 4-link footer must not be a centered flex row",
+);
+assert(
+  chrome.includes("white-space: nowrap"),
+  "site-chrome.css: footer labels must not wrap mid-word",
+);
+console.log("OK footer layout CSS");
+
 // 4. Admin static
 const adminIndex = path.join(PUBLIC, "admin", "index.html");
 const adminConfig = path.join(PUBLIC, "admin", "config.yml");
