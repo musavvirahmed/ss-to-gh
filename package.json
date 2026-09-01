@@ -16,6 +16,7 @@
     "bake:tier-c-atlas": "python3 scripts/bake-tier-c-atlas.py",
     "bake:tier-d": "node scripts/bake-tier-d-glb.mjs",
     "pages:smoke": "node scripts/pages-smoke.mjs",
+    "pages:tier-c-smoke": "node scripts/pages-tier-c-smoke.mjs",
     "visual:capture": "node scripts/capture-baselines.mjs",
     "visual:gate": "node scripts/pixel-gate.mjs",
     "visual:smoke": "CLONE_URL=https://musavvir.info node scripts/pixel-gate.mjs"
