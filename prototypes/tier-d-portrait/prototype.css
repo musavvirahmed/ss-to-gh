@@ -1,0 +1,212 @@
+/* PROTOTYPE — tier D portrait review chrome (#33) */
+
+:root {
+  --proto-accent: #e63946;
+  --proto-bg: #fafafa;
+  --proto-pass: #1a7f37;
+  --proto-fail: #cf222e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
+  background: var(--proto-bg);
+}
+
+.proto-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.65rem 1rem;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.proto-banner strong {
+  color: var(--proto-accent);
+}
+
+.layout {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 5rem;
+}
+
+.bio-row {
+  display: grid;
+  grid-template-columns: 216px 1fr;
+  gap: 1.25rem 2rem;
+  align-items: start;
+}
+
+@media (max-width: 767px) {
+  .bio-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portrait-slot {
+  position: relative;
+  width: 216px;
+  height: 216px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #c41e3a;
+}
+
+.portrait-slot canvas,
+.portrait-slot img {
+  position: absolute;
+  inset: 0;
+  width: 216px;
+  height: 216px;
+  display: block;
+  object-fit: cover;
+}
+
+.bio-copy h1,
+.bio-copy h1 a,
+.bio-copy h1 strong {
+  color: #1a1a1a !important;
+}
+
+.bio-copy h1 a {
+  text-decoration: underline;
+}
+
+.portrait-slot canvas {
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.portrait-slot canvas.is-loading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.overlay-mode .portrait-slot img#portrait-fallback-overlay {
+  display: block;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.portrait-slot img#portrait-fallback-overlay {
+  display: none;
+}
+
+.bio-copy h1 {
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.review-panel {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.review-panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.flip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.flip-card {
+  text-align: center;
+}
+
+.flip-card .thumb {
+  width: 108px;
+  height: 108px;
+  margin: 0 auto 0.35rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #eee;
+  background: #c41e3a;
+}
+
+.flip-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.controls button,
+.controls label {
+  font: inherit;
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f6f6f6;
+  cursor: pointer;
+}
+
+.controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+#metrics-panel dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+#metrics-panel dd {
+  margin: 0;
+  font-family: ui-monospace, monospace;
+}
+
+#metrics-panel .pass {
+  color: var(--proto-pass);
+}
+
+#metrics-panel .fail {
+  color: var(--proto-fail);
+}
+
+#webgl-status {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.35rem;
+}
+
+.checklist {
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PROTOTYPE — tier C eyes / atlas (#34)</title>
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <script
+      src="https://use.typekit.net/ik/h9KqFh_3_ryaUdRXTf2g163-fSdjvZtOPbUK84onLebfez32fFHN4UJLFRbh52jhWDjuwcwXZc9k5QMowQI3wDItjD9owQw3FgnvMKG0jAFu-WsoShFGZAsude80ZkoRdhXCHKoyjamTiY8Djhy8ZYmC-Ao1Oco8if37OcBDOcu8OfG0dWmDjWZh-W4TdcZzO1FUiABkZWF3jAF8OcFzdP37O1FUiABkZWF3jAF8ShFGZAsude80ZkoRdhXCjAFu-WsoShFGZAsude80ZkoRdhXCjAFu-WsoShFGZAsude80Zko0ZWbCjWw0dA9CdeNRjAUGdaFXOeuuShBhic8kOc80ZcvCdWmDjWZh-W4TdcZzO1FUiABkZWF3jAF8OcFzdPUDSWmyScmDSeBRZWFR-emqiAUTdcS0jhNlOYiaikoyjamTiY8Djhy8ZYmC-Ao1OcFzdPUaiaS0jAFu-WsoShFGZAsude80Zko0ZWbCiaiaOcBDOcu8OYiaikoliWFyi1ZTSKoTdcZzOYiaikoliWFyi1ZTSc80Zcv0SaBujW48Sagyjh90jhNlOYiaikoDSWmyScmDSeBRZWFR-emqiAUTdcS0jhNlJ6uy-asTiKu1ScNXZWFnH6qJXeXbMg6IJMJ7fbRAdsMMeM96MKG4fF4lIMMjgkMfH6qJXAXbMg65JMJ7fbRWdsMMeMv6MKG4fFFlIMMjIPMfqMYRkneTg6.js"
+      async
+      onload="try{Typekit.load();}catch(e){}"
+    ></script>
+    <link rel="stylesheet" href="prototype.css" />
+  </head>
+  <body>
+    <div class="proto-banner">
+      <strong>PROTOTYPE #34</strong> — iris rasters of eyes-only. A1 photo patch · A2 wet cornea · A3 matte dark · B atlas.
+      Arrow keys cycle. Not production code.
+    </div>
+
+    <div class="layout">
+      <div class="bio-row">
+        <div class="portrait-slot" id="portrait-slot">
+          <canvas id="portrait-canvas" width="216" height="216" aria-hidden="true"></canvas>
+          <img id="portrait-cutout" src="assets/musa-no-eyes.png" width="216" height="216" alt="" />
+          <img
+            id="portrait-fallback"
+            src="/site/assets/pro-pic-circular-musa.png"
+            width="216"
+            height="216"
+            alt=""
+          />
+          <img
+            id="portrait-fallback-overlay"
+            src="/site/assets/pro-pic-circular-musa.png"
+            width="216"
+            height="216"
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+
+        <div class="bio-copy">
+          <h1>
+            Product designer based in The Hague, interested in growth hacking &amp;
+            <strong>designOps</strong>.<br /><br />
+            Currently designing at
+            <a href="https://nordsecurity.com/" target="_blank" rel="noopener"><strong>Nord Security</strong></a>.
+            Previously, for <strong>Vermietet.de (ImmoScout24)</strong>.<br /><br />
+            Interested in open source &amp; research projects. Feel free to
+            <a href="https://adplist.org/mentors/musavvir-ahmed" target="_blank" rel="noopener">say hello</a>!
+          </h1>
+        </div>
+      </div>
+
+      <section class="review-panel" aria-label="Prototype review">
+        <h2>Flip-book + overlay (ADR-0009 verdict ritual)</h2>
+
+        <div class="flip-grid">
+          <div class="flip-card">
+            <div class="thumb">
+              <img src="/site/assets/pro-pic-circular-musa.png" alt="Static PNG reference" />
+            </div>
+            <div>Static PNG</div>
+          </div>
+          <div class="flip-card">
+            <div class="thumb" id="live-thumb-wrap"></div>
+            <div>Live tier C</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button type="button" data-pose="rest">Rest gaze</button>
+          <button type="button" data-pose="left">Gaze left</button>
+          <button type="button" data-pose="right">Gaze right</button>
+          <button type="button" data-pose="up">Gaze up</button>
+          <button type="button" data-pose="down">Gaze down</button>
+          <label><input type="checkbox" id="overlay-toggle" /> PNG overlay</label>
+          <button type="button" id="capture-flip">Capture frame</button>
+        </div>
+
+        <div id="metrics-panel"></div>
+        <div id="runtime-status">initializing…</div>
+
+        <ul class="checklist">
+          <li><strong>Likeness</strong> — rest pose matches static PNG at 216×216? Wink, not showpiece?</li>
+          <li><strong>Weight</strong> — JS + PNG (no Three.js / no GLB)</li>
+          <li><strong>Build effort</strong> — cutout / atlas bake, not an 8 h 3D pipeline</li>
+          <li><strong>Runtime</strong> — 2D canvas; reduced-motion → static PNG</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="proto-switcher" role="navigation" aria-label="Prototype variants">
+      <button type="button" id="variant-prev" aria-label="Previous variant">←</button>
+      <div class="label" id="variant-label">A1 (Photo iris)</div>
+      <button type="button" id="variant-next" aria-label="Next variant">→</button>
+    </div>
+
+    <script type="module" src="eyes-portrait.js"></script>
+  </body>
+</html>

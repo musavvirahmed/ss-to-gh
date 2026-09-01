@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PROTOTYPE — tier D cursor portrait (#33)</title>
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <script
+      src="https://use.typekit.net/ik/h9KqFh_3_ryaUdRXTf2g163-fSdjvZtOPbUK84onLebfez32fFHN4UJLFRbh52jhWDjuwcwXZc9k5QMowQI3wDItjD9owQw3FgnvMKG0jAFu-WsoShFGZAsude80ZkoRdhXCHKoyjamTiY8Djhy8ZYmC-Ao1Oco8if37OcBDOcu8OfG0dWmDjWZh-W4TdcZzO1FUiABkZWF3jAF8OcFzdP37O1FUiABkZWF3jAF8ShFGZAsude80ZkoRdhXCjAFu-WsoShFGZAsude80ZkoRdhXCjAFu-WsoShFGZAsude80Zko0ZWbCjWw0dA9CdeNRjAUGdaFXOeuuShBhic8kOc80ZcvCdWmDjWZh-W4TdcZzO1FUiABkZWF3jAF8OcFzdPUDSWmyScmDSeBRZWFR-emqiAUTdcS0jhNlOYiaikoyjamTiY8Djhy8ZYmC-Ao1OcFzdPUaiaS0jAFu-WsoShFGZAsude80Zko0ZWbCiaiaOcBDOcu8OYiaikoliWFyi1ZTSKoTdcZzOYiaikoliWFyi1ZTSc80Zcv0SaBujW48Sagyjh90jhNlOYiaikoDSWmyScmDSeBRZWFR-emqiAUTdcS0jhNlJ6uy-asTiKu1ScNXZWFnH6qJXeXbMg6IJMJ7fbRAdsMMeM96MKG4fF4lIMMjgkMfH6qJXAXbMg65JMJ7fbRWdsMMeMv6MKG4fFFlIMMjIPMfqMYRkneTg6.js"
+      async
+      onload="try{Typekit.load();}catch(e){}"
+    ></script>
+    <link rel="stylesheet" href="prototype.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.148.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.148.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="proto-banner">
+      <strong>PROTOTYPE #33</strong> — tier D 3D cursor portrait at 216×216 in homepage bio layout.
+      Move cursor anywhere on the viewport. Not production code.
+    </div>
+
+    <div class="layout">
+      <div class="bio-row">
+        <div class="portrait-slot" id="portrait-slot">
+          <img
+            id="portrait-fallback"
+            src="/site/assets/pro-pic-circular-musa.png"
+            width="216"
+            height="216"
+            alt=""
+          />
+          <img
+            id="portrait-fallback-overlay"
+            src="/site/assets/pro-pic-circular-musa.png"
+            width="216"
+            height="216"
+            alt=""
+            aria-hidden="true"
+          />
+          <canvas id="portrait-canvas" width="216" height="216" aria-hidden="true"></canvas>
+        </div>
+
+        <div class="bio-copy">
+          <h1>
+            Product designer based in The Hague, interested in growth hacking &amp;
+            <strong>designOps</strong>.<br /><br />
+            Currently designing at <a href="https://nordsecurity.com/" target="_blank" rel="noopener"><strong>Nord Security</strong></a>.
+            Previously, for <strong>Vermietet.de (ImmoScout24)</strong>.<br /><br />
+            Interested in open source &amp; research projects. Feel free to
+            <a href="https://adplist.org/mentors/musavvir-ahmed" target="_blank" rel="noopener">say hello</a>!
+          </h1>
+        </div>
+      </div>
+
+      <section class="review-panel" aria-label="Prototype review">
+        <h2>Flip-book + overlay (ADR-0009 verdict ritual)</h2>
+
+        <div class="flip-grid">
+          <div class="flip-card">
+            <div class="thumb">
+              <img src="/site/assets/pro-pic-circular-musa.png" alt="Static PNG reference" />
+            </div>
+            <div>Static PNG</div>
+          </div>
+          <div class="flip-card">
+            <div class="thumb" id="live-thumb-wrap">
+              <!-- live canvas clone via CSS mirror of slot -->
+            </div>
+            <div>Live tier D</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button type="button" data-pose="rest">Rest gaze</button>
+          <button type="button" data-pose="left">Gaze left</button>
+          <button type="button" data-pose="right">Gaze right</button>
+          <label><input type="checkbox" id="overlay-toggle" /> PNG overlay</label>
+          <button type="button" id="capture-flip">Capture frame</button>
+        </div>
+
+        <div id="metrics-panel"></div>
+        <div id="webgl-status">initializing…</div>
+
+        <ul class="checklist">
+          <li><strong>Likeness</strong> — acceptable next to static PNG at 216×216? Wink, not showpiece?</li>
+          <li><strong>Weight</strong> — ≤280 KB gz JS + ≤2 MB GLB (metrics above)</li>
+          <li><strong>Build effort</strong> — offline pipeline ≤~8 h to shippable GLB</li>
+          <li><strong>Runtime</strong> — WebGL init ok on desktop; fail → static PNG only</li>
+        </ul>
+      </section>
+    </div>
+
+    <script type="module" src="portrait-3d.js"></script>
+    <script>
+      // Mirror live canvas into flip-book thumb
+      const slot = document.getElementById("portrait-slot");
+      const wrap = document.getElementById("live-thumb-wrap");
+      if (slot && wrap) {
+        const obs = new MutationObserver(() => {
+          const c = document.getElementById("portrait-canvas");
+          if (c && !c.classList.contains("is-loading") && !wrap.querySelector("canvas")) {
+            const mini = c.cloneNode();
+            mini.width = 108;
+            mini.height = 108;
+            mini.style.width = "100%";
+            mini.style.height = "100%";
+            wrap.appendChild(mini);
+            (function draw() {
+              const ctx = mini.getContext("2d");
+              if (ctx) ctx.drawImage(c, 0, 0, 108, 108);
+              requestAnimationFrame(draw);
+            })();
+          }
+        });
+        obs.observe(slot, { attributes: true, subtree: true, attributeFilter: ["class"] });
+      }
+    </script>
+  </body>
+</html>

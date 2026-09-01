@@ -1,0 +1,45 @@
+{
+  "size": 216,
+  "source": "public/assets/pro-pic-circular-musa.png",
+  "sclera": [
+    136,
+    94,
+    75
+  ],
+  "eyes": {
+    "left": {
+      "cx": 103.2,
+      "cy": 85.8,
+      "rx": 4.6,
+      "ry": 4.0,
+      "irisR": 4.6,
+      "pupilR": 1.93,
+      "restDx": 0.0,
+      "restDy": 0.0,
+      "irisColor": [
+        77,
+        60,
+        57
+      ],
+      "lim": 0.55,
+      "patch": "assets/iris-left.png"
+    },
+    "right": {
+      "cx": 140.2,
+      "cy": 86.6,
+      "rx": 4.4,
+      "ry": 3.9,
+      "irisR": 4.4,
+      "pupilR": 1.85,
+      "restDx": 0.0,
+      "restDy": 0.0,
+      "irisColor": [
+        89,
+        69,
+        62
+      ],
+      "lim": 0.55,
+      "patch": "assets/iris-right.png"
+    }
+  }
+}

@@ -67,7 +67,7 @@ The preferred post-cutover delight: a lazy-loaded 3D cursor-tracking portrait (p
 _Avoid_: 3D avatar, WebGL mugshot, Copilot clone
 
 **Tier C**:
-The fallback when tier D fails its bar: a 2D gaze sprite atlas with cursor tracking in the same slot.
+The fallback when tier D fails its bar: a 2D gaze sprite atlas with cursor tracking in the same slot. Eyes-only cutout (static photo, canvas irises behind punched sockets) is a valid C implementation.
 _Avoid_: 2D fallback, sprite portrait, Lottie head
 
 **Wink tone**:
