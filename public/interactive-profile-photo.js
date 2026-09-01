@@ -1,6 +1,6 @@
 /**
  * Tier C interactive profile photo — A3 matte dark iris, eyes-only cutout (#37).
- * Lazy-loadable ES module; homepage wire-up is a separate ticket (#38).
+ * Loaded lazily from interactive-profile-photo-bootstrap.js on the homepage.
  */
 
 const SIZE = 216;

@@ -132,6 +132,26 @@ for (const name of HTML_TARGETS) {
     `${name}: missing data-content-applied sentinel`,
   );
 }
+assert(
+  indexHtml.includes('data-profile-photo-slot'),
+  "index.html: missing profile photo slot marker",
+);
+assert(
+  indexHtml.includes('data-profile-photo="true"'),
+  "index.html: missing data-profile-photo on avatar img",
+);
+assert(
+  indexHtml.includes('src="interactive-profile-photo-bootstrap.js"'),
+  "index.html: missing interactive profile photo bootstrap script",
+);
+assert(
+  !notFoundHtml.includes("interactive-profile-photo"),
+  "404.html: must not load interactive profile photo module",
+);
+assert(
+  !notFoundHtml.includes("data-profile-photo-slot"),
+  "404.html: must not have profile photo slot marker",
+);
 console.log("OK HTML assertions");
 
 // 3b. Footer layout (ADR-0008): left-aligned Squarespace grid, labels stay one line
