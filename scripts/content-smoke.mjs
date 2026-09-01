@@ -180,6 +180,10 @@ assert(
   chrome.includes("max-height: calc(var(--container-width"),
   "site-chrome.css: profile photo must cap height to fluid-engine row span",
 );
+assert(
+  chrome.includes(':has(img[src*="pro-pic-circular-musa"])'),
+  "site-chrome.css: profile photo sizing must target homepage and 404 avatar blocks",
+);
 console.log("OK footer layout CSS");
 
 // 4. Admin static

@@ -107,37 +107,69 @@ footer.sections h4 a span {
 }
 
 /*
- * Profile photo block (#35): match live Squarespace sizing — img must fit the
- * fluid-engine row span (3 rows), not expand tracks to full column width.
+ * Profile photo block (#35): match live Squarespace sizing on homepage + 404.
+ * Each page has a different fe-block id; target the block that contains the avatar.
+ * Desktop: img must fit the fluid-engine row span (3 rows), not expand column width.
+ * Mobile: grid uses fixed 24px rows (3 rows ≈ 72px).
  */
-.fe-block-yui_3_17_2_1_1697406766081_6001 {
+.fe-block:has(img[src*="pro-pic-circular-musa"]) {
   min-height: 0;
 }
 
-.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-block,
-.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-block-content,
-.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-block-alignment-wrapper,
-.fe-block-yui_3_17_2_1_1697406766081_6001 .image-block-outer-wrapper,
-.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-image,
-.fe-block-yui_3_17_2_1_1697406766081_6001 .sqs-image-content,
-.fe-block-yui_3_17_2_1_1697406766081_6001 .fluid-image-container,
-.fe-block-yui_3_17_2_1_1697406766081_6001 .js-content-mode-element-wrapper {
-  height: 100%;
-  min-height: 0;
+@media (max-width: 767px) {
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-block,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-block-content,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-block-alignment-wrapper,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .image-block-outer-wrapper,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-image,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-image-content,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .fluid-image-container,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .js-content-mode-element-wrapper {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .content-fit img {
+    max-width: 100%;
+    max-height: calc(24px * 3);
+    width: auto;
+    height: auto;
+  }
+
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .content-fit {
+    width: fit-content;
+    height: fit-content;
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 
-.fe-block-yui_3_17_2_1_1697406766081_6001 .content-fit img {
-  max-width: 100%;
-  max-height: calc(var(--container-width, 100vw) * var(--row-height-scaling-factor, 0.0215) * 3);
-  width: auto;
-  height: auto;
-}
+@media (min-width: 768px) {
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-block,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-block-content,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-block-alignment-wrapper,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .image-block-outer-wrapper,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-image,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .sqs-image-content,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .fluid-image-container,
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .js-content-mode-element-wrapper {
+    height: 100%;
+    min-height: 0;
+  }
 
-.fe-block-yui_3_17_2_1_1697406766081_6001 .content-fit {
-  width: fit-content;
-  height: fit-content;
-  max-width: 100%;
-  max-height: 100%;
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .content-fit img {
+    max-width: 100%;
+    max-height: calc(var(--container-width, 100vw) * var(--row-height-scaling-factor, 0.0215) * 3);
+    width: auto;
+    height: auto;
+  }
+
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .content-fit {
+    width: fit-content;
+    height: fit-content;
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 
 /* Tier-C interactive profile photo (#38) — slot is .content-fit[data-profile-photo-slot] */
