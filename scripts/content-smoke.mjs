@@ -168,6 +168,10 @@ assert(
   chrome.includes("white-space: nowrap"),
   "site-chrome.css: footer labels must not wrap mid-word",
 );
+assert(
+  /\.profile-photo-slot \{\s*[^}]*width: 216px/.test(chrome),
+  "site-chrome.css: profile photo slot must reserve 216×216 layout",
+);
 console.log("OK footer layout CSS");
 
 // 4. Admin static

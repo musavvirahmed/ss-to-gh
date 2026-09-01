@@ -7,7 +7,8 @@ if (!slot) {
   // 404 and other routes — no slot, no fetch.
 } else if (
   !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-  window.matchMedia("(pointer: fine)").matches
+  window.matchMedia("(pointer: fine)").matches &&
+  window.matchMedia("(min-width: 768px)").matches
 ) {
   const boot = () => {
     import("./interactive-profile-photo.js")

@@ -156,6 +156,7 @@ test("fine pointer happy path shows canvas and returns interactive mode", async 
     const result = await initInteractiveProfilePhoto(slot, {
       prefersReducedMotion: false,
       hasFinePointer: true,
+      isDesktopViewport: true,
       eyesConfig: SAMPLE_EYES_CONFIG,
       loadImage: async () => fakeImg,
       devicePixelRatio: 2,
@@ -185,6 +186,7 @@ test("init failure keeps static img and returns static mode", async () => {
   const result = await initInteractiveProfilePhoto(slot, {
     prefersReducedMotion: false,
     hasFinePointer: true,
+    isDesktopViewport: true,
     fetchConfig: async () => {
       throw new Error("network down");
     },
@@ -204,6 +206,22 @@ test("coarse pointer keeps static img and returns static mode", async () => {
   const result = await initInteractiveProfilePhoto(slot, {
     prefersReducedMotion: false,
     hasFinePointer: false,
+  });
+
+  assert.equal(result.mode, "static");
+  assert.equal(img.style.display, "");
+  assert.equal(slot.querySelector("canvas[data-tier-c-portrait]"), null);
+});
+
+test("mobile viewport keeps static img even with fine pointer", async () => {
+  const window = installDom();
+  const { slot, img } = makeSlot(window);
+  const { initInteractiveProfilePhoto } = await loadModule();
+
+  const result = await initInteractiveProfilePhoto(slot, {
+    prefersReducedMotion: false,
+    hasFinePointer: true,
+    isDesktopViewport: false,
   });
 
   assert.equal(result.mode, "static");

@@ -9,6 +9,8 @@ const SCLERA_FALLBACK = [214, 201, 191];
 
 const DEFAULT_CONFIG_URL = "assets/eyes-config.json";
 const DEFAULT_CUTOUT_URL = "assets/musa-no-eyes.png";
+/** Squarespace system_mobile breakpoint (max-width 767px) — interactive desktop-only. */
+export const DESKTOP_VIEWPORT_MQ = "(min-width: 768px)";
 
 function clamp(v, lo, hi) {
   return Math.min(hi, Math.max(lo, v));
@@ -22,6 +24,11 @@ function prefersReducedMotion(options) {
 function hasFinePointer(options) {
   if (options.hasFinePointer != null) return options.hasFinePointer;
   return window.matchMedia("(pointer: fine)").matches;
+}
+
+function isDesktopViewport(options) {
+  if (options.isDesktopViewport != null) return options.isDesktopViewport;
+  return window.matchMedia(DESKTOP_VIEWPORT_MQ).matches;
 }
 
 function scleraCss(eyesConfig) {
@@ -157,6 +164,7 @@ function showInteractive(slot, staticImg, canvas) {
  * @param {object} [options]
  * @param {boolean} [options.prefersReducedMotion] Test override for reduced-motion media query.
  * @param {boolean} [options.hasFinePointer] Test override for `(pointer: fine)`.
+ * @param {boolean} [options.isDesktopViewport] Test override for desktop viewport (≥768px).
  * @param {object} [options.eyesConfig] Inline eyes config (skips fetch).
  * @param {string} [options.configUrl] URL for eyes-config.json.
  * @param {string} [options.cutoutUrl] URL for musa-no-eyes cutout PNG.
@@ -177,6 +185,10 @@ export async function initInteractiveProfilePhoto(slot, options = {}) {
   }
 
   if (!hasFinePointer(options)) {
+    return { mode: "static" };
+  }
+
+  if (!isDesktopViewport(options)) {
     return { mode: "static" };
   }
 

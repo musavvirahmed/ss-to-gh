@@ -109,14 +109,21 @@ footer.sections h4 a span {
 /* Tier-C interactive profile photo slot (#38) — homepage only */
 .profile-photo-slot {
   position: relative;
-  display: block;
+  width: 216px;
+  height: 216px;
+  flex-shrink: 0;
 }
 
 .profile-photo-slot canvas[data-tier-c-portrait] {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
+  width: 216px;
+  height: 216px;
   display: none;
+}
+
+.profile-photo-slot.is-live canvas[data-tier-c-portrait] {
+  display: block;
 }
 
 .profile-photo-slot.is-live img[data-profile-photo] {
