@@ -8,6 +8,18 @@ Domain language for replacing the Squarespace-hosted personal site with a cheap 
 The editable words and assets on musavvir.info — homepage bio (markdown paragraphs + highlighted phrases), page-not-found copy, profile photo, footer links, and résumé file.
 _Avoid_: page content, CMS content, marketing copy
 
+**Profile photo**:
+The circular headshot in the homepage bio — static PNG, edited as Site content. Shown on mobile and when reduced motion is preferred; also the fallback when the interactive profile photo does not load.
+_Avoid_: avatar, mugshot, portrait (ambiguous)
+
+**Interactive profile photo**:
+Post-cutover desktop delight: the profile photo slot tracks the visitor’s cursor (3D head or gaze atlas). Ships after cutover; wink tone, not a hero takeover. Recognizable likeness required.
+_Avoid_: mascot, cursor cam, animated avatar
+
+**Portrait bake source**:
+The high-resolution rectangular photograph used offline to produce interactive profile photo assets. Held outside Site content; only derived assets (e.g. GLB, atlas) are committed. Not the circular profile photo PNG; not a generative stranger face.
+_Avoid_: source image, training photo, AI head model
+
 **Homepage bio**:
 The three intro paragraphs on the homepage, plus optional phrase highlights (underline, scribble, bold, link).
 _Avoid_: hero copy, about text, bio block
@@ -47,3 +59,21 @@ _Avoid_: live screenshot oracle, golden master (ambiguous)
 **Visual waive**:
 A human override of a Playwright pixel-diff failure, allowed only after flip-book and overlay checks still pass.
 _Avoid_: force pass, ignore diff
+
+## Interactive profile photo
+
+**Tier D**:
+The preferred post-cutover delight: a lazy-loaded 3D cursor-tracking portrait (pre-baked GLB + WebGL) in the homepage profile photo slot at 216×216.
+_Avoid_: 3D avatar, WebGL mugshot, Copilot clone
+
+**Tier C**:
+The fallback when tier D fails its bar: a 2D gaze sprite atlas with cursor tracking in the same slot.
+_Avoid_: 2D fallback, sprite portrait, Lottie head
+
+**Wink tone**:
+The intended feel of the interactive portrait — noticeable when you move the cursor, not a full-page hero takeover or showpiece.
+_Avoid_: delight mode, easter egg, micro-interaction (too generic)
+
+**Static PNG fallback**:
+The non-interactive profile photo shown on mobile, when `prefers-reduced-motion` is on, or when WebGL init fails. Not tier C — progressive enhancement only.
+_Avoid_: mobile fallback, reduced-motion mode
