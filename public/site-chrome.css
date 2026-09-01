@@ -133,11 +133,16 @@ footer.sections h4 a span {
   height: auto;
 }
 
+.fe-block-yui_3_17_2_1_1697406766081_6001 .content-fit {
+  width: fit-content;
+  height: fit-content;
+  max-width: 100%;
+  max-height: 100%;
+}
+
 /* Tier-C interactive profile photo (#38) — slot is .content-fit[data-profile-photo-slot] */
 [data-profile-photo-slot] {
   position: relative;
-  height: 100%;
-  min-height: 0;
 }
 
 [data-profile-photo-slot] canvas[data-tier-c-portrait] {
