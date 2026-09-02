@@ -27,8 +27,10 @@
     const c = attr.color;
     if (!c) return "#e63148";
     if (c.type === "CUSTOM_COLOR") return hslaToCss(c.customColor?.hslaValue);
-    if (c.type === "SITE_PALETTE_COLOR" && c.sitePaletteColor?.colorName === "darkAccent") {
-      return "hsla(var(--darkAccent-hsl), 1)";
+    if (c.type === "SITE_PALETTE_COLOR") {
+      const name = c.sitePaletteColor?.colorName;
+      if (name === "white") return "hsla(var(--white-hsl), 1)";
+      if (name === "darkAccent") return "hsla(var(--darkAccent-hsl), 1)";
     }
     return "#e63148";
   }
@@ -42,7 +44,13 @@
 
   function templateFor(shape, id) {
     if (shape === "scribble") return SCRIBBLE;
-    if (id === "5b2cbb39-e010-44fa-8b48-321bcb15de97") return UNDERLINE_HELLO;
+    // Linked underlines (say hello grey + Nord Security white) share the hello curve.
+    if (
+      id === "5b2cbb39-e010-44fa-8b48-321bcb15de97" ||
+      id === "c8e4a1f2-3b5d-4e6a-9c0d-1f2a3b4c5d6e"
+    ) {
+      return UNDERLINE_HELLO;
+    }
     return UNDERLINE_CURVE;
   }
 

@@ -4,7 +4,7 @@ resume_pdf: /s/musa-resume-2026.pdf
 bio:
   paragraphs:
     - Product designer based in {{location}}, interested in growth hacking & designOps
-    - Currently designing at [**Nord Security**](https://nordsecurity.com/). Previously, for **Vermietet.de (ImmoScout24)**.
+    - Currently designing at Nord Security. Previously, for **Vermietet.de (ImmoScout24)**.
     - Interested in open source & research projects. Feel free to say hello!
   highlights:
     - phrase: growth hacking
@@ -15,10 +15,16 @@ bio:
       style: scribble
       bold: true
       href: ''
+    - phrase: Nord Security
+      style: underline
+      bold: true
+      href: https://nordsecurity.com/
+      color: white
     - phrase: say hello
       style: underline
       bold: false
       href: https://adplist.org/mentors/musavvir-ahmed
+      color: darkAccent
 footer_links:
   - label: Linkedin
     href: https://www.linkedin.com/in/musavvirinfo/

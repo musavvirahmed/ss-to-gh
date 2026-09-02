@@ -77,6 +77,16 @@ collections:
                     name: href
                     widget: string
                     required: false
+                  - label: Stroke colour
+                    name: color
+                    widget: select
+                    required: false
+                    options:
+                      - label: White
+                        value: white
+                      - label: Grey (dark accent)
+                        value: darkAccent
+                    hint: For linked underlines — white vs grey stroke. Leave blank for red non-link highlights.
           - label: Footer links
             name: footer_links
             widget: list
