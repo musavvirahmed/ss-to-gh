@@ -57,10 +57,13 @@ if (failed > 0) {
   process.exit(1);
 }
 
-const browser = await chromium.launch().catch((err) => {
-  console.warn(`SKIP Playwright canvas check (${err.message})`);
-  return null;
-});
+const browser = await chromium
+  .launch({ channel: "chrome" })
+  .catch(() => chromium.launch())
+  .catch((err) => {
+    console.warn(`SKIP Playwright canvas check (${err.message})`);
+    return null;
+  });
 if (browser) {
   try {
     const page = await browser.newPage({
@@ -82,6 +85,48 @@ if (browser) {
       );
       failed++;
     }
+
+    async function assertSlotSquare(label) {
+      const geom = await page.evaluate(() => {
+        const slot = document.querySelector("[data-profile-photo-slot]");
+        if (!slot) return { error: "no slot" };
+        const r = slot.getBoundingClientRect();
+        const shades = slot.querySelector("img[data-pixel-shades]");
+        return {
+          w: r.width,
+          h: r.height,
+          shadesPosition: shades ? getComputedStyle(shades).position : null,
+        };
+      });
+      if (geom.error) {
+        console.error(`FAIL ${label}: ${geom.error}`);
+        failed++;
+        return;
+      }
+      if (Math.abs(geom.w - geom.h) > 2) {
+        console.error(
+          `FAIL ${label} not square: ${geom.w}×${geom.h} (shades position=${geom.shadesPosition})`,
+        );
+        failed++;
+        return;
+      }
+      console.log(
+        `PASS ${label} square ${Math.round(geom.w)}×${Math.round(geom.h)} (shades ${geom.shadesPosition})`,
+      );
+      if (geom.shadesPosition && geom.shadesPosition !== "absolute") {
+        console.error(
+          `FAIL ${label}: shades must be absolute, got ${geom.shadesPosition}`,
+        );
+        failed++;
+      }
+    }
+
+    await assertSlotSquare("desktop slot");
+
+    // DevTools-style shrink: interactive layer stays mounted below 768px.
+    await page.setViewportSize({ width: 458, height: 900 });
+    await page.waitForTimeout(300);
+    await assertSlotSquare("desktop-then-458 slot");
   } finally {
     await browser.close();
   }

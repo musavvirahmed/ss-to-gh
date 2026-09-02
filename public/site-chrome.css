@@ -129,7 +129,7 @@ footer.sections h4 a span {
     min-height: 0;
   }
 
-  .fe-block:has(img[src*="pro-pic-circular-musa"]) .content-fit img {
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .content-fit img:not([data-pixel-shades]) {
     max-width: 100%;
     max-height: calc(24px * 3);
     width: auto;
@@ -157,7 +157,7 @@ footer.sections h4 a span {
     min-height: 0;
   }
 
-  .fe-block:has(img[src*="pro-pic-circular-musa"]) .content-fit img {
+  .fe-block:has(img[src*="pro-pic-circular-musa"]) .content-fit img:not([data-pixel-shades]) {
     max-width: 100%;
     max-height: calc(var(--container-width, 100vw) * var(--row-height-scaling-factor, 0.0215) * 3);
     width: auto;
@@ -193,12 +193,20 @@ footer.sections h4 a span {
   visibility: hidden;
 }
 
-/* Pixel shades hover overlay — interactive desktop only (same gates as eyes) */
-[data-profile-photo-slot] img[data-pixel-shades] {
+/*
+ * Pixel shades hover overlay — interactive desktop only (same gates as eyes).
+ * Selector must beat captured Squarespace `.content-fit img { position: static }`.
+ * A static overlay sits in-flow, doubles slot height, and stretches the canvas oval.
+ */
+.fe-block .sqs-block-image .design-layout-fluid.image-component-container-fit
+  .fluid-image-container .content-fit[data-profile-photo-slot] img[data-pixel-shades] {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  max-width: none;
+  max-height: none;
+  aspect-ratio: auto;
   display: block;
   pointer-events: none;
   visibility: hidden;
@@ -207,6 +215,7 @@ footer.sections h4 a span {
   image-rendering: crisp-edges;
 }
 
-[data-profile-photo-slot].is-live:hover img[data-pixel-shades] {
+.fe-block .sqs-block-image .design-layout-fluid.image-component-container-fit
+  .fluid-image-container .content-fit[data-profile-photo-slot].is-live:hover img[data-pixel-shades] {
   visibility: visible;
 }

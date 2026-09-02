@@ -184,6 +184,20 @@ assert(
   chrome.includes(':has(img[src*="pro-pic-circular-musa"])'),
   "site-chrome.css: profile photo sizing must target homepage and 404 avatar blocks",
 );
+assert(
+  chrome.includes("img:not([data-pixel-shades])"),
+  "site-chrome.css: avatar size caps must not apply to the pixel-shades overlay",
+);
+assert(
+  /img\[data-pixel-shades\][^{]*\{[^}]*position:\s*absolute/.test(chrome),
+  "site-chrome.css: pixel-shades overlay must be position:absolute (out of flow)",
+);
+assert(
+  chrome.includes(
+    ".fluid-image-container .content-fit[data-profile-photo-slot] img[data-pixel-shades]",
+  ),
+  "site-chrome.css: shades selector must beat Squarespace .content-fit img { position:static }",
+);
 console.log("OK footer layout CSS");
 
 // 4. Admin static
