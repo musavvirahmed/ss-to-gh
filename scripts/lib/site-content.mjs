@@ -17,6 +17,7 @@ const HIGHLIGHT_ATTR_IDS = {
   underline: "cb43d076-99f0-4f47-a9d4-2ecdd32e4916",
   scribble: "770da126-29b7-44d5-88e7-3b30f5206484",
   "underline-link": "5b2cbb39-e010-44fa-8b48-321bcb15de97",
+  "underline-link-white": "c8e4a1f2-3b5d-4e6a-9c0d-1f2a3b4c5d6e",
 };
 
 export function escapeHtml(text) {
@@ -135,18 +136,23 @@ function wrapHighlightPhrase(html, phrase, spec) {
   return html.slice(0, idx) + wrapped + html.slice(idx + phrase.length);
 }
 
-function renderHighlightSpan(text, { style, bold, href }) {
+function renderHighlightSpan(text, { style, bold, href, color }) {
   const inner = escapeHtml(text);
+  const body = bold ? `<strong>${inner}</strong>` : inner;
   if (href) {
-    const id = HIGHLIGHT_ATTR_IDS["underline-link"];
-    return `<span class="sqsrte-text-highlight" data-text-attribute-id="${id}"><a href="${escapeAttr(href)}" target="_blank">${inner}</a></span>`;
+    // Linked strokes: darkAccent (say hello) vs white (Nord Security) — separate TextAttributes ids.
+    const id =
+      color === "white"
+        ? HIGHLIGHT_ATTR_IDS["underline-link-white"]
+        : HIGHLIGHT_ATTR_IDS["underline-link"];
+    return `<span class="sqsrte-text-highlight" data-text-attribute-id="${id}"><a href="${escapeAttr(href)}" target="_blank">${body}</a></span>`;
   }
   if (style === "scribble" && bold) {
     const id = HIGHLIGHT_ATTR_IDS.scribble;
     return `<span class="sqsrte-text-highlight" data-text-attribute-id="${id}"><span class="sqsrte-text-color--white"><strong>${inner}</strong>.</span></span>`;
   }
   const id = HIGHLIGHT_ATTR_IDS.underline;
-  return `<span class="sqsrte-text-highlight" data-text-attribute-id="${id}">${inner}</span>`;
+  return `<span class="sqsrte-text-highlight" data-text-attribute-id="${id}">${body}</span>`;
 }
 
 export function renderBio(content) {
