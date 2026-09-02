@@ -14,6 +14,7 @@ const staticChecks = [
   { name: "interactive module", path: "/interactive-profile-photo.js", status: 200 },
   { name: "eyes config", path: "/assets/eyes-config.json", status: 200 },
   { name: "eye cutout PNG", path: "/assets/musa-no-eyes.png", status: 200 },
+  { name: "pixel shades PNG", path: "/assets/pixel-shades.png", status: 200 },
 ];
 
 let failed = 0;

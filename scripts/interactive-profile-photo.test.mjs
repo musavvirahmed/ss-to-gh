@@ -173,6 +173,33 @@ test("fine pointer happy path shows canvas and returns interactive mode", async 
     assert.equal(canvas.height, 216 * 2);
     assert.equal(img.style.visibility, "hidden");
     assert.ok(slot.classList.contains("is-live"));
+    const shades = slot.querySelector("img[data-pixel-shades]");
+    assert.ok(shades, "pixel shades overlay should mount in interactive mode");
+  } finally {
+    restoreCanvas();
+  }
+});
+
+test("enableShades false skips shades overlay", async () => {
+  const window = installDom();
+  const restoreCanvas = mockCanvas2d(window);
+  const { slot } = makeSlot(window);
+  const { initInteractiveProfilePhoto } = await loadModule();
+  const fakeImg = new window.Image();
+  fakeImg.src = "data:image/png;base64,iVBORw0KGgo=";
+
+  try {
+    const result = await initInteractiveProfilePhoto(slot, {
+      prefersReducedMotion: false,
+      hasFinePointer: true,
+      isDesktopViewport: true,
+      eyesConfig: SAMPLE_EYES_CONFIG,
+      loadImage: async () => fakeImg,
+      enableShades: false,
+      devicePixelRatio: 2,
+    });
+    assert.equal(result.mode, "interactive");
+    assert.equal(slot.querySelector("img[data-pixel-shades]"), null);
   } finally {
     restoreCanvas();
   }

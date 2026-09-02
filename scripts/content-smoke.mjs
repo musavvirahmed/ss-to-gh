@@ -211,6 +211,8 @@ const eyesConfigPath = path.join(PUBLIC, "assets", "eyes-config.json");
 const cutoutPath = path.join(PUBLIC, "assets", "musa-no-eyes.png");
 assert(fs.existsSync(eyesConfigPath), "missing public/assets/eyes-config.json");
 assert(fs.existsSync(cutoutPath), "missing public/assets/musa-no-eyes.png");
+const shadesPath = path.join(PUBLIC, "assets", "pixel-shades.png");
+assert(fs.existsSync(shadesPath), "missing public/assets/pixel-shades.png");
 const eyesConfig = JSON.parse(fs.readFileSync(eyesConfigPath, "utf8"));
 assert(typeof eyesConfig.size === "number", "eyes-config.json: missing size");
 assert(eyesConfig.eyes?.left && eyesConfig.eyes?.right, "eyes-config.json: missing eyes");
@@ -218,7 +220,7 @@ assert(
   eyesConfig.source === content.avatar,
   `eyes-config.json source must match site avatar (${content.avatar})`,
 );
-console.log("OK tier-C eyes assets");
+console.log("OK tier-C eyes + pixel-shades assets");
 
 void before;
 

@@ -192,3 +192,21 @@ footer.sections h4 a span {
 [data-profile-photo-slot].is-live img[data-profile-photo] {
   visibility: hidden;
 }
+
+/* Pixel shades hover overlay — interactive desktop only (same gates as eyes) */
+[data-profile-photo-slot] img[data-pixel-shades] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  visibility: hidden;
+  z-index: 2;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+[data-profile-photo-slot].is-live:hover img[data-pixel-shades] {
+  visibility: visible;
+}

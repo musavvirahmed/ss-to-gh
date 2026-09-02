@@ -9,6 +9,7 @@ const SCLERA_FALLBACK = [214, 201, 191];
 
 const DEFAULT_CONFIG_URL = "assets/eyes-config.json";
 const DEFAULT_CUTOUT_URL = "assets/musa-no-eyes.png";
+const DEFAULT_SHADES_URL = "assets/pixel-shades.png";
 /** Squarespace system_mobile breakpoint (max-width 767px) — interactive desktop-only. */
 export const DESKTOP_VIEWPORT_MQ = "(min-width: 768px)";
 
@@ -55,8 +56,23 @@ async function fetchEyesConfig(url) {
 function findStaticImg(slot) {
   return (
     slot.querySelector("[data-profile-photo]") ||
-    slot.querySelector("img:not([data-tier-c-cutout])")
+    slot.querySelector("img:not([data-tier-c-cutout]):not([data-pixel-shades])")
   );
+}
+
+function mountShadesOverlay(slot, shadesImg) {
+  let el = slot.querySelector("img[data-pixel-shades]");
+  if (!el) {
+    el = document.createElement("img");
+    el.dataset.pixelShades = "true";
+    el.width = SIZE;
+    el.height = SIZE;
+    el.alt = "";
+    el.setAttribute("aria-hidden", "true");
+    el.draggable = false;
+    slot.appendChild(el);
+  }
+  el.src = shadesImg.src || shadesImg.currentSrc || DEFAULT_SHADES_URL;
 }
 
 function setupHiDpi(canvas, ctx, options) {
@@ -176,6 +192,8 @@ function showInteractive(slot, staticImg, canvas) {
  * @param {object} [options.eyesConfig] Inline eyes config (skips fetch).
  * @param {string} [options.configUrl] URL for eyes-config.json.
  * @param {string} [options.cutoutUrl] URL for musa-no-eyes cutout PNG.
+ * @param {string} [options.shadesUrl] URL for pixel-shades hover overlay PNG.
+ * @param {boolean} [options.enableShades=true] Mount kevin.ie-style shades on hover when interactive.
  * @param {number} [options.devicePixelRatio] Hi-DPI backing store multiplier (capped at 3).
  * @param {(url: string) => Promise<HTMLImageElement>} [options.loadImage] Image loader (tests).
  * @param {(url: string) => Promise<object>} [options.fetchConfig] Config fetcher (tests).
@@ -185,6 +203,8 @@ export async function initInteractiveProfilePhoto(slot, options = {}) {
   const staticImg = findStaticImg(slot);
   const configUrl = options.configUrl ?? DEFAULT_CONFIG_URL;
   const cutoutUrl = options.cutoutUrl ?? DEFAULT_CUTOUT_URL;
+  const shadesUrl = options.shadesUrl ?? DEFAULT_SHADES_URL;
+  const enableShades = options.enableShades !== false;
   const loadImageFn = options.loadImage ?? loadImage;
   const fetchConfigFn = options.fetchConfig ?? fetchEyesConfig;
 
@@ -228,6 +248,15 @@ export async function initInteractiveProfilePhoto(slot, options = {}) {
     bindPointer(slot, pointerState);
     startRenderLoop(canvas, ctx, eyesConfig, cutoutImg, pointerState);
     showInteractive(slot, staticImg, canvas);
+
+    if (enableShades) {
+      try {
+        const shadesImg = await loadImageFn(shadesUrl);
+        mountShadesOverlay(slot, shadesImg);
+      } catch {
+        // Eyes still work if shades asset is missing.
+      }
+    }
 
     return { mode: "interactive" };
   } catch {

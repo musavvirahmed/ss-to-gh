@@ -1,0 +1,225 @@
+/* PROTOTYPE — pixel sunglasses hover on tier-C portrait */
+
+:root {
+  --proto-accent: #e63946;
+  --proto-bg: #fafafa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
+  background: var(--proto-bg);
+  color: #1a1a1a;
+}
+
+.proto-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.65rem 1rem;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.proto-banner strong {
+  color: var(--proto-accent);
+}
+
+.layout {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 6.5rem;
+}
+
+.bio-row {
+  display: grid;
+  grid-template-columns: 216px 1fr;
+  gap: 1.25rem 2rem;
+  align-items: start;
+}
+
+@media (max-width: 767px) {
+  .bio-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portrait-slot {
+  position: relative;
+  width: 216px;
+  height: 216px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #c41e3a;
+  cursor: default;
+}
+
+.portrait-slot canvas,
+.portrait-slot img {
+  position: absolute;
+  inset: 0;
+  width: 216px;
+  height: 216px;
+  display: block;
+  object-fit: cover;
+}
+
+.portrait-slot canvas {
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.portrait-slot img#portrait-fallback {
+  z-index: 2;
+}
+
+.portrait-slot.is-live img#portrait-fallback {
+  visibility: hidden;
+}
+
+/* Instant shades overlay — hidden until hover (kevin.ie pattern) */
+.portrait-slot img#shades-overlay {
+  z-index: 5;
+  pointer-events: none;
+  visibility: hidden;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.portrait-slot.is-live:hover img#shades-overlay,
+.portrait-slot.is-live.shades-forced img#shades-overlay {
+  visibility: visible;
+}
+
+.bio-copy h1 {
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.bio-copy h1 a,
+.bio-copy h1 strong {
+  color: #1a1a1a !important;
+}
+
+.bio-copy h1 a {
+  text-decoration: underline;
+}
+
+.review-panel {
+  margin-top: 2.5rem;
+  padding: 1.25rem 1.25rem 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.review-panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.preview-card {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #555;
+}
+
+.preview-card img {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  display: block;
+  margin-bottom: 0.35rem;
+  background: #c41e3a;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.875rem;
+}
+
+.controls button {
+  font: inherit;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  background: #f5f5f5;
+}
+
+.controls button:hover {
+  background: #eee;
+}
+
+#runtime-status {
+  font-size: 0.8125rem;
+  color: #444;
+  margin-top: 0.5rem;
+}
+
+.checklist {
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: #333;
+}
+
+.proto-switcher {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.9rem;
+  background: #1a1a1a;
+  color: #fff;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  font-size: 0.875rem;
+}
+
+.proto-switcher button {
+  font: inherit;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.proto-switcher .label {
+  min-width: 12rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.proto-switcher .label span {
+  color: var(--proto-accent);
+}
