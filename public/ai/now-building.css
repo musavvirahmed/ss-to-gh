@@ -15,7 +15,8 @@
   );
   --fluid-row: calc(var(--container-width) * var(--row-height-scaling-factor));
   box-sizing: border-box;
-  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
+  /* Match site tokens (no Helvetica fallback — keeps localhost Typekit-miss parity with homepage). */
+  font-family: var(--body-font-font-family, aktiv-grotesk);
   color: #fff;
   width: 100%;
   max-width: none;
@@ -68,7 +69,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--heading-font-font-family, aktiv-grotesk);
   font-size: inherit;
   font-weight: 400;
   letter-spacing: normal;
@@ -76,7 +77,7 @@
 }
 
 .now-building-title-lead {
-  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--body-font-font-family, aktiv-grotesk);
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.08em;
@@ -86,7 +87,7 @@
 }
 
 .now-building-title-main {
-  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--heading-font-font-family, aktiv-grotesk);
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 400;
   letter-spacing: -0.01em;
@@ -125,7 +126,7 @@
 
 .now-building-card-title {
   margin: 0 0 0.65rem;
-  font-family: aktiv-grotesk, sans-serif;
+  font-family: var(--heading-font-font-family, aktiv-grotesk);
   font-size: 1.25rem;
   font-weight: 400;
   line-height: 1.25;
