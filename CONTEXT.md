@@ -9,7 +9,7 @@ The editable words and assets on musavvir.info — homepage bio (markdown paragr
 _Avoid_: page content, CMS content, marketing copy
 
 **Now-building index**:
-The public, ungated gallery on musavvir.info at `/ai` (public label **Building with AI**) — cards for what is being built with AI *now*, edited as Site content. Not a lift of the password-gated musavvir.fyi AI prototypes catalog.
+The public, ungated gallery on musavvir.info at `/ai` (public label **Building with AI**) — cards exhibiting AI-assisted work currently on display, including shipped builds, edited as Site content. Homepage entry is a bio highlight phrase (`building with AI` → `/ai`), not header nav. Not a lift of the password-gated musavvir.fyi AI prototypes catalog.
 _Avoid_: AI prototypes, portfolio, case studies (ambiguous), Case study
 
 **Case study**:
