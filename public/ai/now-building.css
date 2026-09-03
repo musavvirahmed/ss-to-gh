@@ -1,45 +1,20 @@
-/* Now-building index (/ai) — variant A locked look */
+/* Now-building index (/ai) — Variant A main only.
+ * Header + footer come from the shared Squarespace shell (site.css / site-chrome.css).
+ */
 
-:root {
-  --now-building-bg: #000;
-  --now-building-fg: #fff;
-  /* Live darkAccent (#474747) fails AA on black; nearest AA-normal grey. */
+.now-building-main {
   --now-building-muted: #767676;
   --now-building-rule: rgba(255, 255, 255, 0.22);
   --now-building-accent: #e63946;
-}
-
-* {
   box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
   font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
-  background: var(--now-building-bg);
-  color: var(--now-building-fg);
-}
-
-.now-building-header {
-  padding: 2vw clamp(1.5rem, 4vw, 4rem) 0;
-  max-width: 1500px;
-  margin: 0 auto;
-}
-
-.now-building-site-title {
-  font-family: aktiv-grotesk, sans-serif;
-  font-size: 1.375rem;
-  font-weight: 400;
-  letter-spacing: -0.01em;
   color: #fff;
-  text-decoration: none;
-}
-
-.now-building-page {
-  max-width: 1500px;
+  width: 100%;
+  max-width: var(--sqs-site-max-width, 1500px);
   margin: 0 auto;
-  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 4vw, 4rem) 2rem;
+  /* Match Squarespace fluid-engine side gutters so avatar/title share the header axis */
+  padding-left: var(--sqs-site-gutter, 4vw);
+  padding-right: var(--sqs-site-gutter, 4vw);
 }
 
 .now-building-intro-block {
@@ -78,6 +53,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
   font-size: inherit;
   font-weight: 400;
   letter-spacing: normal;
@@ -85,6 +61,7 @@ body {
 }
 
 .now-building-title-lead {
+  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.08em;
@@ -94,6 +71,7 @@ body {
 }
 
 .now-building-title-main {
+  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 400;
   letter-spacing: -0.01em;
@@ -143,6 +121,10 @@ body {
   color: var(--now-building-muted);
 }
 
+.now-building-card-p a {
+  color: #fff;
+}
+
 .now-building-cta {
   display: inline-block;
   margin-top: 1rem;
@@ -151,43 +133,6 @@ body {
 }
 
 .now-building-cta span {
-  text-decoration: underline;
-  text-decoration-thickness: 0.14em;
-  text-underline-offset: 0.18em;
-}
-
-.now-building-footer {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 2rem clamp(1.5rem, 4vw, 4rem) 3rem;
-}
-
-.now-building-footer .content-footer-links,
-.now-building-footer .content-footer-links--flex {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-  gap: clamp(1.5rem, 4vw, 3rem);
-  width: 100%;
-  margin: 0;
-  grid-area: unset;
-}
-
-.now-building-footer .content-footer-link,
-.now-building-footer .content-footer-link-flex {
-  margin: 0;
-  white-space: nowrap;
-  font-size: 1rem;
-  font-weight: 400;
-}
-
-.now-building-footer a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.now-building-footer a span {
   text-decoration: underline;
   text-decoration-thickness: 0.14em;
   text-underline-offset: 0.18em;

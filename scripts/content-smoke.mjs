@@ -232,6 +232,23 @@ assert(
   "ai/index.html: missing Visit counter wrapper script",
 );
 assert(
+  aiHtml.includes('id="header"') && aiHtml.includes('id="footer-sections"'),
+  "ai/index.html: must reuse homepage/404 header + footer shell",
+);
+assert(
+  aiHtml.includes("site-chrome.css") && aiHtml.includes("_capture/site.css"),
+  "ai/index.html: must load shared site chrome stylesheets",
+);
+assert(
+  aiHtml.includes('class="now-building-main"'),
+  "ai/index.html: Variant A main must be present",
+);
+assert(
+  !aiHtml.includes("now-building-header") &&
+    !aiHtml.includes("now-building-footer"),
+  "ai/index.html: must not use custom header/footer chrome classes",
+);
+assert(
   fs.existsSync(path.join(PUBLIC, "ai", "now-building.css")),
   "missing public/ai/now-building.css",
 );
