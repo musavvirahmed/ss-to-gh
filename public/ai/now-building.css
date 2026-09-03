@@ -1,29 +1,40 @@
 /* Now-building index (/ai) — Variant A main only.
  * Header + footer come from the shared Squarespace shell (site.css / site-chrome.css).
- * Avatar size/inset match homepage fluid-engine metrics.
+ * Desktop: same 24-col fluid-engine as the homepage. Content sits in columns
+ * 2–19 (the bio band); columns 20–25 stay empty — that right-side gap.
+ * Mobile: 8-col engine; content uses all 8 content columns (homepage bio too).
  */
 
 .now-building-main {
   --now-building-muted: #767676;
   --now-building-rule: rgba(255, 255, 255, 0.22);
   --now-building-accent: #e63946;
-  /* Same fluid row math as homepage avatar block (site-chrome + fluid-engine) */
   --row-height-scaling-factor: 0.0215;
+  --grid-gutter: var(--sqs-site-gutter, var(--pagePadding, 3vw));
+  --site-max: var(--sqs-site-max-width, var(--maxPageWidth, 1900px));
+  --cell-max-width: calc(var(--site-max) / 24);
   --container-width: min(
-    var(--sqs-site-max-width, 1900px),
-    calc(100vw - var(--sqs-site-gutter, 3vw) * 2)
+    var(--site-max),
+    calc(100vw - var(--grid-gutter) * 2)
   );
   --fluid-row: calc(var(--container-width) * var(--row-height-scaling-factor));
   box-sizing: border-box;
-  /* Match site tokens (no Helvetica fallback — keeps localhost Typekit-miss parity with homepage). */
   font-family: var(--body-font-font-family, aktiv-grotesk);
   color: #fff;
   width: 100%;
   max-width: none;
   margin: 0;
-  /* Site gutter = homepage fluid-engine first content column */
-  padding-left: var(--sqs-site-gutter, 3vw);
-  padding-right: var(--sqs-site-gutter, 3vw);
+  padding: 0;
+  display: grid;
+  grid-template-columns:
+    minmax(var(--grid-gutter), 1fr)
+    repeat(24, minmax(0, var(--cell-max-width)))
+    minmax(var(--grid-gutter), 1fr);
+}
+
+/* Homepage bio: grid-area 5/2/17/20 → content columns 1–18 of 24. */
+.now-building-main > * {
+  grid-column: 2 / 20;
 }
 
 .now-building-intro-block {
@@ -76,8 +87,16 @@
 @media (max-width: 767px) {
   .now-building-main {
     --fluid-row: 24px;
-    padding-left: var(--sqs-mobile-site-gutter, 6vw);
-    padding-right: var(--sqs-mobile-site-gutter, 6vw);
+    --grid-gutter: var(--sqs-mobile-site-gutter, 6vw);
+    --cell-max-width: calc(var(--site-max) / 8);
+    grid-template-columns:
+      minmax(var(--grid-gutter), 1fr)
+      repeat(8, minmax(0, var(--cell-max-width)))
+      minmax(var(--grid-gutter), 1fr);
+  }
+
+  .now-building-main > * {
+    grid-column: 2 / 10;
   }
 
   .now-building-portrait {

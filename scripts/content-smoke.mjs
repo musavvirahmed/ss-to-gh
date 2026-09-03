@@ -272,6 +272,14 @@ assert(
   /img\[data-pixel-shades\][^{]*\{[^}]*position:\s*absolute/.test(nowBuildingCss),
   "now-building.css: pixel-shades overlay must be position:absolute (out of flow)",
 );
+assert(
+  /repeat\(24,\s*minmax\(0,\s*var\(--cell-max-width\)\)\)/.test(nowBuildingCss),
+  "now-building.css: desktop must reuse the homepage 24-col fluid-engine",
+);
+assert(
+  /grid-column:\s*2\s*\/\s*20/.test(nowBuildingCss),
+  "now-building.css: desktop content must sit in the homepage bio band (cols 2–19)",
+);
 console.log("OK Now-building index");
 
 // 3a. Visit counter wrapper (ADR-0010) — not Site content
