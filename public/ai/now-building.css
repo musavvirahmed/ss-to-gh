@@ -1,33 +1,42 @@
 /* Now-building index (/ai) — Variant A main only.
  * Header + footer come from the shared Squarespace shell (site.css / site-chrome.css).
+ * Avatar size/inset match homepage fluid-engine metrics.
  */
 
 .now-building-main {
   --now-building-muted: #767676;
   --now-building-rule: rgba(255, 255, 255, 0.22);
   --now-building-accent: #e63946;
+  /* Same fluid row math as homepage avatar block (site-chrome + fluid-engine) */
+  --row-height-scaling-factor: 0.0215;
+  --container-width: min(
+    var(--sqs-site-max-width, 1900px),
+    calc(100vw - var(--sqs-site-gutter, 3vw) * 2)
+  );
+  --fluid-row: calc(var(--container-width) * var(--row-height-scaling-factor));
   box-sizing: border-box;
   font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
   color: #fff;
   width: 100%;
-  max-width: var(--sqs-site-max-width, 1500px);
-  margin: 0 auto;
-  /* Match Squarespace fluid-engine side gutters so avatar/title share the header axis */
-  padding-left: var(--sqs-site-gutter, 4vw);
-  padding-right: var(--sqs-site-gutter, 4vw);
+  max-width: none;
+  margin: 0;
+  /* Site gutter = homepage fluid-engine first content column */
+  padding-left: var(--sqs-site-gutter, 3vw);
+  padding-right: var(--sqs-site-gutter, 3vw);
 }
 
 .now-building-intro-block {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: clamp(1.5rem, 3vw, 2rem);
-  margin-bottom: 2.5rem;
+  /* Homepage: avatar rows 1–3, bio row 5 → one empty fluid row between */
+  gap: var(--fluid-row);
+  margin-bottom: calc(var(--fluid-row) * 2);
 }
 
 .now-building-portrait {
-  width: 78px;
-  height: 78px;
+  width: calc(var(--fluid-row) * 3);
+  height: calc(var(--fluid-row) * 3);
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
@@ -42,6 +51,12 @@
 }
 
 @media (max-width: 767px) {
+  .now-building-main {
+    --fluid-row: 24px;
+    padding-left: var(--sqs-mobile-site-gutter, 6vw);
+    padding-right: var(--sqs-mobile-site-gutter, 6vw);
+  }
+
   .now-building-portrait {
     width: 72px;
     height: 72px;
