@@ -156,7 +156,38 @@ assert(
   !notFoundHtml.includes("data-profile-photo-slot"),
   "404.html: must not have profile photo slot marker",
 );
+assert(
+  indexHtml.includes('src="/goatcounter.js"'),
+  "index.html: missing Visit counter wrapper script",
+);
+assert(
+  notFoundHtml.includes('src="/goatcounter.js"'),
+  "404.html: missing Visit counter wrapper script",
+);
+assert(
+  indexHtml.includes('data-goatcounter-click="resume"'),
+  "index.html: Résumé footer must send GoatCounter event",
+);
+assert(
+  notFoundHtml.includes('data-goatcounter-click="resume"'),
+  "404.html: Résumé footer must send GoatCounter event",
+);
 console.log("OK HTML assertions");
+
+// 3a. Visit counter wrapper (ADR-0010) — not Site content
+const goatPath = path.join(PUBLIC, "goatcounter.js");
+assert(fs.existsSync(goatPath), "missing public/goatcounter.js");
+const goatJs = fs.readFileSync(goatPath, "utf8");
+assert(
+  goatJs.includes("musavvir.info"),
+  "goatcounter.js: must gate on Canonical hostname musavvir.info",
+);
+assert(
+  goatJs.includes("musavvir-info.goatcounter.com/count"),
+  "goatcounter.js: must use musavvir-info count URL",
+);
+assert(goatJs.includes("/admin"), "goatcounter.js: must skip /admin");
+console.log("OK Visit counter wrapper");
 
 // 3b. Footer layout (ADR-0008): left-aligned Squarespace grid, labels stay one line
 const chrome = fs.readFileSync(path.join(PUBLIC, "site-chrome.css"), "utf8");
@@ -217,6 +248,14 @@ assert(
 assert(
   configText.includes("preview: false"),
   "admin config must disable the preview pane",
+);
+assert(
+  !fs.readFileSync(adminIndex, "utf8").includes("goatcounter"),
+  "admin/index.html: must not load Visit counter",
+);
+assert(
+  !configText.includes("goatcounter") && !configText.includes("GOATCOUNTER"),
+  "admin config must not expose Visit counter endpoint as Site content",
 );
 console.log("OK admin static");
 

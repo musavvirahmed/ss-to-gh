@@ -85,3 +85,9 @@ _Avoid_: delight mode, easter egg, micro-interaction (too generic)
 **Static PNG fallback**:
 The non-interactive profile photo shown on mobile, when `prefers-reduced-motion` is on, or when WebGL init fails. Not tier C — progressive enhancement only.
 _Avoid_: mobile fallback, reduced-motion mode
+
+## Ops
+
+**Visit counter**:
+Privacy-oriented pageview and event counts for the Canonical hostname (GoatCounter site `musavvir-info`), outside Site content — a commit-edited Publish-tree wrapper, not Sveltia.
+_Avoid_: analytics, tracking, metrics, GoatCounter (prefer the role name; product is the implementation)

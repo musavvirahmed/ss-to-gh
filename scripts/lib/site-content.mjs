@@ -204,7 +204,11 @@ export function renderFooterLinks(footerLinks) {
     .map(({ label, href }) => {
       const external = href.startsWith("http");
       const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : "";
-      return `    <h4 class="${gridClass}"><a href="${escapeAttr(href)}"${attrs}><span style="text-decoration:underline">${escapeHtml(label)}</span></a></h4>`;
+      // PDF clicks are not pageviews; GoatCounter event (ADR-0010 Visit counter).
+      const resumeEvent = /résumé|resume/i.test(label)
+        ? ' data-goatcounter-click="resume" data-goatcounter-title="Résumé"'
+        : "";
+      return `    <h4 class="${gridClass}"><a href="${escapeAttr(href)}"${attrs}${resumeEvent}><span style="text-decoration:underline">${escapeHtml(label)}</span></a></h4>`;
     })
     .join("\n");
 
