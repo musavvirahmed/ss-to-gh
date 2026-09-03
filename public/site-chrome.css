@@ -106,6 +106,12 @@ footer.sections h4 a span {
   background-image: none !important;
 }
 
+/* Bio scribble "building with AI" — keep the phrase on one line (wrap as a unit). */
+.sqs-block-html .sqs-html-content
+  .sqsrte-text-highlight[data-text-attribute-id="770da126-29b7-44d5-88e7-3b30f5206484"] {
+  white-space: nowrap;
+}
+
 /*
  * Profile photo block (#35): match live Squarespace sizing on homepage + 404.
  * Each page has a different fe-block id; target the block that contains the avatar.
