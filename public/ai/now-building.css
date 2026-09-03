@@ -106,6 +106,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
+  align-items: start;
 }
 
 @media (max-width: 767px) {
@@ -117,7 +118,9 @@
 .now-building-card {
   border: 1px solid var(--now-building-rule);
   padding: 1.35rem 1.4rem 1.5rem;
-  min-height: 100%;
+  /* Do not use min-height:100% — it stretches with section/viewport on resize */
+  height: fit-content;
+  align-self: start;
 }
 
 .now-building-card-title {
