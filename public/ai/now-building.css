@@ -36,6 +36,7 @@
 }
 
 .now-building-portrait {
+  position: relative;
   width: calc(var(--fluid-row) * 3);
   height: calc(var(--fluid-row) * 3);
   border-radius: 50%;
@@ -44,11 +45,32 @@
   background: var(--now-building-accent);
 }
 
-.now-building-portrait img {
+.now-building-portrait img:not([data-pixel-shades]) {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
+}
+
+/* Pixel shades: out of flow so the fixed square slot does not double height. */
+.now-building-portrait[data-profile-photo-slot] img[data-pixel-shades] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  visibility: hidden;
+  z-index: 2;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.now-building-portrait[data-profile-photo-slot].is-live:hover img[data-pixel-shades] {
+  visibility: visible;
 }
 
 @media (max-width: 767px) {

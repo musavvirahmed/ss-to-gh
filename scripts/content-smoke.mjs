@@ -249,8 +249,28 @@ assert(
   "ai/index.html: must not use custom header/footer chrome classes",
 );
 assert(
+  aiHtml.includes("data-profile-photo-slot"),
+  "ai/index.html: must mount interactive profile photo slot",
+);
+assert(
+  aiHtml.includes('data-profile-photo="true"'),
+  "ai/index.html: missing data-profile-photo on avatar img",
+);
+assert(
+  aiHtml.includes('src="interactive-profile-photo-bootstrap.js"'),
+  "ai/index.html: missing interactive profile photo bootstrap script",
+);
+assert(
   fs.existsSync(path.join(PUBLIC, "ai", "now-building.css")),
   "missing public/ai/now-building.css",
+);
+const nowBuildingCss = fs.readFileSync(
+  path.join(PUBLIC, "ai", "now-building.css"),
+  "utf8",
+);
+assert(
+  /img\[data-pixel-shades\][^{]*\{[^}]*position:\s*absolute/.test(nowBuildingCss),
+  "now-building.css: pixel-shades overlay must be position:absolute (out of flow)",
 );
 console.log("OK Now-building index");
 

@@ -135,6 +135,40 @@ try {
       failed += assertSquare("desktop-then-458", await measure(page));
       await page.close();
     }
+
+    {
+      const page = await browser.newPage({
+        viewport: { width: 1280, height: 800 },
+        hasTouch: false,
+      });
+      await page.emulateMedia({ reducedMotion: "no-preference" });
+      await page.goto(`${base}/ai/`, { waitUntil: "networkidle" });
+      await page
+        .locator("[data-profile-photo-slot].is-live")
+        .waitFor({ timeout: 8000 });
+      const geom = await measure(page);
+      failed += assertSquare("ai-desktop-1280", geom);
+      if (geom.shadesPosition !== "absolute") {
+        console.error(
+          `FAIL ai-desktop-1280: shades must be absolute, got ${geom.shadesPosition}`,
+        );
+        failed++;
+      }
+      await page.locator("[data-profile-photo-slot]").hover();
+      const shadesVisible = await page.evaluate(() => {
+        const shades = document.querySelector("img[data-pixel-shades]");
+        return shades ? getComputedStyle(shades).visibility : null;
+      });
+      if (shadesVisible !== "visible") {
+        console.error(
+          `FAIL ai-desktop-1280: shades must show on hover, got ${shadesVisible}`,
+        );
+        failed++;
+      } else {
+        console.log("PASS ai-desktop-1280: shades visible on hover");
+      }
+      await page.close();
+    }
   } finally {
     await browser.close();
   }

@@ -1,5 +1,6 @@
 /**
- * Homepage wire-up for tier-C interactive profile photo (#38).
+ * Tier-C interactive profile photo wire-up (#38).
+ * Used on homepage and /ai where [data-profile-photo-slot] is present.
  * Static img paints first; module loads after idle on eligible desktops only.
  */
 const slot = document.querySelector("[data-profile-photo-slot]");
