@@ -1,9 +1,15 @@
 heading: Building with AI?
+intro: ''
 cards:
   - title: The recurring annual Squarespace cost I erased with the help of AI
-    paragraph: >-
-      Squarespace’s ~€132/year liability is gone. This site now runs on a free
-      GitHub + Cloudflare stack. One month of Cursor Individual (~€20) helped
-      build the pixel-identical clone—then we kept it free.
-    cta_href: ""
+    paragraph: Squarespace’s \~€132/year liability is gone. This site now runs on a free GitHub + Cloudflare stack. One month of Cursor Individual (\~€20) helped build the pixel-identical clone—then we kept it free.
+    cta_href: ''
     cta_label: View README on GitHub
+  - title: Card two title goes here
+    paragraph: Card two body paragraph goes here. Card two body paragraph. Card two body paragraph goes here. Card two body paragraph. Card two body paragraph goes here.
+    cta_href: ''
+    cta_label: ''
+  - title: Title of card three goes here
+    paragraph: Card three body paragraph goes here. Card three body paragraph. Card three body paragraph goes here. Card three body paragraph. Card three body paragraph goes here.
+    cta_href: ''
+    cta_label: ''
