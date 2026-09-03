@@ -5,8 +5,16 @@ Domain language for replacing the Squarespace-hosted personal site with a cheap 
 ## Language
 
 **Site content**:
-The editable words and assets on musavvir.info — homepage bio (markdown paragraphs + highlighted phrases), page-not-found copy, profile photo, footer links, and résumé file.
+The editable words and assets on musavvir.info — homepage bio (markdown paragraphs + highlighted phrases), page-not-found copy, profile photo, footer links, résumé file, and Now-building index entries.
 _Avoid_: page content, CMS content, marketing copy
+
+**Now-building index**:
+The public, ungated gallery on musavvir.info at `/ai` (public label **Building with AI**) — cards for what is being built with AI *now*, edited as Site content. Not a lift of the password-gated musavvir.fyi AI prototypes catalog.
+_Avoid_: AI prototypes, portfolio, case studies (ambiguous), Case study
+
+**Case study**:
+The deferred public write-up of the Squarespace→static migration (job-search signal and craft/teaching). Sibling of a Now-building index card, not the index itself; publish venue TBD.
+_Avoid_: live-site case-study page, Now-building index, portfolio case study
 
 **Profile photo**:
 The circular headshot in the homepage bio — static PNG, edited as Site content. Shown on mobile and when reduced motion is preferred; also the fallback when the interactive profile photo does not load.
