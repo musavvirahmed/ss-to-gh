@@ -1,0 +1,9 @@
+heading: Building with AI?
+cards:
+  - title: The recurring annual Squarespace cost I erased with the help of AI
+    paragraph: >-
+      Squarespace’s ~€132/year liability is gone. This site now runs on a free
+      GitHub + Cloudflare stack. One month of Cursor Individual (~€20) helped
+      build the pixel-identical clone—then we kept it free.
+    cta_href: ""
+    cta_label: View README on GitHub

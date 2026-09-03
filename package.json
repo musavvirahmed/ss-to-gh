@@ -7,7 +7,7 @@
     "init-content-slots": "node scripts/init-html-content-slots.mjs",
     "content:smoke": "node scripts/content-smoke.mjs",
     "avatar:geometry-smoke": "node scripts/avatar-geometry-smoke.mjs",
-    "test": "npm run content:smoke && node --test scripts/interactive-profile-photo.test.mjs && npm run avatar:geometry-smoke",
+    "test": "npm run content:smoke && node --test scripts/site-content.test.mjs scripts/interactive-profile-photo.test.mjs && npm run avatar:geometry-smoke",
     "test:interactive-profile-photo": "node --test scripts/interactive-profile-photo.test.mjs",
     "promote:public": "node scripts/promote-to-public.mjs",
     "serve:public": "python3 scripts/serve-public.py",

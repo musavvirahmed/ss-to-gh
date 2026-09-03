@@ -1,0 +1,194 @@
+/* Now-building index (/ai) — variant A locked look */
+
+:root {
+  --now-building-bg: #000;
+  --now-building-fg: #fff;
+  /* Live darkAccent (#474747) fails AA on black; nearest AA-normal grey. */
+  --now-building-muted: #767676;
+  --now-building-rule: rgba(255, 255, 255, 0.22);
+  --now-building-accent: #e63946;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
+  background: var(--now-building-bg);
+  color: var(--now-building-fg);
+}
+
+.now-building-header {
+  padding: 2vw clamp(1.5rem, 4vw, 4rem) 0;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.now-building-site-title {
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-decoration: none;
+}
+
+.now-building-page {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 4vw, 4rem) 2rem;
+}
+
+.now-building-intro-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 2.5rem;
+}
+
+.now-building-portrait {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--now-building-accent);
+}
+
+.now-building-portrait img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+@media (max-width: 767px) {
+  .now-building-portrait {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+.now-building-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: inherit;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.15;
+}
+
+.now-building-title-lead {
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--now-building-muted);
+  line-height: 1.3;
+}
+
+.now-building-title-main {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.now-building-intro {
+  margin: 0 0 2rem;
+  max-width: 40rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--now-building-muted);
+}
+
+.now-building-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 767px) {
+  .now-building-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.now-building-card {
+  border: 1px solid var(--now-building-rule);
+  padding: 1.35rem 1.4rem 1.5rem;
+  min-height: 100%;
+}
+
+.now-building-card-title {
+  margin: 0 0 0.65rem;
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.now-building-card-p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--now-building-muted);
+}
+
+.now-building-cta {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.now-building-cta span {
+  text-decoration: underline;
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.18em;
+}
+
+.now-building-footer {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 2rem clamp(1.5rem, 4vw, 4rem) 3rem;
+}
+
+.now-building-footer .content-footer-links,
+.now-building-footer .content-footer-links--flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  width: 100%;
+  margin: 0;
+  grid-area: unset;
+}
+
+.now-building-footer .content-footer-link,
+.now-building-footer .content-footer-link-flex {
+  margin: 0;
+  white-space: nowrap;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.now-building-footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.now-building-footer a span {
+  text-decoration: underline;
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.18em;
+}
