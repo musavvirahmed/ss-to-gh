@@ -3,7 +3,7 @@ avatar: assets/pro-pic-circular-musa.png
 resume_pdf: /s/musa-resume-2026.pdf
 bio:
   paragraphs:
-    - Product designer based in {{location}}, interested in growth hacking & designOps
+    - Product designer based in {{location}}, interested in growth hacking & building with AI.
     - Currently designing at Nord Security. Previously, for **Vermietet.de (ImmoScout24)**.
     - Interested in open source & research projects. Feel free to say hello!
   highlights:
@@ -11,10 +11,10 @@ bio:
       style: underline
       bold: false
       href: ''
-    - phrase: designOps
+    - phrase: building with AI
       style: scribble
       bold: true
-      href: ''
+      href: /ai
     - phrase: Nord Security
       style: underline
       bold: true

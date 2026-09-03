@@ -1,0 +1,49 @@
+{
+  "$id": "https://musavvir.info/schemas/now-building-content.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["heading", "cards"],
+  "properties": {
+    "heading": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intro": {
+      "type": "string"
+    },
+    "cards": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "paragraph"],
+        "properties": {
+          "title": { "type": "string" },
+          "paragraph": { "type": "string" },
+          "cta_href": {
+            "type": "string",
+            "pattern": "^(https://|/)[^\\s]+$"
+          },
+          "cta_label": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "required": ["cta_href"],
+              "properties": {
+                "cta_href": { "type": "string", "minLength": 1 }
+              }
+            },
+            "then": {
+              "required": ["cta_label"]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

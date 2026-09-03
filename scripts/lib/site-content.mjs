@@ -7,11 +7,18 @@ import yaml from "yaml";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 export const CONTENT_FILE = path.join(ROOT, "content", "site.yaml");
 export const NOT_FOUND_FILE = path.join(ROOT, "content", "not-found.yaml");
+export const NOW_BUILDING_FILE = path.join(ROOT, "content", "now-building.yaml");
 export const SCHEMA_FILE = path.join(ROOT, "content", "site.schema.json");
 export const NOT_FOUND_SCHEMA_FILE = path.join(ROOT, "content", "not-found.schema.json");
+export const NOW_BUILDING_SCHEMA_FILE = path.join(
+  ROOT,
+  "content",
+  "now-building.schema.json",
+);
 export const ADMIN_SOURCE = path.join(ROOT, "content", "admin");
 export const PUBLIC = path.join(ROOT, "public");
 export const HTML_TARGETS = ["index.html", "404.html"];
+export const AI_HTML_TARGET = path.join("ai", "index.html");
 
 const HIGHLIGHT_ATTR_IDS = {
   underline: "cb43d076-99f0-4f47-a9d4-2ecdd32e4916",
@@ -44,13 +51,33 @@ function normalizeSiteContent(data) {
   return data;
 }
 
+export function normalizeNowBuilding(data) {
+  const cards = (data.cards ?? []).map((card) => {
+    const next = { ...card };
+    if (!next.cta_href?.trim()) {
+      delete next.cta_href;
+      delete next.cta_label;
+    }
+    return next;
+  });
+  const out = { ...data, cards };
+  if (typeof out.intro === "string" && !out.intro.trim()) {
+    delete out.intro;
+  }
+  return out;
+}
+
 export function loadSiteContent(
   siteFile = CONTENT_FILE,
   notFoundFile = NOT_FOUND_FILE,
+  nowBuildingFile = NOW_BUILDING_FILE,
 ) {
   const site = normalizeSiteContent(yaml.parse(fs.readFileSync(siteFile, "utf8")));
   const notFound = yaml.parse(fs.readFileSync(notFoundFile, "utf8"));
-  return { ...site, not_found: notFound };
+  const nowBuilding = normalizeNowBuilding(
+    yaml.parse(fs.readFileSync(nowBuildingFile, "utf8")),
+  );
+  return { ...site, not_found: notFound, now_building: nowBuilding };
 }
 
 function validateAgainstSchema(data, schemaFile, label) {
@@ -64,9 +91,14 @@ function validateAgainstSchema(data, schemaFile, label) {
 }
 
 export function validateSiteContent(data) {
-  const { not_found: notFound, ...site } = data;
+  const { not_found: notFound, now_building: nowBuilding, ...site } = data;
   validateAgainstSchema(site, SCHEMA_FILE, "content/site.yaml");
   validateAgainstSchema(notFound, NOT_FOUND_SCHEMA_FILE, "content/not-found.yaml");
+  validateAgainstSchema(
+    nowBuilding,
+    NOW_BUILDING_SCHEMA_FILE,
+    "content/now-building.yaml",
+  );
   validateHighlights(data);
   return data;
 }
@@ -96,8 +128,19 @@ function validateHighlights(content) {
 export function loadValidatedSiteContent(
   siteFile = CONTENT_FILE,
   notFoundFile = NOT_FOUND_FILE,
+  nowBuildingFile = NOW_BUILDING_FILE,
 ) {
-  return validateSiteContent(loadSiteContent(siteFile, notFoundFile));
+  return validateSiteContent(
+    loadSiteContent(siteFile, notFoundFile, nowBuildingFile),
+  );
+}
+
+function isExternalHref(href) {
+  return String(href).startsWith("http");
+}
+
+function anchorTargetAttrs(href) {
+  return isExternalHref(href) ? ' target="_blank"' : "";
 }
 
 function renderMarkdownBold(text) {
@@ -114,10 +157,8 @@ export function renderMarkdownInline(text) {
     if (match.index > last) {
       parts.push(renderMarkdownBold(text.slice(last, match.index)));
     }
-    const external = href.startsWith("http");
-    const attrs = external ? ' target="_blank"' : "";
     parts.push(
-      `<a href="${escapeAttr(href)}"${attrs}>${renderMarkdownBold(label)}</a>`,
+      `<a href="${escapeAttr(href)}"${anchorTargetAttrs(href)}>${renderMarkdownBold(label)}</a>`,
     );
     last = match.index + full.length;
   }
@@ -140,12 +181,17 @@ function renderHighlightSpan(text, { style, bold, href, color }) {
   const inner = escapeHtml(text);
   const body = bold ? `<strong>${inner}</strong>` : inner;
   if (href) {
-    // Linked strokes: darkAccent (say hello) vs white (Nord Security) — separate TextAttributes ids.
+    // Linked scribble (building with AI → /ai): same TextAttribute as designOps scribble.
+    if (style === "scribble") {
+      const id = HIGHLIGHT_ATTR_IDS.scribble;
+      return `<span class="sqsrte-text-highlight" data-text-attribute-id="${id}"><span class="sqsrte-text-color--white"><a href="${escapeAttr(href)}"${anchorTargetAttrs(href)}>${body}</a></span></span>`;
+    }
+    // Linked underlines: darkAccent (say hello) vs white (Nord Security).
     const id =
       color === "white"
         ? HIGHLIGHT_ATTR_IDS["underline-link-white"]
         : HIGHLIGHT_ATTR_IDS["underline-link"];
-    return `<span class="sqsrte-text-highlight" data-text-attribute-id="${id}"><a href="${escapeAttr(href)}" target="_blank">${body}</a></span>`;
+    return `<span class="sqsrte-text-highlight" data-text-attribute-id="${id}"><a href="${escapeAttr(href)}"${anchorTargetAttrs(href)}>${body}</a></span>`;
   }
   if (style === "scribble" && bold) {
     const id = HIGHLIGHT_ATTR_IDS.scribble;
@@ -202,8 +248,9 @@ export function renderFooterLinks(footerLinks) {
     footerLinks.length === 4 ? "content-footer-link" : "content-footer-link-flex";
   const items = footerLinks
     .map(({ label, href }) => {
-      const external = href.startsWith("http");
-      const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : "";
+      const attrs = isExternalHref(href)
+        ? ' target="_blank" rel="noopener noreferrer"'
+        : "";
       // PDF clicks are not pageviews; GoatCounter event (ADR-0010 Visit counter).
       const resumeEvent = /résumé|resume/i.test(label)
         ? ' data-goatcounter-click="resume" data-goatcounter-title="Résumé"'
@@ -216,6 +263,37 @@ export function renderFooterLinks(footerLinks) {
     footerLinks.length === 4 ? "content-footer-links" : "content-footer-links content-footer-links--flex";
 
   return `<nav id="content-footer-links" class="${layoutClass}" data-content-applied="true" aria-label="Footer">\n${items}\n  </nav>`;
+}
+
+export function renderNowBuildingHeading(nowBuilding) {
+  return escapeHtml(nowBuilding.heading);
+}
+
+export function renderNowBuildingIntro(nowBuilding) {
+  const intro = nowBuilding.intro?.trim();
+  if (!intro) return "";
+  return `<p class="now-building-intro">${renderMarkdownInline(intro)}</p>`;
+}
+
+export function renderNowBuildingCards(nowBuilding) {
+  const cards = nowBuilding.cards ?? [];
+  if (!cards.length) {
+    return `<div class="now-building-grid" data-content-applied="true"></div>`;
+  }
+  const items = cards
+    .map((card) => {
+      const cta =
+        card.cta_href && card.cta_label
+          ? `<a class="now-building-cta" href="${escapeAttr(card.cta_href)}"${anchorTargetAttrs(card.cta_href)}${isExternalHref(card.cta_href) ? ' rel="noopener noreferrer"' : ""}><span>${escapeHtml(card.cta_label)}</span></a>`
+          : "";
+      return `    <article class="now-building-card">
+      <h2 class="now-building-card-title">${escapeHtml(card.title)}</h2>
+      <p class="now-building-card-p">${renderMarkdownInline(card.paragraph)}</p>
+      ${cta}
+    </article>`;
+    })
+    .join("\n");
+  return `<div class="now-building-grid" data-content-applied="true">\n${items}\n  </div>`;
 }
 
 export function replaceSlot(html, name, innerHtml) {
@@ -256,7 +334,12 @@ export function applyAvatar(html, avatarPath) {
 export function applyContentToHtml(
   html,
   content,
-  { includeBio = false, includeNotFound = false, includeAvatar = true } = {},
+  {
+    includeBio = false,
+    includeNotFound = false,
+    includeNowBuilding = false,
+    includeAvatar = true,
+  } = {},
 ) {
   let out = html;
   const footerLinks = syncResumeFooterLinks(content.footer_links, content.resume_pdf);
@@ -266,6 +349,12 @@ export function applyContentToHtml(
   }
   if (includeNotFound) {
     out = replaceSlot(out, "not-found", renderNotFound(content));
+  }
+  if (includeNowBuilding) {
+    const nb = content.now_building;
+    out = replaceSlot(out, "now-building-heading", renderNowBuildingHeading(nb));
+    out = replaceSlot(out, "now-building-intro", renderNowBuildingIntro(nb));
+    out = replaceSlot(out, "now-building-cards", renderNowBuildingCards(nb));
   }
   if (includeAvatar) {
     out = applyAvatar(out, content.avatar);
@@ -286,6 +375,7 @@ export function applyContent({ root = ROOT } = {}) {
   const content = loadValidatedSiteContent(
     path.join(root, "content", "site.yaml"),
     path.join(root, "content", "not-found.yaml"),
+    path.join(root, "content", "now-building.yaml"),
   );
   const publicDir = path.join(root, "public");
 
@@ -297,6 +387,19 @@ export function applyContent({ root = ROOT } = {}) {
       applyContentToHtml(html, content, {
         includeBio: name === "index.html",
         includeNotFound: name === "404.html",
+        includeAvatar: true,
+      }),
+    );
+  }
+
+  const aiPath = path.join(publicDir, AI_HTML_TARGET);
+  if (fs.existsSync(aiPath)) {
+    const aiHtml = fs.readFileSync(aiPath, "utf8");
+    fs.writeFileSync(
+      aiPath,
+      applyContentToHtml(aiHtml, content, {
+        includeNowBuilding: true,
+        // Avatar path from Site content so /admin avatar edits update /ai too.
         includeAvatar: true,
       }),
     );

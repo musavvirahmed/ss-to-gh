@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  AI_HTML_TARGET,
   HTML_TARGETS,
   PUBLIC,
   applyContent,
@@ -40,14 +41,17 @@ console.log("OK schema validation");
 const before = Object.fromEntries(
   HTML_TARGETS.map((n) => [n, readPublic(n)]),
 );
+const aiBefore = readPublic(AI_HTML_TARGET);
 applyContent({ root: ROOT });
 const afterFirst = Object.fromEntries(
   HTML_TARGETS.map((n) => [n, readPublic(n)]),
 );
+const aiAfterFirst = readPublic(AI_HTML_TARGET);
 applyContent({ root: ROOT });
 const afterSecond = Object.fromEntries(
   HTML_TARGETS.map((n) => [n, readPublic(n)]),
 );
+const aiAfterSecond = readPublic(AI_HTML_TARGET);
 
 for (const name of HTML_TARGETS) {
   assert(
@@ -55,6 +59,10 @@ for (const name of HTML_TARGETS) {
     `${name}: apply-content is not idempotent`,
   );
 }
+assert(
+  aiAfterFirst === aiAfterSecond,
+  `${AI_HTML_TARGET}: apply-content is not idempotent`,
+);
 console.log("OK apply-content idempotent");
 
 // 3. HTML assertions
@@ -74,6 +82,18 @@ assert(
 for (const { phrase } of content.bio.highlights) {
   assert(indexHtml.includes(phrase), `index.html: missing highlight phrase ${phrase}`);
 }
+assert(
+  indexHtml.includes('href="/ai"'),
+  "index.html: bio must link building with AI to /ai",
+);
+assert(
+  !indexHtml.includes('href="/ai" target="_blank"'),
+  "index.html: /ai must open in the same tab",
+);
+assert(
+  !indexHtml.includes("designOps"),
+  "index.html: designOps highlight must be removed from bio",
+);
 
 assert(notFoundHtml.includes("<!-- content:not-found -->"), "404.html: missing not-found slot");
 assert(!notFoundHtml.includes("<!-- content:bio -->"), "404.html: must not have bio slot");
@@ -174,6 +194,66 @@ assert(
 );
 console.log("OK HTML assertions");
 
+// 3c. Now-building index (/ai)
+const aiHtml = aiAfterSecond;
+assert(
+  aiHtml.includes("<!-- content:now-building-heading -->"),
+  "ai/index.html: missing heading slot",
+);
+assert(
+  aiHtml.includes("<!-- content:now-building-cards -->"),
+  "ai/index.html: missing cards slot",
+);
+assert(
+  aiHtml.includes(content.now_building.heading),
+  "ai/index.html: missing now-building heading",
+);
+assert(
+  aiHtml.includes(content.now_building.cards[0].title),
+  "ai/index.html: missing first card title",
+);
+assert(
+  aiHtml.includes("€132"),
+  "ai/index.html: missing first card cost copy",
+);
+assert(
+  !aiHtml.includes("View README on GitHub"),
+  "ai/index.html: empty CTA must not render a button",
+);
+assert(
+  aiHtml.includes(`src="${content.avatar}"`),
+  "ai/index.html: avatar img must use Site content avatar path",
+);
+for (const link of content.footer_links) {
+  assert(aiHtml.includes(link.label), `ai/index.html: missing footer label ${link.label}`);
+}
+assert(
+  aiHtml.includes('src="/goatcounter.js"'),
+  "ai/index.html: missing Visit counter wrapper script",
+);
+assert(
+  aiHtml.includes('id="header"') && aiHtml.includes('id="footer-sections"'),
+  "ai/index.html: must reuse homepage/404 header + footer shell",
+);
+assert(
+  aiHtml.includes("site-chrome.css") && aiHtml.includes("_capture/site.css"),
+  "ai/index.html: must load shared site chrome stylesheets",
+);
+assert(
+  aiHtml.includes('class="now-building-main"'),
+  "ai/index.html: Variant A main must be present",
+);
+assert(
+  !aiHtml.includes("now-building-header") &&
+    !aiHtml.includes("now-building-footer"),
+  "ai/index.html: must not use custom header/footer chrome classes",
+);
+assert(
+  fs.existsSync(path.join(PUBLIC, "ai", "now-building.css")),
+  "missing public/ai/now-building.css",
+);
+console.log("OK Now-building index");
+
 // 3a. Visit counter wrapper (ADR-0010) — not Site content
 const goatPath = path.join(PUBLIC, "goatcounter.js");
 assert(fs.existsSync(goatPath), "missing public/goatcounter.js");
@@ -246,6 +326,14 @@ assert(
   "admin config must reference content/not-found.yaml",
 );
 assert(
+  configText.includes("content/now-building.yaml"),
+  "admin config must reference content/now-building.yaml",
+);
+assert(
+  configText.includes("Building with AI"),
+  "admin config must label now-building as Building with AI",
+);
+assert(
   configText.includes("preview: false"),
   "admin config must disable the preview pane",
 );
@@ -276,5 +364,6 @@ assert(
 console.log("OK tier-C eyes + pixel-shades assets");
 
 void before;
+void aiBefore;
 
 console.log("content:smoke passed");

@@ -6,4 +6,4 @@
 import { applyContent } from "./lib/site-content.mjs";
 
 applyContent();
-console.log("Applied content/site.yaml → public/");
+console.log("Applied content/*.yaml → public/");

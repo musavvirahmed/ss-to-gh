@@ -18,7 +18,7 @@ When the frontier is empty and fog is gone: `/to-spec` → `/to-tickets` → `/i
 
 ## Site content (ADR-0007)
 
-Edit **`content/site.yaml`** or the visual editor at **`/admin`** (Sveltia CMS, GitHub PAT). Run **`npm test`** before commit. Never edit bio/footer copy inside `public/index.html`. Cloudflare Pages build: **`npm run apply-content`**.
+Edit **`content/site.yaml`**, **`content/not-found.yaml`**, or **`content/now-building.yaml`**, or the visual editor at **`/admin`** (Sveltia CMS, GitHub PAT). Run **`npm test`** before commit. Never edit bio/footer/Now-building copy inside Publish-tree HTML by hand. Cloudflare Pages build: **`npm run apply-content`**.
 
 ## Agent skills
 

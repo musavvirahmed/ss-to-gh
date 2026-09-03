@@ -120,3 +120,42 @@ collections:
               label: Text
               name: line
               widget: markdown
+      - label: Building with AI
+        name: now-building
+        file: content/now-building.yaml
+        format: yaml
+        editor:
+          preview: false
+        fields:
+          - label: Page heading
+            name: heading
+            widget: string
+            hint: Main title on /ai (under “What am I”)
+          - label: Intro (optional)
+            name: intro
+            widget: markdown
+            required: false
+            hint: Short paragraph under the heading. Leave blank to hide.
+          - label: Cards
+            name: cards
+            widget: list
+            label_singular: card
+            summary: "{{fields.title}}"
+            min: 0
+            fields:
+              - label: Title
+                name: title
+                widget: string
+              - label: Paragraph
+                name: paragraph
+                widget: markdown
+              - label: CTA link (optional)
+                name: cta_href
+                widget: string
+                required: false
+                hint: Leave blank for no CTA button. If you fill this, also fill CTA label. Use https://… or /… paths.
+              - label: CTA label
+                name: cta_label
+                widget: string
+                required: false
+                hint: Used only when CTA link is set (e.g. View README on GitHub)
