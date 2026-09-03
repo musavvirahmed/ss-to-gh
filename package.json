@@ -14,6 +14,8 @@
     "prototype:tier-d": "python3 prototypes/tier-d-portrait/serve.py",
     "prototype:tier-c-eyes": "python3 prototypes/tier-c-eyes/serve.py",
     "prototype:pixel-sunglasses": "python3 prototypes/pixel-sunglasses/serve.py",
+    "prototype:bio-ai-entry": "python3 prototypes/bio-ai-entry/serve.py",
+    "prototype:now-building-gallery": "python3 prototypes/now-building-gallery/serve.py",
     "bake:tier-c-eyes": "python3 scripts/cut-tier-c-eyes.py",
     "bake:tier-c-atlas": "python3 scripts/bake-tier-c-atlas.py",
     "bake:tier-d": "node scripts/bake-tier-d-glb.mjs",

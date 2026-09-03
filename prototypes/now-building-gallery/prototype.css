@@ -1,0 +1,450 @@
+/* PROTOTYPE — Building with AI (/ai) card gallery */
+
+:root {
+  --proto-accent: #e63946;
+  --proto-bg: #000;
+  --proto-fg: #fff;
+  /* Live darkAccent (#474747) fails AA on black (~2.3:1). Nearest AA-normal grey. */
+  --proto-muted: #767676;
+  --proto-rule: rgba(255, 255, 255, 0.22);
+  --dark-accent: #474747;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: aktiv-grotesk, "Helvetica Neue", Arial, sans-serif;
+  background: var(--proto-bg);
+  color: var(--proto-fg);
+}
+
+.proto-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.65rem 1rem;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.proto-banner strong {
+  color: var(--proto-accent);
+}
+
+.site-header {
+  /* Live header uses ~2vw vertical inset + page padding */
+  padding: 2vw clamp(1.5rem, 4vw, 4rem) 0;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.site-title {
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-decoration: none;
+}
+
+.page {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 4vw, 4rem) 2rem;
+}
+
+.page-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--proto-muted);
+}
+
+.page-title {
+  margin: 0 0 2rem;
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.card-title,
+.stack-title,
+.feature-title,
+.rail-title {
+  margin: 0 0 0.65rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.card-p,
+.stack-p,
+.feature-p,
+.rail-p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--proto-muted);
+}
+
+.cta {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.cta span {
+  text-decoration: underline;
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.18em;
+}
+
+/* A — two-up bordered cards + homepage-matched avatar (stacked, ~78px) */
+.intro-a {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 2.5rem;
+}
+
+.portrait-slot {
+  /* Live desktop ~78px at 1280; mobile fixed 72px (3×24px fluid rows) */
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #c41e3a;
+}
+
+.portrait-slot img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+@media (max-width: 767px) {
+  .portrait-slot {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+.page-title-a {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: inherit;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.15;
+}
+
+.page-title-a .title-lead {
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--proto-muted);
+  line-height: 1.3;
+}
+
+.page-title-a .title-main {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.grid-a {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 767px) {
+  .grid-a {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-a {
+  border: 1px solid var(--proto-rule);
+  padding: 1.35rem 1.4rem 1.5rem;
+  min-height: 100%;
+}
+
+.card-a .card-title {
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+.card-a .card-p {
+  color: var(--proto-muted);
+}
+
+/* B — editorial stack, no card boxes */
+.stack-b {
+  max-width: 38rem;
+}
+
+.stack-b article {
+  padding: 1.75rem 0;
+  border-top: 1px solid var(--proto-rule);
+}
+
+.stack-b article:last-child {
+  border-bottom: 1px solid var(--proto-rule);
+}
+
+.stack-b .stack-title {
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
+/* C — featured + rail */
+.layout-c {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 767px) {
+  .layout-c {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feature-c {
+  padding-bottom: 0.5rem;
+}
+
+.feature-c .feature-title {
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: clamp(1.75rem, 3.4vw, 2.4rem);
+  font-weight: 700;
+}
+
+.rail-c {
+  border-left: 1px solid var(--proto-rule);
+  padding-left: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .rail-c {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--proto-rule);
+    padding-top: 1.5rem;
+  }
+}
+
+.rail-label {
+  margin: 0 0 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--proto-muted);
+}
+
+.rail-c article + article {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--proto-rule);
+}
+
+.rail-c .rail-title {
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: 1.05rem;
+}
+
+.rail-c .rail-p {
+  font-size: 0.9rem;
+}
+
+/* D — same-site family: homepage scale, no cards, first exhibit + rows */
+.layout-d {
+  max-width: 52rem;
+}
+
+.page-title-d {
+  margin: 0 0 clamp(2.5rem, 6vw, 4.5rem);
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: clamp(2.5rem, 5.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.page-title-d em {
+  font-style: normal;
+  font-weight: inherit;
+}
+
+.exhibit-d {
+  margin: 0 0 clamp(3.5rem, 8vw, 6rem);
+}
+
+.exhibit-title {
+  margin: 0 0 1.25rem;
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: clamp(1.65rem, 3.2vw, 2.15rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.exhibit-p {
+  margin: 0;
+  max-width: 40rem;
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--proto-muted);
+}
+
+.rows-d {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.75rem, 6vw, 4.5rem);
+}
+
+.row-d {
+  max-width: 40rem;
+}
+
+.row-title {
+  margin: 0 0 0.75rem;
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.row-p {
+  margin: 0;
+  font-family: aktiv-grotesk, sans-serif;
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--proto-muted);
+}
+
+.cta-d {
+  margin-top: 1.15rem;
+  font-size: 1.05rem;
+}
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.75rem, 5vw, 4rem);
+  padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 4vw, 4rem) 7rem;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.site-footer a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.125rem;
+}
+
+.site-footer a span {
+  text-decoration: underline;
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.18em;
+}
+
+.review-panel {
+  max-width: 1500px;
+  margin: 0 auto 6rem;
+  padding: 1.25rem clamp(1.5rem, 4vw, 4rem) 1.5rem;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #141414;
+}
+
+body[data-variant="D"] .review-panel {
+  /* Keep inspector out of the way of the large type judgment */
+  opacity: 0.92;
+}
+
+.review-panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+#runtime-status {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  color: #ddd;
+  background: #0a0a0a;
+  border-radius: 4px;
+  padding: 0.75rem 0.9rem;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.checklist {
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: #ccc;
+}
+
+.proto-switcher {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.9rem;
+  background: #1a1a1a;
+  color: #fff;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  font-size: 0.875rem;
+}
+
+.proto-switcher button {
+  font: inherit;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.proto-switcher .label {
+  min-width: 18rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.proto-switcher .label span {
+  color: var(--proto-accent);
+}
