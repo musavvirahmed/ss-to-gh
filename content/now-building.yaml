@@ -1,6 +1,6 @@
 html_title: Building with AI @ musavvir.info
 heading: Building with AI?
-intro: Testing intro optional. Testing intro optional. Testing intro optional. Testing intro optional. Testing intro optional. Testing intro optional. Testing intro optional. Testing intro optional.
+intro: Harnessing AI is a design skill. I treat LLMs and AI-IDEs as exoskeletons - they make the load up the mountain lighter, but they don't do the climbing for you. The following is a bunch of things I am making to grow my 'AI Builder' muscles.
 cards:
   - title: The recurring annual Squarespace cost I erased with the help of AI
     paragraph: Squarespace’s \~€132/year liability is gone. This site now runs on a free GitHub + Cloudflare stack. One month of Cursor Individual (\~€20) helped build the pixel-identical clone—then we kept it free.
