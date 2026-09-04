@@ -11,10 +11,12 @@ bio:
       style: underline
       bold: false
       href: ''
+      color: ''
     - phrase: building with AI
       style: scribble
       bold: true
       href: /ai
+      color: ''
     - phrase: Nord Security
       style: underline
       bold: true
@@ -26,11 +28,11 @@ bio:
       href: https://adplist.org/mentors/musavvir-ahmed
       color: darkAccent
 footer_links:
-  - label: Linkedin
-    href: https://www.linkedin.com/in/musavvirinfo/
-  - label: Résumé
-    href: /s/musa-resume-2026.pdf
-  - label: Iconfinder
-    href: https://www.iconfinder.com/musavvir
+  - label: Behance
+    href: https://www.behance.net/musavvir
   - label: Dribbble
     href: https://dribbble.com/musavvir
+  - label: Résumé
+    href: /s/musa-resume-2026.pdf
+  - label: Linkedin
+    href: https://www.linkedin.com/in/musavvirinfo/
