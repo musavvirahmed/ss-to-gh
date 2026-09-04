@@ -13,6 +13,8 @@ import {
   applyContent,
   loadValidatedSiteContent,
   renderBio,
+  renderMarkdownInline,
+  renderNowBuildingCards,
 } from "./lib/site-content.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -130,6 +132,29 @@ test("Sveltia blank highlight color/href survive load + schema validation", () =
     }
   }
   fs.rmSync(tmp, { recursive: true, force: true });
+});
+
+test("renderMarkdownInline turns ~~strike~~ into del", () => {
+  assert.equal(
+    renderMarkdownInline("A gift from ~~God~~ Musa"),
+    "A gift from <del>God</del> Musa",
+  );
+});
+
+test("now-building card title renders strikethrough markdown", () => {
+  const html = renderNowBuildingCards({
+    cards: [
+      {
+        title: "A gift from ~~God~~ Musa for HSM job seekers",
+        paragraph: "Body with ~~also~~ strike",
+      },
+    ],
+  });
+  assert.match(
+    html,
+    /<h2 class="now-building-card-title">A gift from <del>God<\/del> Musa for HSM job seekers<\/h2>/,
+  );
+  assert.match(html, /<p class="now-building-card-p">Body with <del>also<\/del> strike<\/p>/);
 });
 
 test("empty card CTA is omitted after normalize and bake", () => {

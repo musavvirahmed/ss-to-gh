@@ -157,7 +157,11 @@ collections:
             fields:
               - label: Title
                 name: title
-                widget: string
+                widget: markdown
+                minimal: true
+                buttons: [bold, strikethrough, link]
+                editor_components: []
+                hint: Inline formatting only (bold, strikethrough, links). Keep it one short line.
               - label: Paragraph
                 name: paragraph
                 widget: markdown

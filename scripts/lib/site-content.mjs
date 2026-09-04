@@ -151,7 +151,25 @@ function renderMarkdownBold(text) {
   return escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 }
 
-/** Minimal markdown: **bold** and [label](url). */
+/** Inline formats after links are peeled: ~~strike~~ then **bold**. */
+function renderMarkdownInlineFormats(text) {
+  const parts = [];
+  const strikeRe = /~~(.+?)~~/g;
+  let last = 0;
+  for (const match of text.matchAll(strikeRe)) {
+    if (match.index > last) {
+      parts.push(renderMarkdownBold(text.slice(last, match.index)));
+    }
+    parts.push(`<del>${renderMarkdownBold(match[1])}</del>`);
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) {
+    parts.push(renderMarkdownBold(text.slice(last)));
+  }
+  return parts.join("");
+}
+
+/** Minimal markdown: **bold**, ~~strikethrough~~, and [label](url). */
 export function renderMarkdownInline(text) {
   const parts = [];
   const linkRe = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -159,15 +177,15 @@ export function renderMarkdownInline(text) {
   for (const match of text.matchAll(linkRe)) {
     const [full, label, href] = match;
     if (match.index > last) {
-      parts.push(renderMarkdownBold(text.slice(last, match.index)));
+      parts.push(renderMarkdownInlineFormats(text.slice(last, match.index)));
     }
     parts.push(
-      `<a href="${escapeAttr(href)}"${anchorTargetAttrs(href)}>${renderMarkdownBold(label)}</a>`,
+      `<a href="${escapeAttr(href)}"${anchorTargetAttrs(href)}>${renderMarkdownInlineFormats(label)}</a>`,
     );
     last = match.index + full.length;
   }
   if (last < text.length) {
-    parts.push(renderMarkdownBold(text.slice(last)));
+    parts.push(renderMarkdownInlineFormats(text.slice(last)));
   }
   return parts.join("");
 }
@@ -291,7 +309,7 @@ export function renderNowBuildingCards(nowBuilding) {
           ? `<a class="now-building-cta" href="${escapeAttr(card.cta_href)}"${anchorTargetAttrs(card.cta_href)}${isExternalHref(card.cta_href) ? ' rel="noopener noreferrer"' : ""}><span>${escapeHtml(card.cta_label)}</span></a>`
           : "";
       return `    <article class="now-building-card">
-      <h2 class="now-building-card-title">${escapeHtml(card.title)}</h2>
+      <h2 class="now-building-card-title">${renderMarkdownInline(card.title)}</h2>
       <p class="now-building-card-p">${renderMarkdownInline(card.paragraph)}</p>
       ${cta}
     </article>`;
