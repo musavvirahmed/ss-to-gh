@@ -44,8 +44,12 @@ function normalizeSiteContent(data) {
     data.avatar = data.avatar.replace(/^\//, "");
   }
   for (const highlight of data.bio?.highlights ?? []) {
+    // Sveltia writes optional selects/strings as "" when blank; schema forbids that.
     if (!highlight.href?.trim()) {
       delete highlight.href;
+    }
+    if (!highlight.color?.trim()) {
+      delete highlight.color;
     }
   }
   return data;

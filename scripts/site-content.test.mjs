@@ -11,6 +11,7 @@ import { test } from "node:test";
 import yaml from "yaml";
 import {
   applyContent,
+  loadValidatedSiteContent,
   renderBio,
 } from "./lib/site-content.mjs";
 
@@ -86,6 +87,44 @@ test("bio highlight to /ai uses linked scribble in the same tab", () => {
     /href="https:\/\/nordsecurity\.com\/"[^>]*target="_blank"/,
     "external highlight links stay target=_blank",
   );
+});
+
+test("Sveltia blank highlight color/href survive load + schema validation", () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "sveltia-blank-"));
+  const contentDir = path.join(tmp, "content");
+  fs.mkdirSync(contentDir, { recursive: true });
+  const site = baseSite();
+  site.bio.highlights = site.bio.highlights.map((h) => ({
+    ...h,
+    href: h.href ?? "",
+    color: h.color ?? "",
+  }));
+  const siteFile = path.join(contentDir, "site.yaml");
+  fs.writeFileSync(siteFile, yaml.stringify(site));
+  fs.copyFileSync(
+    path.join(ROOT, "content", "not-found.yaml"),
+    path.join(contentDir, "not-found.yaml"),
+  );
+  fs.copyFileSync(
+    path.join(ROOT, "content", "now-building.yaml"),
+    path.join(contentDir, "now-building.yaml"),
+  );
+
+  const loaded = loadValidatedSiteContent(
+    siteFile,
+    path.join(contentDir, "not-found.yaml"),
+    path.join(contentDir, "now-building.yaml"),
+  );
+  for (const h of loaded.bio.highlights) {
+    assert.notEqual(h.color, "", "blank color must be stripped before schema");
+    if (h.color !== undefined) {
+      assert.ok(["white", "darkAccent"].includes(h.color));
+    }
+    if (h.href !== undefined) {
+      assert.notEqual(h.href, "");
+    }
+  }
+  fs.rmSync(tmp, { recursive: true, force: true });
 });
 
 test("empty card CTA is omitted after normalize and bake", () => {

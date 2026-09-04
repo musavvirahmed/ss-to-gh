@@ -11,12 +11,10 @@ bio:
       style: underline
       bold: false
       href: ''
-      color: ''
     - phrase: building with AI
       style: scribble
       bold: true
       href: /ai
-      color: ''
     - phrase: Nord Security
       style: underline
       bold: true
