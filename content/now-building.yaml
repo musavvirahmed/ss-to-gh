@@ -5,11 +5,11 @@ cards:
   - title: Replacing an expensive Squarespace subscription with a free stack
     paragraph: I used to pay Squarespace €132 annually to park this website in a convenient way. Then I got a one-month €20 Cursor subscription to make a pixel-identical clone, and made it **free** to run using a GitHub + Sveltia + Cloudflare stack.
     cta_href: https://github.com/musavvirahmed/ss-to-gh
-    cta_label: View repo on GitHub ↗
+    cta_label: View repo on GitHub
   - title: A gift from ~~God~~ Musa for HSM job seekers
     paragraph: Are you tired of LinkedIn job browsing and messing with ghost job openings? What if you could simply ask your LLM model of choice which Dutch companies are likely to sponsor + hire you for your talent? This MCP server will do exactly that.
     cta_href: https://hsmjobs.musavvir.work/
-    cta_label: Fire it up ↗
+    cta_label: Fire it up
   - title: Title of card three goes here
     paragraph: Card three body paragraph goes here. Card three body paragraph. Card three body paragraph goes here. Card three body paragraph. Card three body paragraph goes here.
     cta_href: ''
