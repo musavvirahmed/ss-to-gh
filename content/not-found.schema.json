@@ -2,8 +2,9 @@
   "$id": "https://musavvir.info/schemas/not-found-content.json",
   "type": "object",
   "additionalProperties": false,
-  "required": ["heading", "lines"],
+  "required": ["html_title", "heading", "lines"],
   "properties": {
+    "html_title": { "type": "string", "minLength": 1 },
     "heading": { "type": "string", "minLength": 1 },
     "lines": {
       "type": "array",

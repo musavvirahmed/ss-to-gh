@@ -2,8 +2,12 @@
   "$id": "https://musavvir.info/schemas/now-building-content.json",
   "type": "object",
   "additionalProperties": false,
-  "required": ["heading", "cards"],
+  "required": ["html_title", "heading", "cards"],
   "properties": {
+    "html_title": {
+      "type": "string",
+      "minLength": 1
+    },
     "heading": {
       "type": "string",
       "minLength": 1

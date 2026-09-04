@@ -20,10 +20,12 @@ Editable copy for musavvir.info. **Do not** edit bio, 404 copy, Now-building car
 
 | Section | Fields |
 |---------|--------|
-| **Shared** | `location`, `avatar`, `resume_pdf`, `footer_links` |
+| **Shared** | `html_title`, `location`, `avatar`, `resume_pdf`, `footer_links` |
 | **Homepage bio** | `bio.paragraphs` (markdown), `bio.highlights` (underline/scribble decorations) |
-| **404 page** | `not_found.heading`, `not_found.lines` (markdown) |
-| **Building with AI** (`/ai`) | `heading`, optional `intro`, `cards` (title, paragraph, optional CTA) |
+| **404 page** | `html_title`, `heading`, `lines` (markdown) |
+| **Building with AI** (`/ai`) | `html_title`, `heading`, optional `intro`, `cards` (title, paragraph, optional CTA) |
+
+`html_title` is the browser tab / social preview title (distinct from the on-page heading).
 
 Use `{{location}}` in the first bio paragraph. Highlight phrases must match bio text exactly.
 

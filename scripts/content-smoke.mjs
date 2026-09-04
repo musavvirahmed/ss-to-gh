@@ -192,10 +192,38 @@ assert(
   notFoundHtml.includes('data-goatcounter-click="resume"'),
   "404.html: Résumé footer must send GoatCounter event",
 );
+assert(
+  indexHtml.includes(`<title>${content.html_title}</title>`),
+  "index.html: missing html_title in <title>",
+);
+assert(
+  indexHtml.includes(`property="og:title" content="${content.html_title}"`),
+  "index.html: missing html_title in og:title",
+);
+assert(
+  notFoundHtml.includes(`<title>${content.not_found.html_title}</title>`),
+  "404.html: missing html_title in <title>",
+);
+assert(
+  notFoundHtml.includes(
+    `property="og:title" content="${content.not_found.html_title}"`,
+  ),
+  "404.html: missing html_title in og:title",
+);
 console.log("OK HTML assertions");
 
 // 3c. Now-building index (/ai)
 const aiHtml = aiAfterSecond;
+assert(
+  aiHtml.includes(`<title>${content.now_building.html_title}</title>`),
+  "ai/index.html: missing html_title in <title>",
+);
+assert(
+  aiHtml.includes(
+    `property="og:title" content="${content.now_building.html_title}"`,
+  ),
+  "ai/index.html: missing html_title in og:title",
+);
 assert(
   aiHtml.includes("<!-- content:now-building-heading -->"),
   "ai/index.html: missing heading slot",
@@ -360,6 +388,10 @@ assert(
 assert(
   configText.includes("Building with AI"),
   "admin config must label now-building as Building with AI",
+);
+assert(
+  configText.includes("Browser tab title"),
+  "admin config must expose Browser tab title fields",
 );
 assert(
   configText.includes("preview: false"),

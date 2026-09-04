@@ -33,8 +33,12 @@ The three intro paragraphs on the homepage, plus optional phrase highlights (und
 _Avoid_: hero copy, about text, bio block
 
 **Page not found**:
-The title and message shown on the custom 404 page when a URL does not exist. Edited in `content/not-found.yaml` (its own item in `/admin`).
+The page heading and message shown on the custom 404 page when a URL does not exist. Edited in `content/not-found.yaml` (its own item in `/admin`).
 _Avoid_: 404 page, error page, not_found
+
+**HTML title**:
+The browser-tab (and social-share) title for a page — edited per Site content entry as `html_title`. Distinct from the on-page heading.
+_Avoid_: page title (ambiguous), document title, meta title, SEO title
 
 **Footer links**:
 The row of named links at the bottom of every page (link text + web address).

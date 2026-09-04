@@ -20,6 +20,7 @@ const SCRIBBLE_ID = "770da126-29b7-44d5-88e7-3b30f5206484";
 
 function baseSite(overrides = {}) {
   return {
+    html_title: "musavvir.info",
     location: "The Hague",
     avatar: "assets/pro-pic-circular-musa.png",
     resume_pdf: "/s/musa-resume-2026.pdf",
@@ -66,7 +67,11 @@ function baseSite(overrides = {}) {
 test("bio highlight to /ai uses linked scribble in the same tab", () => {
   const html = renderBio({
     ...baseSite(),
-    not_found: { heading: "Oops…", lines: ["gone"] },
+    not_found: {
+      html_title: "Custom 404 Page — musavvir.info",
+      heading: "Oops…",
+      lines: ["gone"],
+    },
   });
 
   assert.match(
@@ -139,11 +144,16 @@ test("empty card CTA is omitted after normalize and bake", () => {
   fs.writeFileSync(path.join(contentDir, "site.yaml"), yaml.stringify(baseSite()));
   fs.writeFileSync(
     path.join(contentDir, "not-found.yaml"),
-    yaml.stringify({ heading: "Oops…", lines: ["No such page."] }),
+    yaml.stringify({
+      html_title: "Custom 404 Page — musavvir.info",
+      heading: "Oops…",
+      lines: ["No such page."],
+    }),
   );
   fs.writeFileSync(
     path.join(contentDir, "now-building.yaml"),
     yaml.stringify({
+      html_title: "Building with AI — musavvir.info",
       heading: "Building with AI",
       cards: [
         {

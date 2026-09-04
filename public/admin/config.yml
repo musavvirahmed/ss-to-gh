@@ -28,6 +28,10 @@ collections:
         editor:
           preview: false
         fields:
+          - label: Browser tab title
+            name: html_title
+            widget: string
+            hint: Text in the browser tab and social share previews (e.g. musavvir.info)
           - label: City
             name: location
             widget: string
@@ -107,7 +111,11 @@ collections:
         editor:
           preview: false
         fields:
-          - label: Title
+          - label: Browser tab title
+            name: html_title
+            widget: string
+            hint: Text in the browser tab and social share previews
+          - label: Page heading
             name: heading
             widget: string
             hint: Large heading at the top of the 404 page
@@ -127,6 +135,10 @@ collections:
         editor:
           preview: false
         fields:
+          - label: Browser tab title
+            name: html_title
+            widget: string
+            hint: Text in the browser tab and social share previews
           - label: Page heading
             name: heading
             widget: string

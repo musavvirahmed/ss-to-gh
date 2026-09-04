@@ -3,6 +3,7 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "html_title",
     "location",
     "resume_pdf",
     "avatar",
@@ -10,6 +11,10 @@
     "footer_links"
   ],
   "properties": {
+    "html_title": {
+      "type": "string",
+      "minLength": 1
+    },
     "location": {
       "type": "string",
       "minLength": 1

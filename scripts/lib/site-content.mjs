@@ -335,6 +335,26 @@ export function applyAvatar(html, avatarPath) {
   );
 }
 
+/** Browser tab title + matching Open Graph / Twitter / schema name meta. */
+export function applyHtmlTitle(html, title) {
+  const text = escapeHtml(title);
+  const attr = escapeAttr(title);
+  return html
+    .replace(/<title>[^<]*<\/title>/, `<title>${text}</title>`)
+    .replace(
+      /(<meta\s+property="og:title"\s+content=")[^"]*(")/,
+      `$1${attr}$2`,
+    )
+    .replace(
+      /(<meta\s+name="twitter:title"\s+content=")[^"]*(")/,
+      `$1${attr}$2`,
+    )
+    .replace(
+      /(<meta\s+itemprop="name"\s+content=")[^"]*(")/,
+      `$1${attr}$2`,
+    );
+}
+
 export function applyContentToHtml(
   html,
   content,
@@ -343,11 +363,15 @@ export function applyContentToHtml(
     includeNotFound = false,
     includeNowBuilding = false,
     includeAvatar = true,
+    htmlTitle = null,
   } = {},
 ) {
   let out = html;
   const footerLinks = syncResumeFooterLinks(content.footer_links, content.resume_pdf);
 
+  if (htmlTitle != null) {
+    out = applyHtmlTitle(out, htmlTitle);
+  }
   if (includeBio) {
     out = replaceSlot(out, "bio", renderBio(content));
   }
@@ -392,6 +416,10 @@ export function applyContent({ root = ROOT } = {}) {
         includeBio: name === "index.html",
         includeNotFound: name === "404.html",
         includeAvatar: true,
+        htmlTitle:
+          name === "index.html"
+            ? content.html_title
+            : content.not_found.html_title,
       }),
     );
   }
@@ -405,6 +433,7 @@ export function applyContent({ root = ROOT } = {}) {
         includeNowBuilding: true,
         // Avatar path from Site content so /admin avatar edits update /ai too.
         includeAvatar: true,
+        htmlTitle: content.now_building.html_title,
       }),
     );
   }
