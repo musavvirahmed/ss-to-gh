@@ -27,7 +27,7 @@
           "paragraph": { "type": "string" },
           "cta_href": {
             "type": "string",
-            "pattern": "^(https://|/)[^\\s]+$"
+            "pattern": "^(https://\\S+|\\/\\S+|#)$"
           },
           "cta_label": {
             "type": "string",

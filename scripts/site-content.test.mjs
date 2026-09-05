@@ -12,9 +12,11 @@ import yaml from "yaml";
 import {
   applyContent,
   loadValidatedSiteContent,
+  normalizeNowBuilding,
   renderBio,
   renderMarkdownInline,
   renderNowBuildingCards,
+  validateSiteContent,
 } from "./lib/site-content.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -155,6 +157,36 @@ test("now-building card title renders strikethrough markdown", () => {
     /<h2 class="now-building-card-title">A gift from <del>God<\/del> Musa for HSM job seekers<\/h2>/,
   );
   assert.match(html, /<p class="now-building-card-p">Body with <del>also<\/del> strike<\/p>/);
+});
+
+test("hash cta_href is a valid Coming Soon placeholder and bakes a same-tab link", () => {
+  const normalized = normalizeNowBuilding({
+    html_title: "Building with AI @ musavvir.info",
+    heading: "Building with AI?",
+    cards: [
+      {
+        title: "Soon",
+        paragraph: "Body",
+        cta_href: "#",
+        cta_label: "(Coming Soon) Fire it up",
+      },
+    ],
+  });
+  validateSiteContent({
+    ...baseSite(),
+    not_found: {
+      html_title: "Oops @ musavvir.info",
+      heading: "Oops…",
+      lines: ["gone"],
+    },
+    now_building: normalized,
+  });
+  const html = renderNowBuildingCards(normalized);
+  assert.match(
+    html,
+    /<a class="now-building-cta" href="#"><span>\(Coming Soon\) Fire it up<\/span><\/a>/,
+  );
+  assert.doesNotMatch(html, /target="_blank"/);
 });
 
 test("empty card CTA is omitted after normalize and bake", () => {

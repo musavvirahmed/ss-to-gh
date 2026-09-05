@@ -169,7 +169,7 @@ collections:
                 name: cta_href
                 widget: string
                 required: false
-                hint: Leave blank for no CTA button. If you fill this, also fill CTA label. Use https://… or /… paths.
+                hint: Leave blank for no CTA button. If you fill this, also fill CTA label. Use https://… or /… paths, or # for a Coming Soon placeholder.
               - label: CTA label
                 name: cta_label
                 widget: string
