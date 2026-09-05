@@ -10,3 +10,7 @@ cards:
     paragraph: Are you tired of LinkedIn job browsing and messing with ghost job openings? What if you could simply ask your LLM model of choice which Dutch companies are likely to sponsor + hire you for your talent? This MCP server will do exactly that.
     cta_href: '#'
     cta_label: (Coming Soon) Fire it up
+  - title: Building a native (iOS & Android) app which nudges you to daily pushups
+    paragraph: I was fatigued by the plethora of choice for fitness apps, most of them bloated to a tee with unimportant features and interface fanciness, losing the forest for the tree. I instead needed something which focuses on habit building. So I started building a lean app, which will be made open source.
+    cta_href: '#'
+    cta_label: (Currently Dogfooding) View repo on GitHub
