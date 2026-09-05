@@ -191,6 +191,11 @@
   color: #fff;
 }
 
+.now-building-card-p a:hover,
+.now-building-card-p a:focus-visible {
+  color: var(--site-link-hover, #e63946);
+}
+
 .now-building-cta {
   display: inline-block;
   margin-top: 1rem;
@@ -202,9 +207,16 @@
   text-decoration: none;
 }
 
+.now-building-cta:hover,
+.now-building-cta:focus-visible {
+  color: var(--site-link-hover, #e63946);
+}
+
 .now-building-cta span {
   font: inherit;
   text-decoration: underline;
+  text-decoration-color: currentColor;
   text-decoration-thickness: 0.14em;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.28em;
+  text-decoration-skip-ink: none;
 }

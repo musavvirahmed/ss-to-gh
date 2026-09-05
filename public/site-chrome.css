@@ -19,6 +19,9 @@ body.header--menu-open .header #site-title {
  * underline on the <a> from .sqs-block-html a — they should coincide. Without
  * SS runtime they can separate into a thin double line. Collapse to one stroke
  * matching the intended weight.
+ *
+ * skip-ink:none keeps a continuous line under descenders (g/p/y); a slightly
+ * larger offset clears glyph bowls so the stroke reads as one bar, not chewed.
  */
 footer.sections h4 a {
   text-decoration: none !important;
@@ -27,8 +30,8 @@ footer.sections h4 a span {
   text-decoration: underline !important;
   text-decoration-color: currentColor !important;
   text-decoration-thickness: 0.14em !important;
-  text-underline-offset: 0.18em !important;
-  text-decoration-skip-ink: auto;
+  text-underline-offset: 0.28em !important;
+  text-decoration-skip-ink: none;
 }
 
 /* Schema-driven footer links (ADR-0008) — original Squarespace grid-area map */
@@ -224,4 +227,38 @@ footer.sections h4 a span {
 .fe-block .sqs-block-image .design-layout-fluid.image-component-container-fit
   .fluid-image-container .content-fit[data-profile-photo-slot].is-live:hover img[data-pixel-shades] {
   visibility: visible;
+}
+
+/*
+ * Site-wide link hover: white → brand red (matches /ai accent + highlight stroke).
+ * Excludes menu-open header title (forced black above). Highlight white !important
+ * wrappers need an explicit hover override.
+ */
+:root {
+  --site-link-hover: #e63946;
+}
+
+.sqs-block-html a:hover,
+.sqs-block-html a:focus-visible,
+.header-title-text a:hover,
+.header-title-text a:focus-visible,
+#site-title:hover,
+#site-title:focus-visible,
+footer.sections h4 a:hover,
+footer.sections h4 a:focus-visible,
+.now-building-main a:hover,
+.now-building-main a:focus-visible {
+  color: var(--site-link-hover) !important;
+}
+
+.sqs-block-html .sqs-html-content .sqsrte-text-color--white a:hover,
+.sqs-block-html .sqs-html-content .sqsrte-text-color--white a:hover *,
+.sqs-block-html .sqs-html-content .sqsrte-text-color--white a:focus-visible,
+.sqs-block-html .sqs-html-content .sqsrte-text-color--white a:focus-visible * {
+  color: var(--site-link-hover) !important;
+}
+
+footer.sections h4 a:hover span,
+footer.sections h4 a:focus-visible span {
+  text-decoration-color: currentColor !important;
 }
