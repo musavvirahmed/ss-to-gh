@@ -194,11 +194,16 @@
 .now-building-cta {
   display: inline-block;
   margin-top: 1rem;
+  font-family: var(--body-font-font-family, aktiv-grotesk);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.55;
   color: #fff;
   text-decoration: none;
 }
 
 .now-building-cta span {
+  font: inherit;
   text-decoration: underline;
   text-decoration-thickness: 0.14em;
   text-underline-offset: 0.18em;
