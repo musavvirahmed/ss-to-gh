@@ -1,4 +1,4 @@
-# Replacing an expensive Squarespace site with a free stack
+# Relocating my expensive Squarespace site to a free GitHub powered stack
 
 **Live site:** [musavvir.info](https://musavvir.info/)
 
