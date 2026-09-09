@@ -2,8 +2,8 @@ html_title: Building with AI @ musavvir.info
 heading: Building with AI?
 intro: Harnessing AI is a design skill. I treat LLMs and AI-IDEs as exoskeletons - they make the load up the mountain lighter, but they don't do the climbing for you.
 cards:
-  - title: Replacing an expensive Squarespace site with a free stack
-    paragraph: I used to pay Squarespace €132 annually, to park this very website you are currently on. Not long ago, I got a one-month €20 Cursor subscription, made a pixel-identical clone, and started hosting it for free, using a GitHub + Sveltia + Cloudflare stack.
+  - title: Replacing Squarespace subscription with a free stack
+    paragraph: I used to pay a hefty €132 per year to Squarespace, just to park this very website you are currently on. And then I decided to get a one-month €20 Cursor subscription, made a pixel-identical clone, and started hosting it for free, using a GitHub + Sveltia + Cloudflare stack.
     cta_href: https://github.com/musavvirahmed/ss-to-gh/blob/main/README.md
     cta_label: View README on GitHub
   - title: A gift from ~~God~~ Musa for HSM job seekers
