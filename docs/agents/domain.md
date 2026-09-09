@@ -18,7 +18,7 @@ Single-context repo:
 /
 ├── CONTEXT.md
 ├── docs/adr/
-└── docs/handoffs/
+└── README.md          ← public Case study
 ```
 
 ## Use the glossary's vocabulary

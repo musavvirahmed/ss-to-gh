@@ -8,6 +8,13 @@ node_modules/
 dist/
 *.log
 .scratch/
+.cursor/
+.playwright-cli/
+.agents/
+.claude/
+docs/handoffs/
+prototypes/tier-c-eyes/
+prototypes/tier-d-portrait/
 prototypes/throwaway-html-clone/
 visual/diffs/
 playwright-report/
@@ -15,3 +22,5 @@ test-results/
 .idea/
 .vscode/
 *.swp
+.tmp-*
+*.png.preview

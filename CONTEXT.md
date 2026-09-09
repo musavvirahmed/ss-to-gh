@@ -13,7 +13,7 @@ The public, ungated gallery on musavvir.info at `/ai` (public label **Building w
 _Avoid_: AI prototypes, portfolio, case studies (ambiguous), Case study
 
 **Case study**:
-The deferred public write-up of the Squarespace→static migration (job-search signal and craft/teaching). Sibling of a Now-building index card, not the index itself; publish venue TBD.
+The public write-up of the Squarespace→static migration (job-search signal and craft/teaching), published as this repo’s root `README.md`. Sibling of a Now-building index card, not the index itself.
 _Avoid_: live-site case-study page, Now-building index, portfolio case study
 
 **Profile photo**:
@@ -49,7 +49,7 @@ The chosen editing model: Site content lives in the git repo and changes by comm
 _Avoid_: headless CMS, content platform, Squarespace editor
 
 **Host**:
-The service that serves the built static site to the public — Cloudflare Pages, connected to the private GitHub repo `ss-to-gh`.
+The service that serves the built static site to the public — Cloudflare Pages, connected to the GitHub repo `ss-to-gh` (public as of the Case study publish; was private during planning and cutover).
 _Avoid_: hosting provider, CDN alone, GitHub Pages, GitLab Pages
 
 **Registrar**:

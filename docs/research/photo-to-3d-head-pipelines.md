@@ -6,7 +6,7 @@ Ticket: [Photo-to-3D head pipelines and static-site weight budget](https://githu
 
 What pipelines turn a single mugshot into a cursor-trackable 3D head (GLB/glTF)? What are realistic asset sizes, JS runtime weight, and performance on Cloudflare Pages? Is tier **D** (3D, Copilot energy) viable on a personal-site budget?
 
-Current avatar: `assets/pro-pic-circular-musa.png` — 216×216 RGBA PNG, ~51 KB ([handoff note](../handoffs/2026-08-27-export-assets.md)).
+Current avatar: `assets/pro-pic-circular-musa.png` — 216×216 RGBA PNG, ~51 KB (export captured into `assets/`).
 
 ---
 
