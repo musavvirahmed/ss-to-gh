@@ -1,7 +1,6 @@
 .DS_Store
 .env
 .env.*
-!.env.example
 node_modules/
 .vercel/
 .wrangler/
@@ -13,9 +12,6 @@ dist/
 .agents/
 .claude/
 docs/handoffs/
-prototypes/tier-c-eyes/
-prototypes/tier-d-portrait/
-prototypes/throwaway-html-clone/
 visual/diffs/
 playwright-report/
 test-results/
