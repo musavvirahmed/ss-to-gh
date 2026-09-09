@@ -8,7 +8,7 @@ A workflow runs checks. It does not publish the site. Cloudflare Pages publishes
 
 GitHub starts this workflow after each push to `main`. GitHub also starts this workflow for each pull request.
 
-The workflow does this:
+The workflow does the following:
 
 1. Gets a copy of the repository.
 2. Installs Node.js 22.
@@ -18,7 +18,7 @@ The workflow does this:
 6. Writes `content/*.yaml` into the HTML slots.
 7. Runs `npm test`.
 
-`npm test` checks:
+That `npm test` checks:
 
 - The YAML schema
 - The content bake
