@@ -1,18 +1,18 @@
-# Site content
+# Content
 
-This is the copy for [musavvir.info](https://musavvir.info/).
+This folder holds all the copy for [musavvir.info](https://musavvir.info/).
 
-Do not edit the bio, 404 page, Building with AI cards, or footer in `public/` HTML.
+Whenever any content needs editing, it must happen from here. Do NOT directly edit the 'admin/index.html', 'ai/index.html', '404.html', or '/index.html' pages.
 
-## Edit in the browser
+## Edit via the browser
 
-Open [musavvir.info/admin](https://musavvir.info/admin/) (or `*.pages.dev/admin/` on a preview).
+Open [musavvir.info/admin](https://musavvir.info/admin/).
 
 1. Choose **Sign in with Token**.
 2. Use a GitHub [personal access token](https://github.com/settings/tokens) with `repo` scope on `musavvirahmed/ss-to-gh`.
 3. Save. This commits the YAML in `content/` to `main`. Cloudflare rebuilds the site.
 
-## Edit YAML
+## Or, edit via YAML files
 
 Edit [`site.yaml`](site.yaml), [`not-found.yaml`](not-found.yaml), or [`now-building.yaml`](now-building.yaml). Then:
 
