@@ -24,3 +24,4 @@ test-results/
 *.swp
 .tmp-*
 *.png.preview
+README.draft.md
