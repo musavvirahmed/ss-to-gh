@@ -10,10 +10,10 @@ Then came the silent revolutionary advent of agentic coding. I orchestrated the 
 
 **Outcome:** [musavvir.info](https://musavvir.info/) still looks like its former Squarespace-self. Its hosting cost beyond the domain is effectively €0 (thanks to Cloudflare Pages). And the expensive Squarespace subscription liability is finally gone.
 
-|                  |                                                                                                                                                                                                                                            |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Problem**      | Squarespace was convenient but very expensive for a static personal website.                                                                                                                                                               |
-| **Goal**         | Identical site, ideally €0 recurring cost beyond domain, and leave Squarespace billing.                                                                                                                                                    |
-| **Method**       | Human defined goals, agent-led planning (agent asks clarifying questions → human answers → converted to ADRs) + HITL for visual QA + human runs dashboard wizards for go-live → agents run smoke tests → human declares success or failure |
-| **Current host** | This GitHub repo → Cloudflare Pages                                                                                                                                                                                                        |
-| **Edit model**   | Git-as-CMS: `content/*.yaml` + optional Sveltia at `/admin`.                                                                                                                                                                               |
+|                  |                                                                                        |
+| ---------------- | -------------------------------------------------------------------------------------- |
+| **Problem**      | Squarespace was convenient but very expensive for a static personal website.           |
+| **Goal**         | Identical site, ideally €0 recurring cost beyond domain, and leave Squarespace billing.|
+| **Method**       | Human defined goals, agent-led planning (agent asks clarifying questions → human answers → converted to ADRs) + HITL for visual QA + human runs dashboard wizards for go-live → agents run smoke tests → human declares success or failure  |
+| **Current host** | This GitHub repo → Cloudflare Pages                                                    |
+| **Edit model**   | Git-as-CMS: `content/*.yaml` + optional Sveltia at `/admin`.                           |
