@@ -1,10 +1,11 @@
-# public/
+# Public
 
 Cloudflare Pages publishes this folder as [musavvir.info](https://musavvir.info/). The build command is `npm run apply-content`.
 
-## Page copy
 
-Edit bio, 404, and Building with AI copy in [`content/`](../content/). Do not edit that copy in the HTML files here.
+## Edit page copy
+
+Whenever any homepage content, 404 content, or any other pages need editing, it must happen from [`content/`](../content/). Do NOT directly edit any HTML files inside this `public/` folder.
 
 Run `npm run apply-content` to write the YAML into the HTML. That command also copies `content/admin/` into `admin/`.
 
