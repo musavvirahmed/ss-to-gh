@@ -10,6 +10,8 @@ import {
   HTML_TARGETS,
   PUBLIC,
   applyContent,
+  escapeAttr,
+  escapeHtml,
   loadValidatedSiteContent,
 } from "./lib/site-content.mjs";
 
@@ -21,6 +23,18 @@ function assert(cond, msg) {
 
 function readPublic(name) {
   return fs.readFileSync(path.join(PUBLIC, name), "utf8");
+}
+
+function nowBuildingCardArticles(html) {
+  const open = "<!-- content:now-building-cards -->";
+  const close = "<!-- /content:now-building-cards -->";
+  const start = html.indexOf(open);
+  const end = html.indexOf(close);
+  assert(start >= 0 && end > start, "ai/index.html: now-building cards slot bounds");
+  const slot = html.slice(start, end);
+  return [...slot.matchAll(/<article class="now-building-card">([\s\S]*?)<\/article>/g)].map(
+    (m) => m[1],
+  );
 }
 
 function bioParagraphs(content) {
@@ -244,10 +258,38 @@ assert(
   aiHtml.includes("€132"),
   "ai/index.html: missing first card cost copy",
 );
-assert(
-  !aiHtml.includes("View README on GitHub"),
-  "ai/index.html: empty CTA must not render a button",
-);
+{
+  const cards = content.now_building.cards ?? [];
+  const articles = nowBuildingCardArticles(aiHtml);
+  assert(
+    articles.length === cards.length,
+    `ai/index.html: expected ${cards.length} now-building cards, found ${articles.length}`,
+  );
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const article = articles[i];
+    const hasCta = Boolean(card.cta_href && card.cta_label);
+    if (hasCta) {
+      assert(
+        article.includes('class="now-building-cta"'),
+        `ai/index.html: card ${i} with cta_href must render a CTA`,
+      );
+      assert(
+        article.includes(`href="${escapeAttr(card.cta_href)}"`),
+        `ai/index.html: card ${i} CTA href mismatch`,
+      );
+      assert(
+        article.includes(`<span>${escapeHtml(card.cta_label)}</span>`),
+        `ai/index.html: card ${i} CTA label mismatch`,
+      );
+    } else {
+      assert(
+        !article.includes("now-building-cta"),
+        `ai/index.html: card ${i} empty CTA must not render a button`,
+      );
+    }
+  }
+}
 assert(
   aiHtml.includes(`src="${content.avatar}"`),
   "ai/index.html: avatar img must use Site content avatar path",
