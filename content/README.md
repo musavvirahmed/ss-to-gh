@@ -43,5 +43,3 @@ Cloudflare Pages **build command:** `npm run apply-content`
 **Output directory:** `public`
 
 After changing slot structure: `npm run init-content-slots` (idempotent).
-
-See ADR-0007 and `docs/research/content-edit-workflow.md`.
