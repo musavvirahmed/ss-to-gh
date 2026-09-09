@@ -7,9 +7,7 @@ Cloudflare Pages publishes this folder as [musavvir.info](https://musavvir.info/
 
 Whenever any homepage content, 404 content, or any other pages need editing, it must happen from [`content/`](../content/). Do NOT directly edit any HTML files inside this `public/` folder.
 
-Run `npm run apply-content` to write the YAML into the HTML. That command also copies `content/admin/` into `admin/`.
-
-Read [`content/README.md`](../content/README.md) for the full steps.
+Read [`content/README.md`](../content/README.md) for step-by-step instructions.
 
 ## Files
 
