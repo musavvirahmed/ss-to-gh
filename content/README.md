@@ -1,45 +1,35 @@
 # Site content
 
-Editable copy for musavvir.info. **Do not** edit bio, 404 copy, Now-building cards, or footer text in `public/` HTML by hand.
+This is the copy for [musavvir.info](https://musavvir.info/).
 
-## Edit options
+Do not edit the bio, 404 page, Building with AI cards, or footer in `public/` HTML.
 
-1. **Visual editor:** [https://musavvir.info/admin/](https://musavvir.info/admin/) (or `*.pages.dev/admin/` before cutover)
-   - Sign in with **Sign in with Token** and a GitHub [personal access token](https://github.com/settings/tokens) with `repo` scope on `musavvirahmed/ss-to-gh`.
-   - Save commits YAML under `content/` to `main`; Cloudflare rebuilds.
+## Edit in the browser
 
-2. **YAML:** edit [`site.yaml`](site.yaml), [`not-found.yaml`](not-found.yaml), or [`now-building.yaml`](now-building.yaml), then:
+Open [musavvir.info/admin](https://musavvir.info/admin/) (or `*.pages.dev/admin/` on a preview).
 
-   ```bash
-   npm test
-   git add content/ public/
-   git commit -m "Update site content"
-   ```
+1. Choose **Sign in with Token**.
+2. Use a GitHub [personal access token](https://github.com/settings/tokens) with `repo` scope on `musavvirahmed/ss-to-gh`.
+3. Save. This commits the YAML in `content/` to `main`. Cloudflare rebuilds the site.
 
-## What you can edit
+## Edit YAML
 
-| Section | Fields |
-|---------|--------|
-| **Shared** | `html_title`, `location`, `avatar`, `resume_pdf`, `footer_links` |
-| **Homepage bio** | `bio.paragraphs` (markdown), `bio.highlights` (underline/scribble decorations) |
-| **404 page** | `html_title`, `heading`, `lines` (markdown) |
-| **Building with AI** (`/ai`) | `html_title`, `heading`, optional `intro`, `cards` (title, paragraph, optional CTA) |
+Edit [`site.yaml`](site.yaml), [`not-found.yaml`](not-found.yaml), or [`now-building.yaml`](now-building.yaml). Then:
 
-`html_title` is the browser tab / social preview title (distinct from the on-page heading).
+```bash
+npm test
+git add content/ public/
+git commit -m "Update site content"
+```
 
-Use `{{location}}` in the first bio paragraph. Highlight phrases must match bio text exactly.
+## Notes
 
-## Examples
+- `html_title` is the title for the browser tab and for social previews. It is not the heading on the page.
+- Put `{{location}}` in the first bio paragraph.
+- Highlight phrases must match the bio text exactly.
+- For a new résumé, put the PDF in `public/s/`. Then set `resume_pdf`. The footer Résumé link updates when you apply content.
+- For a Building with AI card with no button, leave `cta_href` blank.
 
-- Change city: set `location: Den Haag` (or use `{{location}}` in bio paragraph 1)
-- Add a footer link: add a row under `footer_links`
-- New résumé: drop PDF in `public/s/`, update `resume_pdf` (Résumé footer link href syncs on apply)
-- Edit 404 message: change `not_found.heading` or `not_found.lines`
-- Add a Now-building card: edit `now-building.yaml` (or `/admin` → Building with AI); leave `cta_href` blank for no button
+The Cloudflare Pages build command is `npm run apply-content`. The output directory is `public`.
 
-## Build
-
-Cloudflare Pages **build command:** `npm run apply-content`  
-**Output directory:** `public`
-
-After changing slot structure: `npm run init-content-slots` (idempotent).
+After you change slot structure, run `npm run init-content-slots`. You can run that command more than once.
