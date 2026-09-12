@@ -6,17 +6,17 @@
  */
 
 /*
- * Shared shell on /ai (header + footer fluid-engine): same ultrawide left-align
- * as site-chrome.css. Kept here so /ai does not depend on a stale site-chrome
- * cache after deploy.
+ * Shared shell on /ai (header + footer): keep title/content/footer on one
+ * left rail. Cache-busting query on the <link> forces this sheet past CDNs.
  */
+body.header-width-inset .header-announcement-bar-wrapper > .header-inner,
 body.header-width-inset .header-inner {
-  margin-left: 0 !important;
-  margin-right: auto !important;
+  margin: 0 auto 0 0 !important;
 }
 
 @media (max-width: 767px) {
-  footer .fluid-engine {
+  body footer .fluid-engine,
+  body .now-building-main {
     grid-template-columns:
       var(--grid-gutter)
       repeat(8, minmax(0, var(--cell-max-width)))
@@ -25,7 +25,8 @@ body.header-width-inset .header-inner {
 }
 
 @media (min-width: 768px) {
-  footer .fluid-engine {
+  body footer .fluid-engine,
+  body .now-building-main {
     grid-template-columns:
       var(--grid-gutter)
       repeat(24, minmax(0, var(--cell-max-width)))

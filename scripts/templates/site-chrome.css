@@ -1,19 +1,19 @@
 /* Static-site fixes after Squarespace platform JS is stripped. */
 
 /*
- * Ultrawide left-align: Squarespace used symmetric 1fr gutters + a centered
- * 1900px header, so past ~1900px the whole page becomes a centered island.
- * .header-announcement-bar-wrapper already pads by --sqs-site-gutter, so the
- * inset header band must start at margin-left:0 (not another gutter). Fluid
- * grids keep a fixed left track; leftover width sits on the right.
+ * Ultrawide left-align: Squarespace centered a max-1900px header with
+ * `margin: 0 auto` inside a padded announcement bar. When the fluid grid
+ * snaps left and the header stays centered, "musavvir.info" sits on a
+ * different rail than the avatar/bio — it looks crooked, but it is not
+ * rotated. Pin the header band to the same left edge as the content grid.
  */
-.header-width-inset .header-inner {
-  margin-left: 0 !important;
-  margin-right: auto !important;
+body.header-width-inset .header-announcement-bar-wrapper > .header-inner,
+body.header-width-inset .header-inner {
+  margin: 0 auto 0 0 !important;
 }
 
 @media (max-width: 767px) {
-  .fluid-engine {
+  body .fluid-engine {
     grid-template-columns:
       var(--grid-gutter)
       repeat(8, minmax(0, var(--cell-max-width)))
@@ -22,7 +22,7 @@
 }
 
 @media (min-width: 768px) {
-  .fluid-engine {
+  body .fluid-engine {
     grid-template-columns:
       var(--grid-gutter)
       repeat(24, minmax(0, var(--cell-max-width)))
