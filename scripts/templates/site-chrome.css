@@ -1,5 +1,33 @@
 /* Static-site fixes after Squarespace platform JS is stripped. */
 
+/*
+ * Ultrawide left-align: Squarespace used symmetric 1fr gutters + a centered
+ * 1900px header, so past ~1900px the whole page becomes a centered island.
+ * Keep a fixed left gutter; let leftover width sit on the right.
+ */
+.header-width-inset .header-inner {
+  margin-left: var(--sqs-site-gutter, var(--pagePadding, 3vw)) !important;
+  margin-right: auto !important;
+}
+
+@media (max-width: 767px) {
+  .fluid-engine {
+    grid-template-columns:
+      var(--grid-gutter)
+      repeat(8, minmax(0, var(--cell-max-width)))
+      minmax(0, 1fr) !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .fluid-engine {
+    grid-template-columns:
+      var(--grid-gutter)
+      repeat(24, minmax(0, var(--cell-max-width)))
+      minmax(0, 1fr) !important;
+  }
+}
+
 /* Leftover Squarespace cart chrome (showCart:false but markup remains) */
 .cart-style-icon,
 #sqs-cart-container,

@@ -26,10 +26,11 @@
   margin: 0;
   padding: 0;
   display: grid;
+  /* Fixed left gutter; spare width on the right (match homepage site-chrome). */
   grid-template-columns:
-    minmax(var(--grid-gutter), 1fr)
+    var(--grid-gutter)
     repeat(24, minmax(0, var(--cell-max-width)))
-    minmax(var(--grid-gutter), 1fr);
+    minmax(0, 1fr);
 }
 
 /* Homepage bio: grid-area 5/2/17/20 → content columns 1–18 of 24. */
@@ -96,9 +97,9 @@
     --grid-gutter: var(--sqs-mobile-site-gutter, 6vw);
     --cell-max-width: calc(var(--site-max) / 8);
     grid-template-columns:
-      minmax(var(--grid-gutter), 1fr)
+      var(--grid-gutter)
       repeat(8, minmax(0, var(--cell-max-width)))
-      minmax(var(--grid-gutter), 1fr);
+      minmax(0, 1fr);
   }
 
   .now-building-main > * {

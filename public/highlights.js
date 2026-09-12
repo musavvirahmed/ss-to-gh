@@ -10,11 +10,15 @@
     vh: 64,
     d: "M 0,63.36 c 44.625,-1.76 89.25,-5.44 178.5,-7.04 c 89.25,-1.6 135.66,0 178.5,0.64 c 8.568,0.128 -6.783,1.824 -7.14,1.92",
   };
-  // scribble (designOps): view 273×64 — multi-pass thin strokes
+  /*
+   * Former designOps multi-pass scribble looked crooked when stretched under
+   * "building with AI". Use a single underlineCurve scaled to the same box so
+   * the stroke sits under the phrase like the other bio highlights.
+   */
   const SCRIBBLE = {
-    vw: 273,
+    vw: 357,
     vh: 64,
-    d: "M 0,56.32 c 20.475,-0.288 95.55,-2.112 136.5,-1.92 c 40.95,0.192 132.405,3.2 136.5,3.2 c 4.095,0 -72.345,-3.68 -109.2,-3.2 c -36.855,0.48 -132.405,5.632 -136.5,6.4 c -4.095,0.768 80.535,-1.28 109.2,-1.28 c 28.665,0 81.9,0.608 81.9,1.28 c 0,0.672 -61.425,2.72 -81.9,3.2 c -20.475,0.48 -46.41,0 -54.6,0",
+    d: "M 0,63.36 c 44.625,-1.76 89.25,-5.44 178.5,-7.04 c 89.25,-1.6 135.66,0 178.5,0.64 c 8.568,0.128 -6.783,1.824 -7.14,1.92",
   };
 
   function hslaToCss(hsla) {
@@ -104,10 +108,8 @@
     const padX = fontSize * 0.08;
     const w = Math.max(rect.width + padX * 2, 8);
     const left = rect.left - hostRect.left - padX;
-    const top =
-      attr.shape === "scribble"
-        ? rect.top - hostRect.top - (h - rect.height) * 0.35
-        : rect.top - hostRect.top - (h - rect.height) * 0.15;
+    // Sit under the glyphs (same vertical bias as underlineCurve).
+    const top = rect.top - hostRect.top - (h - rect.height) * 0.15;
 
     const tmpl = templateFor(attr.shape, id);
     const stroke = colorOf(attr);
@@ -182,8 +184,16 @@
     requestAnimationFrame(paint);
   };
 
-  if (document.fonts?.ready) document.fonts.ready.then(run);
-  else window.addEventListener("load", run);
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(() => {
+      run();
+      // Typekit can reflow after fonts.ready; repaint so strokes track glyphs.
+      setTimeout(paint, 120);
+      setTimeout(paint, 400);
+    });
+  } else {
+    window.addEventListener("load", run);
+  }
 
   window.addEventListener("resize", () => {
     clearTimeout(window.__protoHlT);
