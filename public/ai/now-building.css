@@ -5,6 +5,34 @@
  * Mobile: 8-col engine; content uses all 8 content columns (homepage bio too).
  */
 
+/*
+ * Shared shell on /ai (header + footer fluid-engine): same ultrawide left-align
+ * as site-chrome.css. Kept here so /ai does not depend on a stale site-chrome
+ * cache after deploy.
+ */
+body.header-width-inset .header-inner {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+@media (max-width: 767px) {
+  footer .fluid-engine {
+    grid-template-columns:
+      var(--grid-gutter)
+      repeat(8, minmax(0, var(--cell-max-width)))
+      minmax(0, 1fr) !important;
+  }
+}
+
+@media (min-width: 768px) {
+  footer .fluid-engine {
+    grid-template-columns:
+      var(--grid-gutter)
+      repeat(24, minmax(0, var(--cell-max-width)))
+      minmax(0, 1fr) !important;
+  }
+}
+
 .now-building-main {
   --now-building-muted: #767676;
   --now-building-rule: rgba(255, 255, 255, 0.22);

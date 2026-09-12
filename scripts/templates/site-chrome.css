@@ -3,10 +3,12 @@
 /*
  * Ultrawide left-align: Squarespace used symmetric 1fr gutters + a centered
  * 1900px header, so past ~1900px the whole page becomes a centered island.
- * Keep a fixed left gutter; let leftover width sit on the right.
+ * .header-announcement-bar-wrapper already pads by --sqs-site-gutter, so the
+ * inset header band must start at margin-left:0 (not another gutter). Fluid
+ * grids keep a fixed left track; leftover width sits on the right.
  */
 .header-width-inset .header-inner {
-  margin-left: var(--sqs-site-gutter, var(--pagePadding, 3vw)) !important;
+  margin-left: 0 !important;
   margin-right: auto !important;
 }
 
